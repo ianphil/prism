@@ -109,6 +109,70 @@ Key conformance finding: the PRD's conceptual code (`from agent_framework.ollama
 - [Structured Output Tutorial](https://learn.microsoft.com/en-us/agent-framework/tutorials/agents/structured-output)
 - [Run Agent Tutorial](https://learn.microsoft.com/en-us/agent-framework/tutorials/agents/run-agent)
 
+## Integration Testing Findings (2026-01-28)
+
+**Tested with**: `agent-framework-ollama>=1.0.0b260127`, Ollama with `mistral:latest`
+
+### API Corrections
+
+The original research had some inaccuracies. Here are the verified API patterns:
+
+| Documented | Actual | Notes |
+|------------|--------|-------|
+| `client.create_agent()` | `client.as_agent()` | Method name is different |
+| `response_format=BaseModel` | `response_format='json'` only | Ollama doesn't support Pydantic directly |
+| `response.value` populated | `response.value` is always `None` | Must parse JSON manually |
+
+### Correct Usage Pattern
+
+```python
+from agent_framework.ollama import OllamaChatClient
+
+# Create client
+client = OllamaChatClient(host='http://localhost:11434', model_id='mistral')
+
+# Create agent (use as_agent, not create_agent)
+agent = client.as_agent(
+    name='agent_name',
+    instructions='System prompt here',
+)
+
+# Run agent (options passed to run, not agent creation)
+response = await agent.run(
+    'User message here',
+    options={
+        'temperature': 0.7,
+        'max_tokens': 512,
+        'response_format': 'json',  # Only 'json' or '' supported
+    }
+)
+
+# Access response
+text = response.text  # Always populated
+value = response.value  # Always None for Ollama
+```
+
+### Structured Output Strategy (Confirmed)
+
+Ollama's `response_format` only accepts `'json'` or `''` (empty string). It does NOT accept Pydantic models.
+
+**Required fallback strategy for SocialAgent**:
+1. Set `response_format: 'json'` in options
+2. Instruct model to return JSON matching AgentDecision schema in system prompt
+3. Parse `response.text` with `json.loads()`
+4. Validate with `AgentDecision(**parsed_json)`
+5. On parse failure, return default `AgentDecision(choice='SCROLL', reason='Parse error')`
+
+### Integration Test Results
+
+All tests pass with running Ollama:
+- Client connects successfully
+- Agent returns text responses
+- JSON format mode produces valid JSON
+- Manual parsing into Pydantic works
+
 ## Conclusion
 
 The Microsoft Agent Framework Python SDK closely matches the PRD's conceptual design. The main corrections are parameter naming (`host`/`model_id` vs `endpoint`/`model`), package installation (`uv add agent-framework-ollama --pre`), and adding the `response_format` invocation pattern. The framework provides more than needed for MVP, with clear extension points for future features.
+
+**Critical for Phase 3**: Use `client.as_agent()` (not `create_agent()`), and implement JSON parsing fallback for structured output.

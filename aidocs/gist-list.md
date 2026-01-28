@@ -16,3 +16,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Spec test runner setup** (2026-01-28)
   - Gist: https://gist.github.com/ianphil/d517cab26a6b400dc9a1a2f899ac99bc
   - Preview: https://gisthost.github.io/?d517cab26a6b400dc9a1a2f899ac99bc/index.html
+- **Study-level spec test drafting** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/8841c73bef335206e55a7cb03e8274c4
+  - Preview: https://gisthost.github.io/?8841c73bef335206e55a7cb03e8274c4/index.html

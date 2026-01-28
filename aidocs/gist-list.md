@@ -13,3 +13,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 001 planning session** (2026-01-28)
   - Gist: https://gist.github.com/ianphil/eece7493340a23e9a9948bdf3fecf26c
   - Preview: https://gisthost.github.io/?eece7493340a23e9a9948bdf3fecf26c/index.html
+- **Spec test runner setup** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/d517cab26a6b400dc9a1a2f899ac99bc
+  - Preview: https://gisthost.github.io/?d517cab26a6b400dc9a1a2f899ac99bc/index.html

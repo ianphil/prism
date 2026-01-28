@@ -38,6 +38,14 @@ PRISM - Python 3.11, managed exclusively with `uv`.
 - Place tests in `tests/` mirroring `prism/` package structure.
 - Name test files `test_<module>.py`.
 
+## Spec Tests
+
+- Always load the `/spec-tests` skill before working with spec tests.
+- Runners live in `specs/tests/`. Prefer runners in this order:
+  1. `run_tests_opencode.py` (preferred)
+  2. `run_tests_codex.py` (fallback)
+- **Never** use the `run_tests_claude.py` runner.
+
 ## Linting & Formatting
 
 - Linter: ruff (`uv run ruff check .`), flake8 (`uv run flake8 .`)

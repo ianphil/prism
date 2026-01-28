@@ -22,3 +22,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 001 Phase 1 TDD implementation** (2026-01-28)
   - Gist: https://gist.github.com/ianphil/a8c227f0dae300396bd97404e59c2aa7
   - Preview: https://gisthost.github.io/?a8c227f0dae300396bd97404e59c2aa7/index.html
+- **Feature 001 - LLM Client & Integration Tests** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/df25814cf0f5388a4acbf43cc95b4562
+  - Preview: https://gisthost.github.io/?df25814cf0f5388a4acbf43cc95b4562/index.html

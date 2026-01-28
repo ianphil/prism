@@ -20,12 +20,14 @@ dev = [
 
 [tool.ruff]
 target-version = "py311"
+exclude = ["specs/tests/run_tests_*.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
 
 [tool.black]
 target-version = ["py311"]
+extend-exclude = "specs/tests/run_tests_.*\\.py"
 
 
 [tool.pytest.ini_options]

@@ -34,31 +34,31 @@ Phase 1 (Models + Config) ──► Phase 2 (LLM Client) ──► Phase 3 (Agen
 ## Phase 1: Data Models and Configuration
 
 ### AgentDecision Model
-- [ ] T001 [TEST] Write tests for `AgentDecision` Pydantic model
+- [x] T001 [TEST] Write tests for `AgentDecision` Pydantic model
   - Valid decision with all fields
   - LIKE/SCROLL with `content=None` is valid
   - REPLY without content raises validation error
   - RESHARE without content raises validation error
   - Invalid choice value raises validation error
   - Empty reason raises validation error
-- [ ] T002 [IMPL] Implement `AgentDecision` in `prism/agents/decision.py`
+- [x] T002 [IMPL] Implement `AgentDecision` in `prism/agents/decision.py`
   - Pydantic BaseModel with choice/reason/content
   - field_validator for content requirement
 
 ### Configuration
-- [ ] T003 [TEST] Write tests for `LLMConfig` Pydantic model
+- [x] T003 [TEST] Write tests for `LLMConfig` Pydantic model
   - Default values are correct
   - Valid config parses successfully
   - Temperature out of range raises error
   - max_tokens <= 0 raises error
-- [ ] T004 [IMPL] Implement `LLMConfig` and `PrismConfig` in `prism/llm/config.py`
-- [ ] T005 [TEST] Write tests for `load_config()`
+- [x] T004 [IMPL] Implement `LLMConfig` and `PrismConfig` in `prism/llm/config.py`
+- [x] T005 [TEST] Write tests for `load_config()`
   - Loads valid YAML file
   - Returns PrismConfig with LLMConfig populated
   - Missing file raises FileNotFoundError
   - Invalid YAML raises appropriate error
-- [ ] T006 [IMPL] Implement `load_config()` in `prism/llm/config.py`
-- [ ] T007 [IMPL] Create `configs/default.yaml` with default values
+- [x] T006 [IMPL] Implement `load_config()` in `prism/llm/config.py`
+- [x] T007 [IMPL] Create `configs/default.yaml` with default values
 
 ## Phase 2: LLM Client
 

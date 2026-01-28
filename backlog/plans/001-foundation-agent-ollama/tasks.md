@@ -63,10 +63,10 @@ Phase 1 (Models + Config) ──► Phase 2 (LLM Client) ──► Phase 3 (Agen
 ## Phase 2: LLM Client
 
 ### Client Factory
-- [ ] T008 [TEST] Write tests for `create_llm_client()`
+- [x] T008 [TEST] Write tests for `create_llm_client()`
   - Creates OllamaChatClient with config values
   - Passes host and model_id correctly
-- [ ] T009 [IMPL] Implement `create_llm_client()` in `prism/llm/client.py`
+- [x] T009 [IMPL] Implement `create_llm_client()` in `prism/llm/client.py`
 
 ## Phase 3: Agent Layer
 

@@ -131,6 +131,7 @@ Include dependency diagram and task summary table.
 4. **Phase 3**: Create `research.md` - validate against external specs (if applicable)
 5. **Phase 4**: Create `plan.md`, `data-model.md`, `contracts/` - design
 6. **Phase 5**: Create `specs/tests/{NNN}-{slug}.md` and `tasks.md` - test design
+7. **Cleanup**: Remove the corresponding quick plan from `backlog/plans/` (e.g., `backlog/plans/YYYYMMDD-{slug}.md`) since the full planning artifacts supersede it
 
 ### Interactive Planning
 
@@ -159,6 +160,9 @@ Created Artifacts:
 │   └── contracts/
 │       └── README.md    ✅
 └── specs/tests/{NNN}-{slug}.md  ✅
+
+Cleaned Up:
+- Removed quick plan: backlog/plans/YYYYMMDD-{slug}.md  🗑️
 
 Next Steps:
 1. Review planning artifacts

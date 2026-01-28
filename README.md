@@ -38,6 +38,16 @@ PRISM is a Python-based toolkit for running generative agent-based simulations o
 | Graph Analysis | NetworkX |
 | Observability | OpenTelemetry |
 
+## Project Structure
+
+```
+prism/          # Main package
+tests/          # Tests mirroring prism/ layout
+configs/        # YAML configuration files
+aidocs/         # PRD and planning docs
+backlog/        # Feature plans and issue templates
+```
+
 ## Status
 
 Early development. See `aidocs/prd.md` for full requirements.

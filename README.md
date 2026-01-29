@@ -48,6 +48,12 @@ aidocs/         # PRD and planning docs
 backlog/        # Feature plans and issue templates
 ```
 
+## Attribution
+
+This project is inspired by the paper:
+
+> Macal, C. et al. "Agent-Based Modelling Meets Generative AI in Social Network Simulations." arXiv [2411.16031](https://arxiv.org/abs/2411.16031) / Springer chapter.
+
 ## Status
 
 Early development. See `aidocs/prd.md` for full requirements.

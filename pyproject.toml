@@ -4,25 +4,36 @@ version = "0.1.0"
 description = "A generative agent-based social media simulator for studying virality and information spread"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "agent-framework-ollama>=1.0.0b260127",
+    "pydantic>=2.12.5",
+    "pyyaml>=6.0.3",
+]
 
 [dependency-groups]
 dev = [
     "black>=26.1.0",
     "flake8>=7.3.0",
     "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
     "ruff>=0.14.14",
 ]
 
 [tool.ruff]
 target-version = "py311"
+exclude = ["specs/tests/run_tests_*.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
 
 [tool.black]
 target-version = ["py311"]
+extend-exclude = "specs/tests/run_tests_.*\\.py"
 
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "integration: marks tests as integration tests (require running Ollama)",
+]

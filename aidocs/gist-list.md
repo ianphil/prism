@@ -10,3 +10,27 @@ Shareable links to notable Claude Code sessions for this project.
 - **Project setup & tooling** (2026-01-28)
   - Gist: https://gist.github.com/ianphil/113e8c4844ce85a06038a488704636a4
   - Preview: https://gisthost.github.io/?113e8c4844ce85a06038a488704636a4/index.html
+- **Feature 001 planning session** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/eece7493340a23e9a9948bdf3fecf26c
+  - Preview: https://gisthost.github.io/?eece7493340a23e9a9948bdf3fecf26c/index.html
+- **Spec test runner setup** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/d517cab26a6b400dc9a1a2f899ac99bc
+  - Preview: https://gisthost.github.io/?d517cab26a6b400dc9a1a2f899ac99bc/index.html
+- **Study-level spec test drafting** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/8841c73bef335206e55a7cb03e8274c4
+  - Preview: https://gisthost.github.io/?8841c73bef335206e55a7cb03e8274c4/index.html
+- **Feature 001 Phase 1 TDD implementation** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/a8c227f0dae300396bd97404e59c2aa7
+  - Preview: https://gisthost.github.io/?a8c227f0dae300396bd97404e59c2aa7/index.html
+- **Feature 001 - LLM Client & Integration Tests** (2026-01-28)
+  - Gist: https://gist.github.com/ianphil/df25814cf0f5388a4acbf43cc95b4562
+  - Preview: https://gisthost.github.io/?df25814cf0f5388a4acbf43cc95b4562/index.html
+- **Phase 3 Agent Layer Implementation** (2026-01-29)
+  - Gist: https://gist.github.com/ianphil/5e00894c8538060012ed68cdb557e48d
+  - Preview: https://gisthost.github.io/?5e00894c8538060012ed68cdb557e48d/index.html
+- **Feature 001 Phase 4 Implementation** (2026-01-29)
+  - Gist: https://gist.github.com/ianphil/046adef675f1f75b31a900992dbbe249
+  - Preview: https://gisthost.github.io/?046adef675f1f75b31a900992dbbe249/index.html
+- **Feature 001 Code Review** (2026-01-29)
+  - Gist: https://gist.github.com/ianphil/2a281bcb07d78d9bdbc0ca9d821495f8
+  - Preview: https://gisthost.github.io/?2a281bcb07d78d9bdbc0ca9d821495f8/index.html

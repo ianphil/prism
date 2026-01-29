@@ -43,6 +43,19 @@ class TestSocialAgentConstruction:
 
         assert agent._client is mock_client
 
+    def test_raises_value_error_for_empty_interests(self):
+        """SocialAgent should raise ValueError if interests is empty."""
+        mock_client = MagicMock()
+
+        with pytest.raises(ValueError, match="interests must be a non-empty list"):
+            SocialAgent(
+                agent_id="agent_invalid",
+                name="Nobody",
+                interests=[],
+                personality="undefined",
+                client=mock_client,
+            )
+
 
 class TestSocialAgentDecide:
     """Tests for SocialAgent.decide() method."""

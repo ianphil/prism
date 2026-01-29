@@ -34,12 +34,18 @@ class SocialAgent:
         Args:
             agent_id: Unique identifier for this agent.
             name: Display name for the agent.
-            interests: List of topics the agent cares about.
+            interests: List of topics the agent cares about (must be non-empty).
             personality: Brief personality description.
             client: OllamaChatClient instance for LLM inference.
             temperature: Sampling temperature for LLM responses.
             max_tokens: Maximum tokens in LLM response.
+
+        Raises:
+            ValueError: If interests list is empty.
         """
+        if not interests:
+            raise ValueError("interests must be a non-empty list")
+
         self.agent_id = agent_id
         self.name = name
         self.interests = interests

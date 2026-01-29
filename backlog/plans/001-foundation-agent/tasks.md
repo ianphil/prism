@@ -41,105 +41,105 @@ Phase 1 ──► Phase 2 ──► Phase 4 ──► Phase 5
 
 ### Data Structures
 
-- [ ] T001 [TEST] Write test for Choice enum values
-- [ ] T002 [IMPL] Implement Choice enum with IGNORE, LIKE, REPLY, RESHARE
-- [ ] T003 [TEST] Write test for AgentDecision dataclass fields
-- [ ] T004 [IMPL] Implement AgentDecision dataclass
-- [ ] T005 [TEST] Write test for AgentDecision validation (content matches choice)
-- [ ] T006 [IMPL] Add validation to AgentDecision
-- [ ] T007 [TEST] Write test for AgentProfile dataclass fields
-- [ ] T008 [IMPL] Implement AgentProfile dataclass
-- [ ] T009 [TEST] Write test for Post dataclass fields
-- [ ] T010 [IMPL] Implement Post dataclass with media fields
+- [x] T001 [TEST] Write test for Choice enum values
+- [x] T002 [IMPL] Implement Choice enum with IGNORE, LIKE, REPLY, RESHARE
+- [x] T003 [TEST] Write test for AgentDecision dataclass fields
+- [x] T004 [IMPL] Implement AgentDecision dataclass
+- [x] T005 [TEST] Write test for AgentDecision validation (content matches choice)
+- [x] T006 [IMPL] Add validation to AgentDecision
+- [x] T007 [TEST] Write test for AgentProfile dataclass fields
+- [x] T008 [IMPL] Implement AgentProfile dataclass
+- [x] T009 [TEST] Write test for Post dataclass fields
+- [x] T010 [IMPL] Implement Post dataclass with media fields
 
 ### Phase 1 Exit
 
-- [ ] T011 [SPEC] Run spec tests for Phase 1 → expect pass for data model tests
+- [x] T011 [SPEC] Run spec tests for Phase 1 → expect pass for data model tests
 
 ## Phase 2: LLM Client
 
 ### Ollama Client
 
-- [ ] T012 [TEST] Write test for OllamaChatClient initialization
-- [ ] T013 [IMPL] Implement OllamaChatClient.__init__ with endpoint/model
-- [ ] T014 [TEST] Write test for OllamaChatClient.chat() with mocked response
-- [ ] T015 [IMPL] Implement OllamaChatClient.chat() using httpx
-- [ ] T016 [TEST] Write test for timeout handling
-- [ ] T017 [IMPL] Add timeout handling to chat()
-- [ ] T018 [TEST] Write test for error response handling
-- [ ] T019 [IMPL] Add error handling for non-200 responses
+- [x] T012 [TEST] Write test for OllamaChatClient initialization
+- [x] T013 [IMPL] Implement OllamaChatClient.__init__ with endpoint/model
+- [x] T014 [TEST] Write test for OllamaChatClient.chat() with mocked response
+- [x] T015 [IMPL] Implement OllamaChatClient.chat() using httpx
+- [x] T016 [TEST] Write test for timeout handling
+- [x] T017 [IMPL] Add timeout handling to chat()
+- [x] T018 [TEST] Write test for error response handling
+- [x] T019 [IMPL] Add error handling for non-200 responses
 
 ### Phase 2 Exit
 
-- [ ] T020 [SPEC] Run spec tests for Phase 2 → expect pass for LLM client tests
+- [x] T020 [SPEC] Run spec tests for Phase 2 → expect pass for LLM client tests
 
 ## Phase 3: Configuration
 
 ### Config Loading
 
-- [ ] T021 [TEST] Write test for LLMConfig dataclass validation
-- [ ] T022 [IMPL] Implement LLMConfig with Pydantic validation
-- [ ] T023 [TEST] Write test for loading config from YAML file
-- [ ] T024 [IMPL] Implement load_config() function
-- [ ] T025 [TEST] Write test for environment variable overrides
-- [ ] T026 [IMPL] Add env var override support
-- [ ] T027 [TEST] Write test for default config values
-- [ ] T028 [IMPL] Implement default configuration
+- [x] T021 [TEST] Write test for LLMConfig dataclass validation
+- [x] T022 [IMPL] Implement LLMConfig with Pydantic validation
+- [x] T023 [TEST] Write test for loading config from YAML file
+- [x] T024 [IMPL] Implement load_config() function
+- [x] T025 [TEST] Write test for environment variable overrides
+- [x] T026 [IMPL] Add env var override support
+- [x] T027 [TEST] Write test for default config values
+- [x] T028 [IMPL] Implement default configuration
 
 ### Config File
 
-- [ ] T029 [IMPL] Create configs/default.yaml with documented settings
+- [x] T029 [IMPL] Create configs/default.yaml with documented settings
 
 ### Phase 3 Exit
 
-- [ ] T030 [SPEC] Run spec tests for Phase 3 → expect pass for config tests
+- [x] T030 [SPEC] Run spec tests for Phase 3 → expect pass for config tests
 
 ## Phase 4: Agent Implementation
 
 ### Prompts
 
-- [ ] T031 [TEST] Write test for system prompt generation from profile
-- [ ] T032 [IMPL] Implement build_system_prompt(profile) function
-- [ ] T033 [TEST] Write test for user prompt generation from feed
-- [ ] T034 [IMPL] Implement build_user_prompt(feed) function
-- [ ] T035 [TEST] Write test for decision response parsing
-- [ ] T036 [IMPL] Implement parse_decision_response() function
+- [x] T031 [TEST] Write test for system prompt generation from profile
+- [x] T032 [IMPL] Implement build_system_prompt(profile) function
+- [x] T033 [TEST] Write test for user prompt generation from feed
+- [x] T034 [IMPL] Implement build_user_prompt(feed) function
+- [x] T035 [TEST] Write test for decision response parsing
+- [x] T036 [IMPL] Implement parse_decision_response() function
 
 ### SocialAgent
 
-- [ ] T037 [TEST] Write test for SocialAgent initialization
-- [ ] T038 [IMPL] Implement SocialAgent.__init__ with profile and client
-- [ ] T039 [TEST] Write test for SocialAgent.decide() with mocked client
-- [ ] T040 [IMPL] Implement SocialAgent.decide() method
-- [ ] T041 [TEST] Write test for invalid response handling in decide()
-- [ ] T042 [IMPL] Add fallback behavior for unparseable responses
+- [x] T037 [TEST] Write test for SocialAgent initialization
+- [x] T038 [IMPL] Implement SocialAgent.__init__ with profile and client
+- [x] T039 [TEST] Write test for SocialAgent.decide() with mocked client
+- [x] T040 [IMPL] Implement SocialAgent.decide() method
+- [x] T041 [TEST] Write test for invalid response handling in decide()
+- [x] T042 [IMPL] Add fallback behavior for unparseable responses
 
 ### Phase 4 Exit
 
-- [ ] T043 [SPEC] Run spec tests for Phase 4 → expect pass for agent tests
+- [x] T043 [SPEC] Run spec tests for Phase 4 → expect pass for agent tests
 
 ## Phase 5: Integration
 
 ### End-to-End Test
 
-- [ ] T044 [TEST] Write integration test: agent decides on mock feed
-- [ ] T045 [IMPL] Ensure all components work together
-- [ ] T046 [TEST] Write test for config-driven model selection
-- [ ] T047 [IMPL] Verify model can be changed via config
+- [x] T044 [TEST] Write integration test: agent decides on mock feed
+- [x] T045 [IMPL] Ensure all components work together
+- [x] T046 [TEST] Write test for config-driven model selection
+- [x] T047 [IMPL] Verify model can be changed via config
 
 ### Documentation
 
-- [ ] T048 [IMPL] Add docstrings to all public classes/methods
-- [ ] T049 [IMPL] Update prism/__init__.py with exports
+- [x] T048 [IMPL] Add docstrings to all public classes/methods
+- [x] T049 [IMPL] Update prism/__init__.py with exports
 
 ### Cleanup
 
-- [ ] T050 [IMPL] Run ruff format and fix any issues
-- [ ] T051 [IMPL] Run flake8 and fix any issues
+- [x] T050 [IMPL] Run ruff format and fix any issues
+- [x] T051 [IMPL] Run flake8 and fix any issues
 
 ### Phase 5 Exit
 
-- [ ] T052 [SPEC] Run ALL spec tests → expect ALL PASS
+- [x] T052 [SPEC] Run ALL spec tests → expect ALL PASS
 
 ## Task Summary
 
@@ -156,12 +156,12 @@ Phase 1 ──► Phase 2 ──► Phase 4 ──► Phase 5
 
 After all implementation phases are complete:
 
-- [ ] `uv run pytest` passes
-- [ ] `uv run ruff check .` passes
-- [ ] `uv run flake8 .` passes
-- [ ] `uv run black --check .` passes
-- [ ] Run spec tests with `specs/tests/001-foundation-agent.md`
-- [ ] All spec tests pass → feature complete
+- [x] `uv run pytest` passes
+- [x] `uv run ruff check .` passes
+- [x] `uv run flake8 .` passes
+- [x] `uv run black --check .` passes
+- [x] Run spec tests with `specs/tests/001-foundation-agent.md`
+- [x] All spec tests pass → feature complete
 
 ## Quick Reference
 

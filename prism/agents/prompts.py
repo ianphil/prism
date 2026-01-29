@@ -51,8 +51,7 @@ Guidelines:
     # Add stance information if present
     if profile.stance:
         stance_lines = [
-            f"- {topic}: {position}"
-            for topic, position in profile.stance.items()
+            f"- {topic}: {position}" for topic, position in profile.stance.items()
         ]
         stance_text = "\n".join(stance_lines)
         prompt += f"\nYour positions on topics:\n{stance_text}\n"
@@ -76,9 +75,7 @@ def build_user_prompt(feed: list[Post], profile: AgentProfile) -> str:
     if not feed:
         return "Your feed is empty. Respond with IGNORE and post_id of 'none'."
 
-    lines = [
-        f"Here is your feed, {profile.name}. Choose ONE post to engage with:\n"
-    ]
+    lines = [f"Here is your feed, {profile.name}. Choose ONE post to engage with:\n"]
 
     for i, post in enumerate(feed, 1):
         lines.append(f"--- Post #{i} (ID: {post.id}) ---")
@@ -114,7 +111,7 @@ def parse_decision_response(
 
     # Try to extract JSON from the response
     # Look for JSON object pattern
-    json_match = re.search(r'\{[^{}]*\}', response, re.DOTALL)
+    json_match = re.search(r"\{[^{}]*\}", response, re.DOTALL)
 
     if json_match:
         try:

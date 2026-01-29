@@ -89,12 +89,12 @@ class TestSocialAgentDecide:
         sample_feed: list[Post],
     ) -> None:
         """decide() should return an AgentDecision."""
-        mock_client.chat.return_value = '''{
+        mock_client.chat.return_value = """{
             "choice": "LIKE",
             "reason": "Interesting startup news!",
             "content": null,
             "post_id": "post_001"
-        }'''
+        }"""
 
         agent = SocialAgent(profile=sample_profile, client=mock_client)
         decision = await agent.decide(sample_feed)
@@ -112,12 +112,12 @@ class TestSocialAgentDecide:
         sample_feed: list[Post],
     ) -> None:
         """decide() should handle REPLY with content."""
-        mock_client.chat.return_value = '''{
+        mock_client.chat.return_value = """{
             "choice": "REPLY",
             "reason": "Want to congratulate them",
             "content": "Congrats on the launch! What problem does it solve?",
             "post_id": "post_001"
-        }'''
+        }"""
 
         agent = SocialAgent(profile=sample_profile, client=mock_client)
         decision = await agent.decide(sample_feed)
@@ -133,12 +133,12 @@ class TestSocialAgentDecide:
         sample_feed: list[Post],
     ) -> None:
         """decide() should handle RESHARE with content."""
-        mock_client.chat.return_value = '''{
+        mock_client.chat.return_value = """{
             "choice": "RESHARE",
             "reason": "My followers would love this",
             "content": "Check out this exciting new startup!",
             "post_id": "post_001"
-        }'''
+        }"""
 
         agent = SocialAgent(profile=sample_profile, client=mock_client)
         decision = await agent.decide(sample_feed)
@@ -154,12 +154,12 @@ class TestSocialAgentDecide:
         sample_feed: list[Post],
     ) -> None:
         """decide() should handle IGNORE."""
-        mock_client.chat.return_value = '''{
+        mock_client.chat.return_value = """{
             "choice": "IGNORE",
             "reason": "Not relevant to my interests",
             "content": null,
             "post_id": "post_002"
-        }'''
+        }"""
 
         agent = SocialAgent(profile=sample_profile, client=mock_client)
         decision = await agent.decide(sample_feed)
@@ -175,11 +175,11 @@ class TestSocialAgentDecide:
         sample_feed: list[Post],
     ) -> None:
         """decide() should call client with system and user messages."""
-        mock_client.chat.return_value = '''{
+        mock_client.chat.return_value = """{
             "choice": "IGNORE",
             "reason": "Not interested",
             "post_id": "post_001"
-        }'''
+        }"""
 
         agent = SocialAgent(profile=sample_profile, client=mock_client)
         await agent.decide(sample_feed)
@@ -199,10 +199,10 @@ class TestSocialAgentDecide:
         sample_feed: list[Post],
     ) -> None:
         """decide() should use first post's ID as fallback."""
-        mock_client.chat.return_value = '''{
+        mock_client.chat.return_value = """{
             "choice": "LIKE",
             "reason": "Good post"
-        }'''
+        }"""
 
         agent = SocialAgent(profile=sample_profile, client=mock_client)
         decision = await agent.decide(sample_feed)
@@ -218,11 +218,11 @@ class TestSocialAgentDecide:
         sample_feed: list[Post],
     ) -> None:
         """decide() should use reason as content if REPLY missing content."""
-        mock_client.chat.return_value = '''{
+        mock_client.chat.return_value = """{
             "choice": "REPLY",
             "reason": "I want to say something about this",
             "post_id": "post_001"
-        }'''
+        }"""
 
         agent = SocialAgent(profile=sample_profile, client=mock_client)
         decision = await agent.decide(sample_feed)

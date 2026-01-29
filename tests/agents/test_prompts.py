@@ -183,12 +183,12 @@ class TestParseDecisionResponse:
 
     def test_parse_valid_json(self) -> None:
         """Should parse valid JSON response."""
-        response = '''{
+        response = """{
             "choice": "LIKE",
             "reason": "I agree with this",
             "content": null,
             "post_id": "post_123"
-        }'''
+        }"""
         result = parse_decision_response(response)
         assert result["choice"] == "LIKE"
         assert result["reason"] == "I agree with this"
@@ -197,14 +197,14 @@ class TestParseDecisionResponse:
 
     def test_parse_json_with_surrounding_text(self) -> None:
         """Should extract JSON from response with extra text."""
-        response = '''Here's my decision:
+        response = """Here's my decision:
         {
             "choice": "REPLY",
             "reason": "I want to respond",
             "content": "Great point!",
             "post_id": "post_456"
         }
-        That's my answer.'''
+        That's my answer."""
         result = parse_decision_response(response)
         assert result["choice"] == "REPLY"
         assert result["content"] == "Great point!"

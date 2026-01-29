@@ -37,9 +37,7 @@ class TestOllamaChatClientChat:
     """Tests for OllamaChatClient.chat() method."""
 
     @pytest.mark.anyio
-    async def test_chat_sends_correct_request(
-        self, httpx_mock
-    ) -> None:
+    async def test_chat_sends_correct_request(self, httpx_mock) -> None:
         """Chat should send properly formatted request to Ollama."""
         httpx_mock.add_response(
             method="POST",
@@ -64,9 +62,7 @@ class TestOllamaChatClientChat:
         assert request.url == "http://localhost:11434/api/chat"
 
     @pytest.mark.anyio
-    async def test_chat_includes_model_in_payload(
-        self, httpx_mock
-    ) -> None:
+    async def test_chat_includes_model_in_payload(self, httpx_mock) -> None:
         """Chat should include model name in request payload."""
         httpx_mock.add_response(
             method="POST",
@@ -79,13 +75,12 @@ class TestOllamaChatClientChat:
 
         request = httpx_mock.get_request()
         import json
+
         payload = json.loads(request.content)
         assert payload["model"] == "llama3"
 
     @pytest.mark.anyio
-    async def test_chat_passes_extra_kwargs(
-        self, httpx_mock
-    ) -> None:
+    async def test_chat_passes_extra_kwargs(self, httpx_mock) -> None:
         """Chat should pass extra kwargs to Ollama."""
         httpx_mock.add_response(
             method="POST",
@@ -101,13 +96,12 @@ class TestOllamaChatClientChat:
 
         request = httpx_mock.get_request()
         import json
+
         payload = json.loads(request.content)
         assert payload["temperature"] == 0.5
 
     @pytest.mark.anyio
-    async def test_chat_raises_on_http_error(
-        self, httpx_mock
-    ) -> None:
+    async def test_chat_raises_on_http_error(self, httpx_mock) -> None:
         """Chat should raise HTTPStatusError on error response."""
         httpx_mock.add_response(
             method="POST",
@@ -139,9 +133,7 @@ class TestOllamaChatClientRetry:
     """Tests for OllamaChatClient.chat_with_retry() method."""
 
     @pytest.mark.anyio
-    async def test_retry_succeeds_on_first_try(
-        self, httpx_mock
-    ) -> None:
+    async def test_retry_succeeds_on_first_try(self, httpx_mock) -> None:
         """Retry should return immediately if first attempt succeeds."""
         httpx_mock.add_response(
             method="POST",
@@ -193,12 +185,14 @@ def httpx_mock():
             status_code=200,
             json=None,
         ):
-            self._responses.append({
-                "method": method,
-                "url": url,
-                "status_code": status_code,
-                "json": json,
-            })
+            self._responses.append(
+                {
+                    "method": method,
+                    "url": url,
+                    "status_code": status_code,
+                    "json": json,
+                }
+            )
 
         def get_request(self):
             return self._requests[0] if self._requests else None

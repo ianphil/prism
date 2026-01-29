@@ -25,3 +25,9 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 001 - LLM Client & Integration Tests** (2026-01-28)
   - Gist: https://gist.github.com/ianphil/df25814cf0f5388a4acbf43cc95b4562
   - Preview: https://gisthost.github.io/?df25814cf0f5388a4acbf43cc95b4562/index.html
+- **Phase 3 Agent Layer Implementation** (2026-01-29)
+  - Gist: https://gist.github.com/ianphil/5e00894c8538060012ed68cdb557e48d
+  - Preview: https://gisthost.github.io/?5e00894c8538060012ed68cdb557e48d/index.html
+- **Feature 001 Phase 4 Implementation** (2026-01-29)
+  - Gist: https://gist.github.com/ianphil/046adef675f1f75b31a900992dbbe249
+  - Preview: https://gisthost.github.io/?046adef675f1f75b31a900992dbbe249/index.html

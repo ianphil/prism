@@ -103,8 +103,8 @@ Phase 1 (Models + Config) ──► Phase 2 (LLM Client) ──► Phase 3 (Agen
   - `uv add agent-framework-ollama --pre`
   - `uv add pydantic`
   - `uv add pyyaml`
-- [ ] T016 [SPEC] Run spec tests using `specs/tests/001-foundation-agent-ollama.md`
-- [ ] T017 [TEST] Write integration test (marked with `@pytest.mark.integration`)
+- [x] T016 [SPEC] Run spec tests using `specs/tests/001-foundation-agent-ollama.md`
+- [x] T017 [TEST] Write integration test (marked with `@pytest.mark.integration`)
   - Requires running Ollama with `mistral` model
   - Creates SocialAgent from config
   - Calls `decide()` with sample feed text
@@ -124,9 +124,9 @@ Phase 1 (Models + Config) ──► Phase 2 (LLM Client) ──► Phase 3 (Agen
 
 After all implementation phases are complete:
 
-- [ ] `uv run ruff check .` passes
-- [ ] `uv run flake8 .` passes
-- [ ] `uv run black --check .` passes
-- [ ] `uv run pytest` passes
-- [ ] Run spec tests with `/spec-tests` skill using `specs/tests/001-foundation-agent-ollama.md`
-- [ ] All spec tests pass → feature complete
+- [x] `uv run ruff check .` passes
+- [x] `uv run flake8 .` passes
+- [x] `uv run black --check .` passes
+- [x] `uv run pytest` passes (58 tests)
+- [x] Run spec tests with `/spec-tests` skill using `specs/tests/001-foundation-agent-ollama.md`
+- [x] All spec tests pass (10/10) → feature complete

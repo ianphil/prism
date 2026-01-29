@@ -31,3 +31,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 001 Phase 4 Implementation** (2026-01-29)
   - Gist: https://gist.github.com/ianphil/046adef675f1f75b31a900992dbbe249
   - Preview: https://gisthost.github.io/?046adef675f1f75b31a900992dbbe249/index.html
+- **Feature 001 Code Review** (2026-01-29)
+  - Gist: https://gist.github.com/ianphil/2a281bcb07d78d9bdbc0ca9d821495f8
+  - Preview: https://gisthost.github.io/?2a281bcb07d78d9bdbc0ca9d821495f8/index.html

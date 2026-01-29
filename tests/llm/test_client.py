@@ -121,14 +121,17 @@ class TestOllamaChatClientChat:
 
     @pytest.mark.anyio
     async def test_chat_raises_on_timeout(self) -> None:
-        """Chat should raise TimeoutException on timeout."""
+        """Chat should raise exception on unreachable endpoint."""
         # Use a very short timeout and an endpoint that won't respond
         client = OllamaChatClient(
             endpoint="http://10.255.255.1:11434",  # Non-routable IP
             timeout=0.001,
         )
 
-        with pytest.raises((httpx.TimeoutException, httpx.ConnectError)):
+        # Network behavior varies - may timeout, refuse connection, or proxy error
+        with pytest.raises(
+            (httpx.TimeoutException, httpx.ConnectError, httpx.HTTPStatusError)
+        ):
             await client.chat([{"role": "user", "content": "Test"}])
 
 

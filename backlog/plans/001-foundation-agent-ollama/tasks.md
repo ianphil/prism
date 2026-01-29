@@ -71,27 +71,27 @@ Phase 1 (Models + Config) ──► Phase 2 (LLM Client) ──► Phase 3 (Agen
 ## Phase 3: Agent Layer
 
 ### Prompt Templates
-- [ ] T010 [TEST] Write tests for prompt template functions
+- [x] T010 [TEST] Write tests for prompt template functions
   - System prompt includes agent interests and personality
   - System prompt mentions valid choices (LIKE, REPLY, RESHARE, SCROLL)
   - Feed prompt formats input text
-- [ ] T011 [IMPL] Implement prompt templates in `prism/agents/prompts.py`
+- [x] T011 [IMPL] Implement prompt templates in `prism/agents/prompts.py`
   - `build_system_prompt(name, interests, personality)` → str
   - `build_feed_prompt(feed_text)` → str
 
 ### SocialAgent
-- [ ] T012 [TEST] Write tests for `SocialAgent`
+- [x] T012 [TEST] Write tests for `SocialAgent`
   - Construction with profile data
   - `decide()` returns AgentDecision from mocked ChatAgent
   - Fallback parsing when structured output is None
   - Default SCROLL on parse failure
-- [ ] T013 [IMPL] Implement `SocialAgent` in `prism/agents/social_agent.py`
+- [x] T013 [IMPL] Implement `SocialAgent` in `prism/agents/social_agent.py`
   - Constructor: agent_id, name, interests, personality, chat_agent
   - `async decide(feed_text)` → AgentDecision
   - Structured output with fallback
 
 ### Package Exports
-- [ ] T014 [IMPL] Create `__init__.py` files with exports
+- [x] T014 [IMPL] Create `__init__.py` files with exports
   - `prism/llm/__init__.py`
   - `prism/agents/__init__.py`
   - `tests/llm/__init__.py`

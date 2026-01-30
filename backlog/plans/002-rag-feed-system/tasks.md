@@ -68,21 +68,21 @@ Phase 1 (Models + Config) ──► Phase 2 (ChromaDB) ──► Phase 3 (Retrie
 ## Phase 2: ChromaDB Integration
 
 ### Collection Factory
-- [ ] T009 [TEST] Write tests for `create_collection()`
+- [x] T009 [TEST] Write tests for `create_collection()`
   - Returns chromadb.Collection
   - In-memory when persist_directory is None
   - Persistent when persist_directory is set
   - Configures embedding function
-- [ ] T010 [IMPL] Implement `create_collection()` in `prism/rag/store.py`
+- [x] T010 [IMPL] Implement `create_collection()` in `prism/rag/store.py`
   - chromadb.Client() for in-memory
   - chromadb.PersistentClient() for persistent
   - SentenceTransformerEmbeddingFunction as default
 
 ### Optional: Ollama Embeddings
-- [ ] T011 [TEST] Write tests for `OllamaEmbeddingFunction` (optional)
+- [x] T011 [TEST] Write tests for `OllamaEmbeddingFunction` (optional)
   - Implements chromadb embedding function protocol
   - Calls Ollama API for embedding
-- [ ] T012 [IMPL] Implement `OllamaEmbeddingFunction` in `prism/rag/embeddings.py`
+- [x] T012 [IMPL] Implement `OllamaEmbeddingFunction` in `prism/rag/embeddings.py`
   - Custom embedding function for Ollama users
   - Calls /api/embeddings endpoint
 

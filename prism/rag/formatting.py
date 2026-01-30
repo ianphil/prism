@@ -6,9 +6,9 @@ from prism.rag.models import Post
 
 # Media type to emoji mapping
 MEDIA_EMOJI: dict[str, str] = {
-    "image": "IMAGE:",
-    "video": "VIDEO:",
-    "gif": "GIF:",
+    "image": "📷 IMAGE:",
+    "video": "🎬 VIDEO:",
+    "gif": "🎞️ GIF:",
 }
 
 
@@ -98,7 +98,10 @@ def format_feed_for_prompt(
 
         # Engagement stats and timestamp
         relative_time = format_relative_time(post.timestamp, now)
-        stats = f"{post.likes} | {post.reshares} | {post.replies} | {relative_time}"
+        likes = f"❤️ {post.likes}"
+        reshares = f"🔁 {post.reshares}"
+        replies = f"💬 {post.replies}"
+        stats = f"{likes} | {reshares} | {replies} | {relative_time}"
         lines.append(stats)
 
         formatted_posts.append("\n".join(lines))

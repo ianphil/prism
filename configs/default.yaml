@@ -5,3 +5,11 @@ llm:
   temperature: 0.7                # Sampling randomness (0.0=deterministic, 2.0=very random)
   max_tokens: 512                 # Maximum tokens in LLM response
   seed: null                      # Random seed for reproducibility (null=non-deterministic)
+
+rag:
+  collection_name: posts          # ChromaDB collection name
+  embedding_model: all-MiniLM-L6-v2  # sentence-transformers model for embeddings
+  embedding_provider: sentence-transformers  # Embedding backend ("sentence-transformers" or "ollama")
+  persist_directory: null         # Storage path (null=in-memory, path=persistent)
+  feed_size: 5                    # Number of posts per agent feed (1-20)
+  mode: preference                # Retrieval mode ("preference" or "random")

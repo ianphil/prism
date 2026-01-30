@@ -6,6 +6,8 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, Field
 
+from prism.rag.config import RAGConfig
+
 
 class LLMConfig(BaseModel):
     """Configuration for the LLM client."""
@@ -22,6 +24,7 @@ class PrismConfig(BaseModel):
     """Root configuration for PRISM."""
 
     llm: LLMConfig = LLMConfig()
+    rag: RAGConfig = RAGConfig()
 
 
 def load_config(path: str | Path = "configs/default.yaml") -> PrismConfig:

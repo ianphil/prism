@@ -70,12 +70,13 @@ Implementation approach:
 ## Tasks
 
 - [ ] Define `AgentState` enum (Idle, Scrolling, Evaluating, Composing, Engaging substates)
-- [ ] Implement `Transition` class (trigger, guard, target_state, action)
-- [ ] Implement `Statechart` class (states, transitions, current_state, fire_event)
-- [ ] Add LLM oracle integration for decision transitions
-- [ ] Integrate statechart into `SocialAgent` decision flow
+- [ ] Implement `Transition` dataclass (trigger, source, target, guard, action)
+- [ ] Implement `Statechart` class (~150 lines: states, transitions, fire, valid_triggers)
+- [ ] Add timeout transition support (tick-based expiry)
+- [ ] Add LLM oracle integration for ambiguous transitions
+- [ ] Integrate statechart into `SocialAgent.decide()` flow
 - [ ] Add state query methods (agents_in_state, state_distribution)
-- [ ] Write tests for state transitions and guards
+- [ ] Write tests for state transitions, guards, and timeouts
 
 ## Design Decisions
 
@@ -84,3 +85,4 @@ Implementation approach:
 | Statechart scope | Shared + parameterized | One statechart definition; behavior varies via agent thresholds/weights. Simpler to maintain, can evolve to hybrid later if needed. |
 | Stuck agents | Timeout transitions | Auto-transition to Idle/Scrolling after N ticks of simulation time. Prevents deadlocks. |
 | State history | Agent memory | Each agent tracks its own state history, included in RAG context for LLM decisions. Enables "why did I reshare that?" reasoning. |
+| Implementation | Custom (~150 lines) | No external library. Zero deps, tight LLM oracle integration, full control. Core is simple; add hierarchy/history only if needed. |

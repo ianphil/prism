@@ -34,3 +34,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 001 Code Review** (2026-01-29)
   - Gist: https://gist.github.com/ianphil/2a281bcb07d78d9bdbc0ca9d821495f8
   - Preview: https://gisthost.github.io/?2a281bcb07d78d9bdbc0ca9d821495f8/index.html
+- **Statecharts planning session** (2026-01-30)
+  - Gist: https://gist.github.com/ianphil/fad62f9b0b98ff8bf2fdcef745be5586
+  - Preview: https://gisthost.github.io/?fad62f9b0b98ff8bf2fdcef745be5586/index.html

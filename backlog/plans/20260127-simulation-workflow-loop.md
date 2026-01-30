@@ -3,7 +3,7 @@ title: "Simulation Workflow Loop"
 status: open
 priority: high
 created: 2026-01-27
-depends_on: ["20260127-foundation-agent-framework-ollama.md", "20260127-rag-feed-system.md"]
+depends_on: ["001-foundation-agent-ollama", "20260127-rag-feed-system.md", "20260130-agent-behavior-statecharts.md"]
 ---
 
 # Simulation Workflow Loop

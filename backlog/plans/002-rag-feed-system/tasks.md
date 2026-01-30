@@ -127,21 +127,21 @@ Phase 1 (Models + Config) ──► Phase 2 (ChromaDB) ──► Phase 3 (Retrie
 ## Phase 4: Feed Formatting
 
 ### Format Function
-- [ ] T023 [TEST] Write tests for `format_feed_for_prompt()`
+- [x] T023 [TEST] Write tests for `format_feed_for_prompt()`
   - Returns formatted string
   - Includes post text
   - Includes media indicator when has_media=True
   - Uses correct emoji for media_type (📷, 🎬, 🎞️)
   - Includes engagement stats (❤️, 🔁, 💬)
   - Includes relative timestamp
-- [ ] T024 [IMPL] Implement `format_feed_for_prompt()` in `prism/rag/formatting.py`
+- [x] T024 [IMPL] Implement `format_feed_for_prompt()` in `prism/rag/formatting.py`
 
 ### Relative Timestamp
-- [ ] T025 [TEST] Write tests for relative timestamp formatting
+- [x] T025 [TEST] Write tests for relative timestamp formatting
   - Minutes ago (e.g., "5m ago")
   - Hours ago (e.g., "3h ago")
   - Days ago (e.g., "2d ago")
-- [ ] T026 [IMPL] Implement `format_relative_time()` helper function
+- [x] T026 [IMPL] Implement `format_relative_time()` helper function
 
 ## Phase 5: Integration
 

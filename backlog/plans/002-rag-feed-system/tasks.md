@@ -167,8 +167,7 @@ Phase 1 (Models + Config) ──► Phase 2 (ChromaDB) ──► Phase 3 (Retrie
 
 ### Spec Tests
 - [x] T030 [SPEC] Run spec tests using `specs/tests/002-rag-feed-system.md`
-  - 14/15 passing
-  - 1 edge case: LLM judge conflates intent (5-10 typical) with assertion (respects feed_size)
+  - 15/15 passing (opencode runner)
 
 ## Task Summary
 
@@ -190,4 +189,4 @@ After all implementation phases are complete:
 - [x] `uv run black --check .` passes
 - [x] `uv run pytest` passes (all tests including new RAG tests)
 - [x] Run spec tests with `/spec-tests` skill using `specs/tests/002-rag-feed-system.md`
-- [x] 14/15 spec tests pass → feature complete
+- [x] All 15 spec tests pass → feature complete

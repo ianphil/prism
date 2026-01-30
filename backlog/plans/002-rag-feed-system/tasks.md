@@ -89,40 +89,40 @@ Phase 1 (Models + Config) ──► Phase 2 (ChromaDB) ──► Phase 3 (Retrie
 ## Phase 3: Feed Retrieval
 
 ### FeedRetriever Class
-- [ ] T013 [TEST] Write tests for `FeedRetriever.__init__()`
+- [x] T013 [TEST] Write tests for `FeedRetriever.__init__()`
   - Accepts collection and config
   - Stores feed_size and default_mode
-- [ ] T014 [TEST] Write tests for `FeedRetriever.add_post()`
+- [x] T014 [TEST] Write tests for `FeedRetriever.add_post()`
   - Indexes single post in collection
   - Post metadata stored correctly
-- [ ] T015 [TEST] Write tests for `FeedRetriever.add_posts()`
+- [x] T015 [TEST] Write tests for `FeedRetriever.add_posts()`
   - Batch indexes multiple posts
   - All posts retrievable after indexing
-- [ ] T016 [IMPL] Implement `FeedRetriever` with `add_post()` and `add_posts()` in `prism/rag/retriever.py`
+- [x] T016 [IMPL] Implement `FeedRetriever` with `add_post()` and `add_posts()` in `prism/rag/retriever.py`
 
 ### Preference Mode Retrieval
-- [ ] T017 [TEST] Write tests for `get_feed(mode="preference")`
+- [x] T017 [TEST] Write tests for `get_feed(mode="preference")`
   - Returns list of Post objects
   - Relevant posts ranked higher (by interest similarity)
   - Respects feed_size limit
   - Raises error if interests is None/empty
-- [ ] T018 [IMPL] Implement preference mode in `get_feed()`
+- [x] T018 [IMPL] Implement preference mode in `get_feed()`
 
 ### Random Mode Retrieval
-- [ ] T019 [TEST] Write tests for `get_feed(mode="random")`
+- [x] T019 [TEST] Write tests for `get_feed(mode="random")`
   - Returns list of Post objects
   - Does not require interests
   - Returns diverse posts (not always same order)
   - Respects feed_size limit
-- [ ] T020 [IMPL] Implement random mode in `get_feed()`
+- [x] T020 [IMPL] Implement random mode in `get_feed()`
 
 ### Edge Cases
-- [ ] T021 [TEST] Write tests for edge cases
+- [x] T021 [TEST] Write tests for edge cases
   - Empty collection raises RuntimeError
   - Fewer posts than feed_size returns all posts
   - count() returns correct number
   - clear() removes all posts
-- [ ] T022 [IMPL] Implement `count()` and `clear()` methods
+- [x] T022 [IMPL] Implement `count()` and `clear()` methods
 
 ## Phase 4: Feed Formatting
 

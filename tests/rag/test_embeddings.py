@@ -1,7 +1,8 @@
 """Tests for Ollama embedding function."""
 
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
+import httpx
 import pytest
 
 
@@ -59,6 +60,84 @@ class TestOllamaEmbeddingFunction:
 
         ef = OllamaEmbeddingFunction(model="nomic-embed-text")
         assert ef.host == "http://localhost:11434"
+
+    def test_default_timeout_is_30_seconds(self):
+        """Default timeout is 30 seconds."""
+        from prism.rag.embeddings import OllamaEmbeddingFunction
+
+        ef = OllamaEmbeddingFunction(model="nomic-embed-text")
+        assert ef.timeout == 30.0
+
+    def test_uses_configured_timeout(self):
+        """OllamaEmbeddingFunction uses the timeout specified in constructor."""
+        from prism.rag.embeddings import OllamaEmbeddingFunction
+
+        ef = OllamaEmbeddingFunction(model="nomic-embed-text", timeout=60.0)
+        assert ef.timeout == 60.0
+
+    def test_retries_on_timeout_then_succeeds(self):
+        """_embed_single retries on timeout and succeeds on subsequent attempt."""
+        from prism.rag.embeddings import OllamaEmbeddingFunction
+
+        ef = OllamaEmbeddingFunction(model="nomic-embed-text")
+        mock_embedding = [0.1, 0.2, 0.3]
+
+        # Create a mock response
+        mock_response = MagicMock()
+        mock_response.raise_for_status = MagicMock()
+        mock_response.json.return_value = {"embedding": mock_embedding}
+
+        # First call raises timeout, second succeeds
+        call_count = 0
+
+        def side_effect(*args, **kwargs):
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                raise httpx.TimeoutException("Connection timed out")
+            return mock_response
+
+        with patch("httpx.post", side_effect=side_effect):
+            result = ef._embed_single("test text")
+
+        assert result == mock_embedding
+        assert call_count == 2  # First attempt failed, second succeeded
+
+    def test_retries_on_network_error_then_succeeds(self):
+        """_embed_single retries on network error and succeeds on subsequent attempt."""
+        from prism.rag.embeddings import OllamaEmbeddingFunction
+
+        ef = OllamaEmbeddingFunction(model="nomic-embed-text")
+        mock_embedding = [0.4, 0.5, 0.6]
+
+        mock_response = MagicMock()
+        mock_response.raise_for_status = MagicMock()
+        mock_response.json.return_value = {"embedding": mock_embedding}
+
+        call_count = 0
+
+        def side_effect(*args, **kwargs):
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                raise httpx.NetworkError("Connection refused")
+            return mock_response
+
+        with patch("httpx.post", side_effect=side_effect):
+            result = ef._embed_single("test text")
+
+        assert result == mock_embedding
+        assert call_count == 2
+
+    def test_raises_after_max_retries(self):
+        """_embed_single raises after exhausting retries."""
+        from prism.rag.embeddings import OllamaEmbeddingFunction
+
+        ef = OllamaEmbeddingFunction(model="nomic-embed-text")
+
+        with patch("httpx.post", side_effect=httpx.TimeoutException("Timeout")):
+            with pytest.raises(httpx.TimeoutException):
+                ef._embed_single("test text")
 
     @pytest.mark.integration
     def test_calls_ollama_api(self):

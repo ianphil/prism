@@ -6,6 +6,34 @@ from pathlib import Path
 import chromadb
 
 from prism.rag.config import RAGConfig
+from prism.rag.store import _clients, clear_client_cache
+
+
+class TestClearClientCache:
+    """Tests for clear_client_cache() function."""
+
+    def test_clears_client_cache(self):
+        """clear_client_cache removes all cached clients."""
+        from prism.rag.store import create_collection
+
+        # Create a collection to populate the cache
+        config = RAGConfig(collection_name="cache_test")
+        create_collection(config)
+
+        # Cache should have at least one entry
+        assert len(_clients) > 0
+
+        # Clear the cache
+        clear_client_cache()
+
+        # Cache should be empty
+        assert len(_clients) == 0
+
+    def test_clear_empty_cache_is_safe(self):
+        """clear_client_cache is safe to call on empty cache."""
+        clear_client_cache()  # Ensure empty
+        clear_client_cache()  # Should not raise
+        assert len(_clients) == 0
 
 
 class TestCreateCollection:

@@ -1797,6 +1797,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "pyyaml" },
     { name = "sentence-transformers" },
+    { name = "tenacity" },
 ]
 
 [package.dev-dependencies]
@@ -1815,6 +1816,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "sentence-transformers", specifier = ">=5.2.2" },
+    { name = "tenacity", specifier = ">=9.1.2" },
 ]
 
 [package.metadata.requires-dev]

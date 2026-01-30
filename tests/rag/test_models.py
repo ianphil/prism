@@ -151,6 +151,71 @@ class TestPostModel:
             assert post.media_type == media_type
 
 
+class TestPostMediaConsistency:
+    """Test suite for Post media_type/has_media consistency validation."""
+
+    def test_has_media_false_media_type_none_is_valid(self):
+        """has_media=False with media_type=None is valid."""
+        from prism.rag.models import Post
+
+        post = Post(
+            id="post_1",
+            author_id="agent_1",
+            text="Test post",
+            timestamp=datetime.now(),
+            has_media=False,
+            media_type=None,
+        )
+        assert post.has_media is False
+        assert post.media_type is None
+
+    def test_has_media_true_with_media_type_is_valid(self):
+        """has_media=True with media_type set is valid."""
+        from prism.rag.models import Post
+
+        post = Post(
+            id="post_1",
+            author_id="agent_1",
+            text="Test post",
+            timestamp=datetime.now(),
+            has_media=True,
+            media_type="image",
+        )
+        assert post.has_media is True
+        assert post.media_type == "image"
+
+    def test_has_media_false_with_media_type_raises_error(self):
+        """has_media=False with media_type set raises ValueError."""
+        from prism.rag.models import Post
+
+        with pytest.raises(ValidationError) as exc_info:
+            Post(
+                id="post_1",
+                author_id="agent_1",
+                text="Test post",
+                timestamp=datetime.now(),
+                has_media=False,
+                media_type="image",
+            )
+
+        assert "media_type cannot be set when has_media is False" in str(exc_info.value)
+
+    def test_has_media_true_media_type_none_is_valid(self):
+        """has_media=True with media_type=None is valid (media type unspecified)."""
+        from prism.rag.models import Post
+
+        post = Post(
+            id="post_1",
+            author_id="agent_1",
+            text="Test post",
+            timestamp=datetime.now(),
+            has_media=True,
+            media_type=None,
+        )
+        assert post.has_media is True
+        assert post.media_type is None
+
+
 class TestPostChromaConversion:
     """Test suite for Post ChromaDB conversion methods."""
 

@@ -2,6 +2,12 @@
 
 import httpx
 from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 
 class OllamaEmbeddingFunction(EmbeddingFunction[Documents]):
@@ -15,18 +21,30 @@ class OllamaEmbeddingFunction(EmbeddingFunction[Documents]):
         self,
         model: str,
         host: str = "http://localhost:11434",
+        timeout: float = 30.0,
     ) -> None:
         """Initialize the Ollama embedding function.
 
         Args:
             model: The Ollama model to use for embeddings (e.g., "nomic-embed-text").
             host: The Ollama API host URL.
+            timeout: Request timeout in seconds (default: 30.0).
         """
         self.model = model
         self.host = host.rstrip("/")
+        self.timeout = timeout
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        retry=retry_if_exception_type((httpx.TimeoutException, httpx.NetworkError)),
+        reraise=True,
+    )
     def _embed_single(self, text: str) -> list[float]:
         """Embed a single text using Ollama API.
+
+        Retries up to 3 times with exponential backoff on transient failures
+        (timeouts and network errors).
 
         Args:
             text: The text to embed.
@@ -35,12 +53,12 @@ class OllamaEmbeddingFunction(EmbeddingFunction[Documents]):
             The embedding vector as a list of floats.
 
         Raises:
-            httpx.HTTPError: If the API request fails.
+            httpx.HTTPError: If the API request fails after retries.
         """
         response = httpx.post(
             f"{self.host}/api/embeddings",
             json={"model": self.model, "prompt": text},
-            timeout=30.0,
+            timeout=self.timeout,
         )
         response.raise_for_status()
         return response.json()["embedding"]

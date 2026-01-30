@@ -16,3 +16,4 @@ class RAGConfig(BaseModel):
     persist_directory: str | None = None
     feed_size: int = Field(default=5, ge=1, le=20)
     mode: Literal["preference", "random"] = "preference"
+    ollama_timeout: float = Field(default=30.0, ge=1.0, le=300.0)

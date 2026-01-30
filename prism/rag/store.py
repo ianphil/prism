@@ -30,6 +30,14 @@ def _get_client(persist_directory: str | None) -> chromadb.ClientAPI:
     return _clients[persist_directory]
 
 
+def clear_client_cache() -> None:
+    """Clear the ChromaDB client cache.
+
+    Useful for test teardown to ensure isolation between tests.
+    """
+    _clients.clear()
+
+
 def _get_embedding_function(config: RAGConfig) -> EmbeddingFunction:
     """Get the appropriate embedding function based on config.
 
@@ -42,7 +50,10 @@ def _get_embedding_function(config: RAGConfig) -> EmbeddingFunction:
     if config.embedding_provider == "sentence-transformers":
         return SentenceTransformerEmbeddingFunction(model_name=config.embedding_model)
     elif config.embedding_provider == "ollama":
-        return OllamaEmbeddingFunction(model=config.embedding_model)
+        return OllamaEmbeddingFunction(
+            model=config.embedding_model,
+            timeout=config.ollama_timeout,
+        )
     else:
         raise ValueError(f"Unknown embedding provider: {config.embedding_provider}")
 

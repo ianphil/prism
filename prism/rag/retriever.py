@@ -112,6 +112,11 @@ class FeedRetriever:
     def _get_feed_random(self) -> list[Post]:
         """Retrieve feed using random sampling.
 
+        Note:
+            This method has O(n) complexity where n is the collection size,
+            as it fetches all document IDs before sampling. Suitable for
+            collections under 100K posts.
+
         Returns:
             List of randomly sampled Post objects.
         """

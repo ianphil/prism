@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class Post(BaseModel):
@@ -25,6 +25,13 @@ class Post(BaseModel):
     reshares: int = Field(default=0, ge=0)
     replies: int = Field(default=0, ge=0)
     velocity: float = Field(default=0.0, ge=0.0)
+
+    @model_validator(mode="after")
+    def validate_media_consistency(self) -> "Post":
+        """Ensure media_type is only set when has_media is True."""
+        if not self.has_media and self.media_type is not None:
+            raise ValueError("media_type cannot be set when has_media is False")
+        return self
 
     def to_metadata(self) -> dict:
         """Convert to ChromaDB-compatible metadata dict.

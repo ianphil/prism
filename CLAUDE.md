@@ -37,6 +37,10 @@ PRISM - Python 3.11, managed exclusively with `uv`.
 - Framework: pytest (`uv run pytest`)
 - Place tests in `tests/` mirroring `prism/` package structure.
 - Name test files `test_<module>.py`.
+- Integration tests are excluded by default. To run them:
+  1. Start Ollama: `ollama serve &`
+  2. Run integration tests: `uv run pytest -m integration`
+  3. Run all tests: `uv run pytest -m ""`
 
 ## Spec Tests
 

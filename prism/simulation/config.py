@@ -24,7 +24,7 @@ class SimulationConfig(BaseModel):
         log_file: File for structured logging output (None to disable).
     """
 
-    max_rounds: int = Field(default=10, ge=1)
+    max_rounds: int = Field(default=50, ge=1)
     checkpoint_frequency: int = Field(default=5, ge=1)
     checkpoint_dir: Path | None = None
     reasoner_enabled: bool = Field(default=True)

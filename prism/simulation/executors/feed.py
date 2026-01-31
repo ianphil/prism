@@ -4,6 +4,7 @@ This module provides the FeedRetrievalExecutor that retrieves feed posts
 for an agent using the FeedRetriever.
 """
 
+import asyncio
 from typing import TYPE_CHECKING, Any
 
 from prism.rag.models import Post
@@ -51,7 +52,8 @@ class FeedRetrievalExecutor:
     ) -> list[Post]:
         """Async version of execute for pipeline compatibility.
 
-        Currently delegates to sync version since FeedRetriever is sync.
+        Runs sync retrieval in a thread pool to avoid blocking the event loop.
+        This is important when running multiple agents concurrently.
 
         Args:
             agent: The agent to retrieve feed for.
@@ -60,4 +62,4 @@ class FeedRetrievalExecutor:
         Returns:
             List of Post objects.
         """
-        return self.execute(agent, state)
+        return await asyncio.to_thread(self.execute, agent, state)

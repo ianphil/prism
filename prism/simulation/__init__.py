@@ -16,6 +16,7 @@ Public API:
 from prism.simulation.checkpointer import CheckpointData, Checkpointer
 from prism.simulation.config import SimulationConfig, load_config
 from prism.simulation.controller import RoundController
+from prism.simulation.protocols import SocialAgentProtocol, StatechartReasonerProtocol
 from prism.simulation.results import (
     ActionResult,
     DecisionResult,
@@ -33,6 +34,9 @@ __all__ = [
     # State
     "SimulationState",
     "EngagementMetrics",
+    # Protocols
+    "SocialAgentProtocol",
+    "StatechartReasonerProtocol",
     # Controller
     "RoundController",
     # Checkpointing

@@ -78,6 +78,19 @@ class LoggingExecutor:
             self._file_handle.close()
             self._file_handle = None
 
+    def __enter__(self) -> "LoggingExecutor":
+        """Enter context manager."""
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: Any,
+    ) -> None:
+        """Exit context manager, ensuring file is closed."""
+        self.close()
+
     def __del__(self) -> None:
-        """Ensure file handle is closed on deletion."""
+        """Fallback cleanup. Prefer context manager or explicit close()."""
         self.close()

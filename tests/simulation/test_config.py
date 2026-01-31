@@ -10,11 +10,11 @@ class TestSimulationConfigDefaults:
     """T001: Test SimulationConfig with default values."""
 
     def test_config_has_max_rounds_default(self):
-        """SimulationConfig should have max_rounds defaulting to 10."""
+        """SimulationConfig should have max_rounds defaulting to 50 (matches default.yaml)."""
         from prism.simulation.config import SimulationConfig
 
         config = SimulationConfig()
-        assert config.max_rounds == 10
+        assert config.max_rounds == 50
 
     def test_config_has_checkpoint_frequency_default(self):
         """SimulationConfig should have checkpoint_frequency defaulting to 5."""

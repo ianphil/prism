@@ -88,7 +88,7 @@ class TestLoadConfig:
         config = load_config(yaml_file)
         assert isinstance(config, SimulationConfig)
         # Should use default values
-        assert config.max_rounds == 10  # Default from SimulationConfig
+        assert config.max_rounds == 50  # Default from SimulationConfig (matches default.yaml)
 
     def test_load_config_parses_path_fields(self, tmp_path: Path) -> None:
         """load_config should convert string paths to Path objects."""

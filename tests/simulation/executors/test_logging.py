@@ -232,3 +232,50 @@ class TestLoggingExecutor:
         log_text = caplog.records[-1].message
         entry = json.loads(log_text)
         assert entry["reasoner_used"] is True
+
+    @pytest.mark.asyncio
+    async def test_context_manager_closes_file(self, tmp_path: Path) -> None:
+        """Context manager should ensure file handle is closed."""
+        # Arrange
+        log_file = tmp_path / "decisions.jsonl"
+        agent = create_mock_agent()
+        state = create_test_state()
+
+        decision = DecisionResult(
+            agent_id="test_agent",
+            trigger="sees_post",
+            from_state=AgentState.SCROLLING,
+            to_state=AgentState.EVALUATING,
+            action=ActionResult(action="scroll", target_post_id=None),
+        )
+
+        # Act - use context manager
+        with LoggingExecutor(log_file=log_file) as executor:
+            await executor.execute(agent=agent, state=state, decision=decision)
+            # File handle should be open inside context
+            assert executor._file_handle is not None
+
+        # Assert - file handle should be closed after exiting context
+        assert executor._file_handle is None
+
+        # Verify content was written
+        content = log_file.read_text()
+        lines = content.strip().split("\n")
+        assert len(lines) == 1
+        entry = json.loads(lines[0])
+        assert entry["agent_id"] == "test_agent"
+
+    @pytest.mark.asyncio
+    async def test_context_manager_closes_on_exception(self, tmp_path: Path) -> None:
+        """Context manager should close file even when exception occurs."""
+        # Arrange
+        log_file = tmp_path / "decisions.jsonl"
+
+        # Act & Assert
+        with pytest.raises(ValueError, match="test error"):
+            with LoggingExecutor(log_file=log_file) as executor:
+                assert executor._file_handle is not None
+                raise ValueError("test error")
+
+        # File handle should be closed even after exception
+        assert executor._file_handle is None

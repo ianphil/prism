@@ -7,12 +7,17 @@ simulation state to/from JSON checkpoint files with atomic writes.
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable, overload
 
 from pydantic import BaseModel, Field
 
 if TYPE_CHECKING:
+    from prism.simulation.protocols import SocialAgentProtocol
     from prism.simulation.state import SimulationState
+    from prism.statechart.statechart import Statechart
+
+    # Type alias for agent reconstruction factory
+    AgentFactory = Callable[[dict[str, Any]], SocialAgentProtocol]
 
 
 class CheckpointData(BaseModel):
@@ -104,12 +109,31 @@ class Checkpointer:
 
         return path
 
+    @overload
     def load(
         self,
         path: Path,
-        statechart: Any,
+        statechart: "Statechart",
         reasoner: Any = None,
-        agent_factory: Any = None,
+        *,
+        agent_factory: "AgentFactory",
+    ) -> "SimulationState": ...
+
+    @overload
+    def load(
+        self,
+        path: Path,
+        statechart: "Statechart",
+        reasoner: Any = None,
+        agent_factory: None = None,
+    ) -> "SimulationState": ...
+
+    def load(
+        self,
+        path: Path,
+        statechart: "Statechart",
+        reasoner: Any = None,
+        agent_factory: "AgentFactory | None" = None,
     ) -> "SimulationState":
         """Load simulation state from checkpoint file.
 
@@ -117,11 +141,15 @@ class Checkpointer:
             path: Path to checkpoint JSON file.
             statechart: Statechart to use (not serialized in checkpoint).
             reasoner: Optional reasoner to use (not serialized in checkpoint).
-            agent_factory: Optional callable to reconstruct agents.
-                           If None, agents are stored as dicts.
+            agent_factory: Optional callable to reconstruct agents from dicts.
+                If provided, returns SimulationState with SocialAgentProtocol agents.
+                If None, agents are stored as raw dicts (for testing or deferred
+                reconstruction).
 
         Returns:
-            Reconstructed SimulationState.
+            Reconstructed SimulationState. Agent types depend on agent_factory:
+            - With agent_factory: agents are SocialAgentProtocol instances
+            - Without agent_factory: agents are raw dict objects
 
         Raises:
             ValueError: If checkpoint version is not supported.

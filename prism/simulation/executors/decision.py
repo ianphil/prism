@@ -5,6 +5,7 @@ decision flow for agents, including trigger determination, statechart firing,
 reasoner invocation for ambiguous cases, and action execution.
 """
 
+import logging
 from typing import TYPE_CHECKING, Any
 
 from prism.rag.models import Post
@@ -14,6 +15,8 @@ from prism.statechart.states import AgentState
 
 if TYPE_CHECKING:
     from prism.simulation.state import SimulationState
+
+logger = logging.getLogger(__name__)
 
 
 class AgentDecisionExecutor:
@@ -83,7 +86,13 @@ class AgentDecisionExecutor:
                 # Single target - use it
                 new_state = targets[0]
             elif len(targets) > 1:
-                # Multiple targets but no reasoner - use first one
+                # Multiple targets but no reasoner - use first one as fallback
+                logger.warning(
+                    "Agent %s: multiple targets %s but no reasoner. Using fallback: %s",
+                    agent.agent_id,
+                    [t.value for t in targets],
+                    targets[0].value,
+                )
                 new_state = targets[0]
             # else: no valid targets - stay in current state
 

@@ -3,6 +3,11 @@
 This module defines the core state models for simulation execution including
 EngagementMetrics for tracking cumulative engagement and SimulationState
 as the single source of truth during simulation.
+
+Type Safety Note:
+    The agents and reasoner fields use Any at runtime for Pydantic compatibility,
+    but are expected to conform to SocialAgentProtocol and StatechartReasonerProtocol
+    respectively. See prism.simulation.protocols for the expected interfaces.
 """
 
 from typing import Any

@@ -63,7 +63,7 @@ Feature 3 (`003-agent-behavior-statecharts/`) provides the agent behavior model.
 tick() → is_timed_out()? → determine_trigger() → fire() → [reasoner?] → transition_to()
 ```
 
-See `backlog/plans/003-agent-behavior-statecharts/plan.md` for detailed architecture.
+See `backlog/plans/_completed/003-agent-behavior-statecharts/plan.md` for detailed architecture.
 
 ## Tasks
 

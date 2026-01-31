@@ -8,7 +8,7 @@ This document outlines the recommended implementation sequence for PRISM based o
 |---|---------|-----------|----------|------------|--------|
 | 1 | Foundation: Agent Framework + Ollama | `_completed/001-foundation-agent-ollama/` | High | 14 | ✅ Done |
 | 2 | RAG Feed System | `_completed/002-rag-feed-system/` | High | 30 | ✅ Done |
-| 3 | Agent Behavior Statecharts | `003-agent-behavior-statecharts/` | High | 47 | Planned |
+| 3 | Agent Behavior Statecharts | `_completed/003-agent-behavior-statecharts/` | High | 47 | ✅ Done |
 | 4 | Simulation Workflow Loop | `20260127-simulation-workflow-loop.md` | High | 7 | Open |
 | 5 | X Algorithm Ranking | `20260127-x-algorithm-ranking.md` | Medium | 6 | Open |
 | 6 | Data Pipeline | `20260127-data-pipeline.md` | Medium | 7 | Open |
@@ -72,7 +72,7 @@ This document outlines the recommended implementation sequence for PRISM based o
 - `IChatClient` abstraction for LLM provider flexibility
 - Validates: Single agent can make decisions
 
-### Phase 2: Data Layer & Agent Behavior (Current)
+### Phase 2: Data Layer & Agent Behavior (F2, F3 ✅)
 
 **Feature 2: RAG Feed System** (depends on F1) — ✅ Complete
 - ChromaDB vector store setup
@@ -80,7 +80,7 @@ This document outlines the recommended implementation sequence for PRISM based o
 - Preference-based and random feed modes
 - Validates: Agent receives relevant posts
 
-**Feature 3: Agent Behavior Statecharts** (depends on F1, parallel with F2) — *Planned*
+**Feature 3: Agent Behavior Statecharts** (depends on F1, parallel with F2) — ✅ Complete
 - Harel-style statechart for agent behavioral states
 - Shared statechart with parameterized guards per agent
 - LLM-based Agent Reasoner for ambiguous transitions
@@ -94,7 +94,7 @@ This document outlines the recommended implementation sequence for PRISM based o
 - Agent profile generation
 - Validates: Real data bootstraps realistic agents
 
-### Phase 3: Simulation Core
+### Phase 3: Simulation Core (Current)
 
 **Feature 4: Simulation Workflow Loop** (depends on F2, F3)
 - Graph-based workflow orchestration
@@ -149,7 +149,7 @@ Merge point: F4 (Simulation Loop) requires F2 + F3, optionally F5/F6
 |-----------|-------------------|------------|
 | **M1: Agent Works** | F1 ✅ | Single agent makes valid decision with gpt-oss:20b |
 | **M2: Feed Works** | F1, F2 ✅ | Agent receives personalized feed from ChromaDB |
-| **M3: States Work** | F1, F3 | Agent transitions between states, state queries work |
+| **M3: States Work** | F1, F3 ✅ | Agent transitions between states, state queries work |
 | **M4: Sim Runs** | F1-F4 | 100-agent statechart-driven simulation completes 10 rounds |
 | **M5: Real Data** | F1-F4, F6 | Simulation bootstrapped from Twitter dataset |
 | **M6: Algorithm** | F1-F5 | X-algo feed produces different cascades than random |
@@ -174,6 +174,6 @@ Merge point: F4 (Simulation Loop) requires F2 + F3, optionally F5/F6
 1. ~~Start with Feature 1: Foundation~~ ✅ Complete
 2. ~~Continue Feature 2 (RAG)~~ ✅ Complete
 3. ~~Plan Feature 3 (Statecharts) with `/planner`~~ ✅ Planned (47 tasks)
-4. Implement Feature 3 with `/implement` skill
+4. ~~Implement Feature 3 with `/implement` skill~~ ✅ Complete
 5. Track progress in `backlog/plans/` with status updates
 6. Validate each milestone before proceeding

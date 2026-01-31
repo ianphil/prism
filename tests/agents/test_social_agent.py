@@ -603,6 +603,32 @@ class TestSocialAgentTransitionTo:
         assert agent.state_history[0].context == context
 
 
+class TestSocialAgentTimestamps:
+    """Tests for timestamp handling in SocialAgent."""
+
+    def test_transition_to_records_utc_timestamp(self) -> None:
+        """transition_to() should record UTC timestamp."""
+        from datetime import datetime
+
+        from prism.statechart.states import AgentState
+
+        mock_client = MagicMock()
+        agent = SocialAgent(
+            agent_id="agent_utc",
+            name="UTC Test",
+            interests=["time"],
+            personality="precise",
+            client=mock_client,
+        )
+
+        before = datetime.utcnow()
+        agent.transition_to(AgentState.SCROLLING, trigger="start")
+        after = datetime.utcnow()
+
+        ts = agent.state_history[0].timestamp
+        assert before <= ts <= after
+
+
 class TestSocialAgentHistoryPruning:
     """Tests for history pruning in transition_to() (T036)."""
 

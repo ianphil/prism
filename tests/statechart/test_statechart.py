@@ -558,6 +558,95 @@ class TestStatechartValidTriggers:
         assert triggers == ["start"]
 
 
+class TestStatechartActionExecution:
+    """Tests for action execution in fire()."""
+
+    def test_fire_executes_action_when_transition_matches(self):
+        """fire() should execute action when transition fires."""
+        from prism.statechart.statechart import Statechart
+
+        action_called = []
+
+        def capture_action(agent, context):
+            action_called.append((agent, context))
+
+        states = {AgentState.IDLE, AgentState.SCROLLING}
+        transitions = [
+            Transition(
+                trigger="start",
+                source=AgentState.IDLE,
+                target=AgentState.SCROLLING,
+                action=capture_action,
+            )
+        ]
+        sc = Statechart(states=states, transitions=transitions, initial=AgentState.IDLE)
+
+        test_agent = {"name": "test"}
+        test_context = {"post_id": "123"}
+
+        sc.fire(
+            trigger="start",
+            current_state=AgentState.IDLE,
+            agent=test_agent,
+            context=test_context,
+        )
+
+        assert len(action_called) == 1
+        assert action_called[0] == (test_agent, test_context)
+
+    def test_fire_action_exception_does_not_prevent_transition(self):
+        """Action exception should not prevent transition (fail-safe)."""
+        from prism.statechart.statechart import Statechart
+
+        def failing_action(agent, context):
+            raise RuntimeError("Action failed")
+
+        states = {AgentState.IDLE, AgentState.SCROLLING}
+        transitions = [
+            Transition(
+                trigger="start",
+                source=AgentState.IDLE,
+                target=AgentState.SCROLLING,
+                action=failing_action,
+            )
+        ]
+        sc = Statechart(states=states, transitions=transitions, initial=AgentState.IDLE)
+
+        result = sc.fire(
+            trigger="start", current_state=AgentState.IDLE, agent=None, context=None
+        )
+
+        # Transition should still succeed despite action failure
+        assert result == AgentState.SCROLLING
+
+    def test_fire_does_not_call_action_when_no_transition_matches(self):
+        """fire() should not call action when no transition matches."""
+        from prism.statechart.statechart import Statechart
+
+        action_called = []
+
+        def capture_action(agent, context):
+            action_called.append(True)
+
+        states = {AgentState.IDLE, AgentState.SCROLLING}
+        transitions = [
+            Transition(
+                trigger="start",
+                source=AgentState.IDLE,
+                target=AgentState.SCROLLING,
+                action=capture_action,
+            )
+        ]
+        sc = Statechart(states=states, transitions=transitions, initial=AgentState.IDLE)
+
+        # Wrong trigger - should not match
+        sc.fire(
+            trigger="unknown", current_state=AgentState.IDLE, agent=None, context=None
+        )
+
+        assert len(action_called) == 0
+
+
 class TestStatechartValidTargets:
     """Tests for Statechart.valid_targets() (T014)."""
 

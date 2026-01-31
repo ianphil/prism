@@ -199,7 +199,7 @@ class SocialAgent:
             from_state=self.state,
             to_state=new_state,
             trigger=trigger,
-            timestamp=datetime.now(),
+            timestamp=datetime.utcnow(),
             context=context,
         )
         self.state_history.append(transition)

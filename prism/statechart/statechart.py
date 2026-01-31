@@ -94,6 +94,15 @@ class Statechart:
                     # Guard exception treated as False - continue to next transition
                     continue
 
+            # Execute action if present (fail-safe: exceptions logged but don't
+            # prevent transition)
+            if transition.action is not None:
+                try:
+                    transition.action(agent, context)
+                except Exception:
+                    # Action exception is fail-safe - continue to transition
+                    pass
+
             # Transition matches - return target state
             return transition.target
 

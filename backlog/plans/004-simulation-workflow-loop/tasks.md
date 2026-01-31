@@ -199,41 +199,41 @@ Round orchestration and state persistence.
 
 ### Checkpointer
 
-- [ ] T101 [TEST] Write test for Checkpointer.save creates JSON file
-- [ ] T102 [IMPL] Implement save method with JSON serialization
-- [ ] T103 [TEST] Write test for saved file includes version field
-- [ ] T104 [IMPL] Add version to CheckpointData
-- [ ] T105 [TEST] Write test for file path includes round number
-- [ ] T106 [IMPL] Implement filename pattern checkpoint_round_NNNN.json
-- [ ] T107 [TEST] Write test for atomic write (temp file + rename)
-- [ ] T108 [IMPL] Implement temp file pattern
-- [ ] T109 [TEST] Write test for Checkpointer.load reconstructs state
-- [ ] T110 [IMPL] Implement load method
-- [ ] T111 [TEST] Write test for load validates version
-- [ ] T112 [IMPL] Implement version check with ValueError
-- [ ] T113 [TEST] Write test for latest_checkpoint finds most recent
-- [ ] T114 [IMPL] Implement latest_checkpoint method
-- [ ] T115 [TEST] Write test for checkpoint_for_round finds specific round
-- [ ] T116 [IMPL] Implement checkpoint_for_round method
+- [x] T101 [TEST] Write test for Checkpointer.save creates JSON file
+- [x] T102 [IMPL] Implement save method with JSON serialization
+- [x] T103 [TEST] Write test for saved file includes version field
+- [x] T104 [IMPL] Add version to CheckpointData
+- [x] T105 [TEST] Write test for file path includes round number
+- [x] T106 [IMPL] Implement filename pattern checkpoint_round_NNNN.json
+- [x] T107 [TEST] Write test for atomic write (temp file + rename)
+- [x] T108 [IMPL] Implement temp file pattern
+- [x] T109 [TEST] Write test for Checkpointer.load reconstructs state
+- [x] T110 [IMPL] Implement load method
+- [x] T111 [TEST] Write test for load validates version
+- [x] T112 [IMPL] Implement version check with ValueError
+- [x] T113 [TEST] Write test for latest_checkpoint finds most recent
+- [x] T114 [IMPL] Implement latest_checkpoint method
+- [x] T115 [TEST] Write test for checkpoint_for_round finds specific round
+- [x] T116 [IMPL] Implement checkpoint_for_round method
 
 ### Round Controller
 
-- [ ] T117 [TEST] Write test for RoundController.run_simulation iterates rounds
-- [ ] T118 [IMPL] Implement round iteration loop
-- [ ] T119 [TEST] Write test for controller processes all agents each round
-- [ ] T120 [IMPL] Implement agent iteration within round
-- [ ] T121 [TEST] Write test for controller saves checkpoints at frequency
-- [ ] T122 [IMPL] Implement checkpoint saving with frequency check
-- [ ] T123 [TEST] Write test for controller skips checkpoints when dir is None
-- [ ] T124 [IMPL] Implement checkpoint skip logic
-- [ ] T125 [TEST] Write test for controller advances round_number
-- [ ] T126 [IMPL] Implement state.advance_round call
-- [ ] T127 [TEST] Write test for controller returns SimulationResult
-- [ ] T128 [IMPL] Implement result construction
-- [ ] T129 [TEST] Write test for run_round executes single round
-- [ ] T130 [IMPL] Implement run_round method
-- [ ] T131 [TEST] Write test for resume_from_checkpoint loads and continues
-- [ ] T132 [IMPL] Implement resume_from_checkpoint method
+- [x] T117 [TEST] Write test for RoundController.run_simulation iterates rounds
+- [x] T118 [IMPL] Implement round iteration loop
+- [x] T119 [TEST] Write test for controller processes all agents each round
+- [x] T120 [IMPL] Implement agent iteration within round
+- [x] T121 [TEST] Write test for controller saves checkpoints at frequency
+- [x] T122 [IMPL] Implement checkpoint saving with frequency check
+- [x] T123 [TEST] Write test for controller skips checkpoints when dir is None
+- [x] T124 [IMPL] Implement checkpoint skip logic
+- [x] T125 [TEST] Write test for controller advances round_number
+- [x] T126 [IMPL] Implement state.advance_round call
+- [x] T127 [TEST] Write test for controller returns SimulationResult
+- [x] T128 [IMPL] Implement result construction
+- [x] T129 [TEST] Write test for run_round executes single round
+- [x] T130 [IMPL] Implement run_round method
+- [x] T131 [TEST] Write test for resume_from_checkpoint loads and continues
+- [x] T132 [IMPL] Implement resume_from_checkpoint method
 
 ---
 

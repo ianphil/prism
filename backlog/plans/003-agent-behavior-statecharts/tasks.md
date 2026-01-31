@@ -185,27 +185,27 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
 ## Phase 6: State Queries and Validation
 
 ### Query Functions
-- [ ] T040 [TEST] Write tests for `agents_in_state()`
+- [x] T040 [TEST] Write tests for `agents_in_state()`
   - Returns count of agents in given state
   - Returns 0 for empty list
   - Returns 0 when no agents in state
-- [ ] T041 [IMPL] Implement `agents_in_state()` in `prism/statechart/queries.py`
+- [x] T041 [IMPL] Implement `agents_in_state()` in `prism/statechart/queries.py`
 
-- [ ] T042 [TEST] Write tests for `state_distribution()`
+- [x] T042 [TEST] Write tests for `state_distribution()`
   - Returns dict mapping each AgentState to count
   - All states present in result (even with 0 count)
   - Correct counts for mixed agent states
-- [ ] T043 [IMPL] Implement `state_distribution()`
+- [x] T043 [IMPL] Implement `state_distribution()`
 
 ### Package Exports
-- [ ] T044 [IMPL] Create `prism/statechart/__init__.py` with exports
+- [x] T044 [IMPL] Create `prism/statechart/__init__.py` with exports
   - AgentState, Transition, StateTransition
   - Statechart, StatechartReasoner
   - agents_in_state, state_distribution
-- [ ] T045 [IMPL] Create `tests/statechart/__init__.py`
+- [x] T045 [IMPL] Create `tests/statechart/__init__.py`
 
 ### Integration Test
-- [ ] T046 [TEST] Write integration test
+- [x] T046 [TEST] Write integration test
   - Create statechart with social agent states
   - Create agent and fire transitions
   - Verify state changes and history recording
@@ -213,7 +213,7 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
   - Test reasoner invocation for ambiguous case (mock LLM)
 
 ### Spec Tests
-- [ ] T047 [SPEC] Run spec tests using `specs/tests/003-agent-behavior-statecharts.md`
+- [x] T047 [SPEC] Run spec tests using `specs/tests/003-agent-behavior-statecharts.md`
   - All tests pass with opencode or codex runner
 
 ## Task Summary
@@ -232,9 +232,9 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
 
 After all implementation phases are complete:
 
-- [ ] `uv run ruff check .` passes
-- [ ] `uv run flake8 .` passes
-- [ ] `uv run black --check .` passes
-- [ ] `uv run pytest` passes (all tests including new statechart tests)
-- [ ] Run spec tests with `/spec-tests` skill using `specs/tests/003-agent-behavior-statecharts.md`
+- [x] `uv run ruff check .` passes
+- [x] `uv run flake8 .` passes
+- [x] `uv run black --check .` passes
+- [x] `uv run pytest` passes (all tests including new statechart tests)
+- [x] Run spec tests with `/spec-tests` skill using `specs/tests/003-agent-behavior-statecharts.md`
 - [ ] All spec tests pass → feature complete

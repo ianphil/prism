@@ -206,7 +206,8 @@ class SocialAgent:
 
         # Prune history if it exceeds max depth (FIFO - remove oldest first)
         if len(self.state_history) > self.max_history_depth:
-            self.state_history = self.state_history[-self.max_history_depth:]
+            excess = len(self.state_history) - self.max_history_depth
+            self.state_history = self.state_history[excess:]
 
         # Update state and reset tick counter
         self.state = new_state

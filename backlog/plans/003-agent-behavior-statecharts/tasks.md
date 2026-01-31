@@ -42,59 +42,59 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
 ## Phase 1: Core Types
 
 ### AgentState Enum
-- [ ] T001 [TEST] Write tests for `AgentState` enum
+- [x] T001 [TEST] Write tests for `AgentState` enum
   - All states are defined (IDLE, SCROLLING, EVALUATING, COMPOSING, ENGAGING_*, RESTING)
   - Inherits from str for JSON serialization
   - Values are lowercase strings
-- [ ] T002 [IMPL] Implement `AgentState` in `prism/statechart/states.py`
+- [x] T002 [IMPL] Implement `AgentState` in `prism/statechart/states.py`
 
 ### Transition Dataclass
-- [ ] T003 [TEST] Write tests for `Transition` dataclass
+- [x] T003 [TEST] Write tests for `Transition` dataclass
   - Has trigger, source, target fields
   - Guard and action are optional (default None)
   - Is frozen (immutable)
-- [ ] T004 [IMPL] Implement `Transition` in `prism/statechart/transitions.py`
+- [x] T004 [IMPL] Implement `Transition` in `prism/statechart/transitions.py`
 
 ### StateTransition Record
-- [ ] T005 [TEST] Write tests for `StateTransition` dataclass
+- [x] T005 [TEST] Write tests for `StateTransition` dataclass
   - Has from_state, to_state, trigger, timestamp fields
   - Context is optional (default None)
   - Timestamp is datetime type
-- [ ] T006 [IMPL] Implement `StateTransition` in `prism/statechart/transitions.py`
+- [x] T006 [IMPL] Implement `StateTransition` in `prism/statechart/transitions.py`
 
 ## Phase 2: Statechart Engine
 
 ### Statechart Construction
-- [ ] T007 [TEST] Write tests for `Statechart.__init__()`
+- [x] T007 [TEST] Write tests for `Statechart.__init__()`
   - Accepts states (set), transitions (list), initial (AgentState)
   - Validates initial is in states
   - Validates all transition sources/targets are in states
   - Raises ValueError on invalid configuration
-- [ ] T008 [IMPL] Implement `Statechart.__init__()` in `prism/statechart/statechart.py`
+- [x] T008 [IMPL] Implement `Statechart.__init__()` in `prism/statechart/statechart.py`
 
 ### Transition Firing
-- [ ] T009 [TEST] Write tests for `Statechart.fire()`
+- [x] T009 [TEST] Write tests for `Statechart.fire()`
   - Returns target state when transition matches
   - Returns None when no transition matches
   - Evaluates guards in definition order
   - First matching guard wins
-- [ ] T010 [IMPL] Implement `Statechart.fire()` basic logic
+- [x] T010 [IMPL] Implement `Statechart.fire()` basic logic
 
 ### Guard Fail-Safe
-- [ ] T011 [TEST] Write tests for guard exception handling
+- [x] T011 [TEST] Write tests for guard exception handling
   - Guard that raises exception is treated as False
   - Guard that returns non-boolean is coerced to bool
   - Transition continues to next candidate on guard failure
-- [ ] T012 [IMPL] Implement guard fail-safe behavior
+- [x] T012 [IMPL] Implement guard fail-safe behavior
 
 ### Trigger Introspection
-- [ ] T013 [TEST] Write tests for `Statechart.valid_triggers()`
+- [x] T013 [TEST] Write tests for `Statechart.valid_triggers()`
   - Returns list of triggers available from given state
   - Returns empty list for state with no outgoing transitions
-- [ ] T014 [TEST] Write tests for `Statechart.valid_targets()`
+- [x] T014 [TEST] Write tests for `Statechart.valid_targets()`
   - Returns list of possible target states for trigger from state
   - Returns empty list when no matching transitions
-- [ ] T015 [IMPL] Implement `valid_triggers()` and `valid_targets()`
+- [x] T015 [IMPL] Implement `valid_triggers()` and `valid_targets()`
 
 ## Phase 3: LLM Reasoner
 

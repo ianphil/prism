@@ -7,8 +7,8 @@ This document outlines the recommended implementation sequence for PRISM based o
 | # | Feature | Plan File | Priority | Est. Tasks | Status |
 |---|---------|-----------|----------|------------|--------|
 | 1 | Foundation: Agent Framework + Ollama | `_completed/001-foundation-agent-ollama/` | High | 14 | ✅ Done |
-| 2 | RAG Feed System | `20260127-rag-feed-system.md` | High | 7 | In Progress |
-| 3 | Agent Behavior Statecharts | `20260130-agent-behavior-statecharts.md` | High | 7 | Open |
+| 2 | RAG Feed System | `_completed/002-rag-feed-system/` | High | 30 | ✅ Done |
+| 3 | Agent Behavior Statecharts | `003-agent-behavior-statecharts/` | High | 47 | Planned |
 | 4 | Simulation Workflow Loop | `20260127-simulation-workflow-loop.md` | High | 7 | Open |
 | 5 | X Algorithm Ranking | `20260127-x-algorithm-ranking.md` | Medium | 6 | Open |
 | 6 | Data Pipeline | `20260127-data-pipeline.md` | Medium | 7 | Open |
@@ -74,16 +74,16 @@ This document outlines the recommended implementation sequence for PRISM based o
 
 ### Phase 2: Data Layer & Agent Behavior (Current)
 
-**Feature 2: RAG Feed System** (depends on F1) — *In Progress*
+**Feature 2: RAG Feed System** (depends on F1) — ✅ Complete
 - ChromaDB vector store setup
 - Post embedding and retrieval
 - Preference-based and random feed modes
 - Validates: Agent receives relevant posts
 
-**Feature 3: Agent Behavior Statecharts** (depends on F1, parallel with F2)
+**Feature 3: Agent Behavior Statecharts** (depends on F1, parallel with F2) — *Planned*
 - Harel-style statechart for agent behavioral states
 - Shared statechart with parameterized guards per agent
-- LLM as decision oracle for ambiguous transitions
+- LLM-based Agent Reasoner for ambiguous transitions
 - Timeout transitions for stuck agents
 - State history in agent memory for RAG context
 - Validates: Agent states are queryable, transitions are traceable
@@ -148,7 +148,7 @@ Merge point: F4 (Simulation Loop) requires F2 + F3, optionally F5/F6
 | Milestone | Features Complete | Validation |
 |-----------|-------------------|------------|
 | **M1: Agent Works** | F1 ✅ | Single agent makes valid decision with gpt-oss:20b |
-| **M2: Feed Works** | F1, F2 | Agent receives personalized feed from ChromaDB |
+| **M2: Feed Works** | F1, F2 ✅ | Agent receives personalized feed from ChromaDB |
 | **M3: States Work** | F1, F3 | Agent transitions between states, state queries work |
 | **M4: Sim Runs** | F1-F4 | 100-agent statechart-driven simulation completes 10 rounds |
 | **M5: Real Data** | F1-F4, F6 | Simulation bootstrapped from Twitter dataset |
@@ -172,7 +172,8 @@ Merge point: F4 (Simulation Loop) requires F2 + F3, optionally F5/F6
 ## Next Steps
 
 1. ~~Start with Feature 1: Foundation~~ ✅ Complete
-2. Continue Feature 2 (RAG) in worktree
-3. Plan Feature 3 (Statecharts) with `/planner` for TDD task breakdown
-4. Track progress in `backlog/plans/` with status updates
-5. Validate each milestone before proceeding
+2. ~~Continue Feature 2 (RAG)~~ ✅ Complete
+3. ~~Plan Feature 3 (Statecharts) with `/planner`~~ ✅ Planned (47 tasks)
+4. Implement Feature 3 with `/implement` skill
+5. Track progress in `backlog/plans/` with status updates
+6. Validate each milestone before proceeding

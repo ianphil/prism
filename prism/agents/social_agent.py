@@ -2,11 +2,14 @@
 
 import json
 import logging
+from datetime import datetime, timezone
 
 from agent_framework.ollama import OllamaChatClient
 
 from prism.agents.decision import AgentDecision
 from prism.agents.prompts import build_feed_prompt, build_system_prompt
+from prism.statechart.states import AgentState
+from prism.statechart.transitions import StateTransition
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +31,9 @@ class SocialAgent:
         client: OllamaChatClient,
         temperature: float = 0.7,
         max_tokens: int = 512,
+        timeout_threshold: int = 5,
+        max_history_depth: int = 100,
+        engagement_threshold: float = 0.5,
     ) -> None:
         """Initialize a social agent.
 
@@ -39,12 +45,17 @@ class SocialAgent:
             client: OllamaChatClient instance for LLM inference.
             temperature: Sampling temperature for LLM responses.
             max_tokens: Maximum tokens in LLM response.
+            timeout_threshold: Ticks before agent is considered timed out (must be > 0).
+            max_history_depth: Maximum number of state transitions to keep in history.
+            engagement_threshold: Relevance threshold for should_engage() guard.
 
         Raises:
-            ValueError: If interests list is empty.
+            ValueError: If interests list is empty or timeout_threshold <= 0.
         """
         if not interests:
             raise ValueError("interests must be a non-empty list")
+        if timeout_threshold <= 0:
+            raise ValueError("timeout_threshold must be > 0")
 
         self.agent_id = agent_id
         self.name = name
@@ -53,6 +64,16 @@ class SocialAgent:
         self._client = client
         self._temperature = temperature
         self._max_tokens = max_tokens
+
+        # Timeout tracking (Phase 4)
+        self.timeout_threshold = timeout_threshold
+        self.ticks_in_state: int = 0
+
+        # State tracking (Phase 5)
+        self.state: AgentState = AgentState.IDLE
+        self.state_history: list[StateTransition] = []
+        self.max_history_depth = max_history_depth
+        self.engagement_threshold = engagement_threshold
 
         # Build the system prompt from profile
         self._system_prompt = build_system_prompt(
@@ -137,3 +158,70 @@ class SocialAgent:
             reason=reason,
             content=None,
         )
+
+    def tick(self) -> None:
+        """Increment ticks_in_state counter.
+
+        Called once per simulation round for timeout detection.
+        """
+        self.ticks_in_state += 1
+
+    def is_timed_out(self) -> bool:
+        """Check if agent has been in current state too long.
+
+        Returns:
+            True if ticks_in_state > timeout_threshold.
+        """
+        return self.ticks_in_state > self.timeout_threshold
+
+    def transition_to(
+        self,
+        new_state: AgentState,
+        trigger: str,
+        context: dict | None = None,
+    ) -> None:
+        """Transition agent to a new state.
+
+        Records the transition in history and resets tick counter.
+        No-op if new_state equals current state (self-transition).
+
+        Args:
+            new_state: The target AgentState to transition to.
+            trigger: The event that caused this transition.
+            context: Optional context dict (e.g., post_id, relevance).
+        """
+        # No-op for self-transitions
+        if new_state == self.state:
+            return
+
+        # Record the transition
+        transition = StateTransition(
+            from_state=self.state,
+            to_state=new_state,
+            trigger=trigger,
+            timestamp=datetime.now(timezone.utc),
+            context=context,
+        )
+        self.state_history.append(transition)
+
+        # Prune history if it exceeds max depth (FIFO - remove oldest first)
+        if len(self.state_history) > self.max_history_depth:
+            excess = len(self.state_history) - self.max_history_depth
+            self.state_history = self.state_history[excess:]
+
+        # Update state and reset tick counter
+        self.state = new_state
+        self.ticks_in_state = 0
+
+    def should_engage(self, relevance: float) -> bool:
+        """Guard helper to determine if agent should engage with content.
+
+        Used as a guard condition in statechart transitions.
+
+        Args:
+            relevance: A score from 0.0 to 1.0 indicating content relevance.
+
+        Returns:
+            True if relevance >= engagement_threshold.
+        """
+        return relevance >= self.engagement_threshold

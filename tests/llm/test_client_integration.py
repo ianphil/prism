@@ -29,8 +29,8 @@ class TestOllamaIntegration:
     @pytest.mark.asyncio
     async def test_agent_returns_response(self):
         """Verify ChatAgent can get a response from Ollama."""
-        config = LLMConfig(model_id="mistral")
-        client = create_llm_client(config)
+        config = load_config("configs/default.yaml")
+        client = create_llm_client(config.llm)
 
         # Create a simple agent using as_agent()
         agent = client.as_agent(
@@ -88,8 +88,8 @@ class TestOllamaIntegration:
             answer: str
             confidence: int
 
-        config = LLMConfig(model_id="mistral")
-        client = create_llm_client(config)
+        config = load_config("configs/default.yaml")
+        client = create_llm_client(config.llm)
 
         agent = client.as_agent(
             name="structured_agent",

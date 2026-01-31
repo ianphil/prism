@@ -56,3 +56,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 004 planning session** (2026-01-30)
   - Gist: https://gist.github.com/ianphil/c31bc18edee7810dd6c7b8e5e726ccac
   - Preview: https://gisthost.github.io/?c31bc18edee7810dd6c7b8e5e726ccac/index.html
+- **Feature 004 Phase 3 - Executor Pipeline Implementation** (2026-01-31)
+  - Gist: https://gist.github.com/ianphil/0e05d5b0f5f28700a7e8e783da7470bc
+  - Preview: https://gisthost.github.io/?0e05d5b0f5f28700a7e8e783da7470bc/index.html

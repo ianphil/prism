@@ -180,7 +180,7 @@ class Statechart:
    - If guard raises → treat as False, continue
 3. If exactly one match → return target state
 4. If no matches → return None
-5. If multiple matches → ambiguous (caller should invoke oracle)
+5. If multiple matches → ambiguous (caller should invoke reasoner)
 
 ### Construction Validation
 

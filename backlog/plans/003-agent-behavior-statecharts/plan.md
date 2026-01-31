@@ -2,7 +2,7 @@
 
 ## Summary
 
-Implement a custom Harel-style statechart engine (~200 lines) to model agent behavioral states. The statechart governs state transitions via triggers and guards, with the LLM serving as a decision oracle for ambiguous transitions. All state changes are recorded for observability and cascade analysis.
+Implement a custom Harel-style statechart engine (~200 lines) to model agent behavioral states. The statechart governs state transitions via triggers and guards, with the LLM serving as a decision reasoner for ambiguous transitions. All state changes are recorded for observability and cascade analysis.
 
 ## Architecture
 
@@ -27,8 +27,8 @@ Implement a custom Harel-style statechart engine (~200 lines) to model agent beh
 │                  │                                                   │
 │                  ▼                                                   │
 │          ┌────────────────┐                                          │
-│          │  LLM Oracle    │  (for ambiguous transitions)             │
-│          │  • prompt      │                                          │
+│          │    Reasoner    │  (LLM-based Agent Reasoner)              │
+│          │  • prompt      │  (for ambiguous transitions)             │
 │          │  • parse       │                                          │
 │          └────────────────┘                                          │
 │                                                                      │
@@ -65,7 +65,7 @@ Implement a custom Harel-style statechart engine (~200 lines) to model agent beh
                     │     │ • On exception → False          │ │
                     │     │ • First True guard wins         │ │
                     │     └─────────────────────────────────┘ │
-                    │  4. If ambiguous → call LLM oracle      │
+                    │  4. If ambiguous → call LLM reasoner      │
                     │  5. Execute action (if any)             │
                     │  6. Update agent.state                  │
                     │  7. Record StateTransition in history   │
@@ -80,14 +80,14 @@ Implement a custom Harel-style statechart engine (~200 lines) to model agent beh
 | `AgentState` | Enum of all valid behavioral states | Transition, SocialAgent |
 | `Transition` | Defines trigger, source, target, guard, action | Statechart |
 | `StateTransition` | History record with timestamps | SocialAgent.state_history |
-| `Statechart` | Core engine: fire(), valid_triggers() | SocialAgent, Oracle |
-| `Oracle` | LLM decision for ambiguous transitions | Statechart, OllamaChatClient |
+| `Statechart` | Core engine: fire(), valid_triggers() | SocialAgent, Reasoner |
+| `Reasoner` | LLM-based reasoning for ambiguous transitions | Statechart, OllamaChatClient |
 | `Query functions` | State distribution analysis | Simulation manager |
 
 ### Data Flow: Agent Evaluates Post
 
 ```
-SocialAgent                 Statechart                  LLM Oracle
+SocialAgent                 Statechart                    Reasoner
      │                           │                           │
      │  fire("sees_post", post)  │                           │
      │─────────────────────────▶│                           │
@@ -108,7 +108,7 @@ SocialAgent                 Statechart                  LLM Oracle
      │                           │ Multiple valid targets:   │
      │                           │ COMPOSING, SCROLLING      │
      │                           │                           │
-     │                           │  query_oracle(agent,post) │
+     │                           │  reasoner.decide(...)     │
      │                           │─────────────────────────▶│
      │                           │                           │
      │                           │    COMPOSING (choice)     │
@@ -131,7 +131,7 @@ prism/
 │   ├── states.py                  # NEW: AgentState enum
 │   ├── transitions.py             # NEW: Transition, StateTransition
 │   ├── statechart.py              # NEW: Statechart class
-│   ├── oracle.py                  # NEW: LLM oracle for decisions
+│   ├── reasoner.py                  # NEW: LLM reasoner for decisions
 │   └── queries.py                 # NEW: State query functions
 │
 ├── agents/
@@ -143,36 +143,36 @@ tests/
 │   ├── test_states.py
 │   ├── test_transitions.py
 │   ├── test_statechart.py
-│   ├── test_oracle.py
+│   ├── test_reasoner.py
 │   ├── test_queries.py
 │   └── test_integration.py
 ```
 
-## Critical: LLM Oracle Design
+## Critical: LLM Reasoner Design
 
-**Problem**: How do we decide when to invoke the expensive LLM oracle vs. using deterministic guards?
+**Problem**: How do we decide when to invoke the expensive LLM reasoner vs. using deterministic guards?
 
-**Solution**: Oracle is invoked only when:
+**Solution**: Reasoner is invoked only when:
 1. Multiple transitions match the trigger from the current state
 2. Multiple guards evaluate to True (ambiguous case)
-3. The transition is explicitly marked as requiring oracle decision
+3. The transition is explicitly marked as requiring reasoner decision
 
 For `Evaluating → ?` transitions, the guard can check thresholds:
 - `post.relevance > agent.high_threshold` → COMPOSING (deterministic)
 - `post.relevance < agent.low_threshold` → SCROLLING (deterministic)
-- Otherwise → LLM oracle decides
+- Otherwise → LLM reasoner decides
 
 ```python
 # Deterministic guard
 def high_engagement_guard(agent, post):
     return post.velocity > 100 or agent.is_interested(post)
 
-# Oracle-required transition (no guard, or guard returns "needs_oracle")
+# Reasoner-required transition (no guard, or guard returns "needs_reasoner")
 Transition(
     trigger="decides",
     source=AgentState.EVALUATING,
-    target=None,  # Oracle will decide
-    guard=lambda a, p: "needs_oracle",  # Special marker
+    target=None,  # Reasoner will decide
+    guard=lambda a, p: "needs_reasoner",  # Special marker
 )
 ```
 
@@ -182,7 +182,7 @@ See `tasks.md` for detailed breakdown. Summary:
 
 1. **Phase 1**: Core types (AgentState, Transition, StateTransition)
 2. **Phase 2**: Statechart engine (fire, valid_triggers)
-3. **Phase 3**: LLM Oracle integration
+3. **Phase 3**: LLM Reasoner integration
 4. **Phase 4**: Timeout transitions
 5. **Phase 5**: SocialAgent integration
 6. **Phase 6**: State queries and final validation
@@ -194,7 +194,7 @@ See `tasks.md` for detailed breakdown. Summary:
 | Statechart scope | Shared + parameterized | One definition; behavior varies via agent thresholds |
 | State representation | Enum (str) | JSON-serializable, exhaustive pattern matching |
 | Guard fail-safe | Return False on exception | SCXML conformance; prevents crashes |
-| Oracle invocation | Explicit marker or multiple matches | Minimize LLM calls; deterministic when possible |
+| Reasoner invocation | Explicit marker or multiple matches | Minimize LLM calls; deterministic when possible |
 | History depth | Configurable (default: 50) | Balance debugging vs memory |
 | Timeout mechanism | ticks_in_state counter | Simple; no external timer dependency |
 
@@ -205,7 +205,7 @@ See `tasks.md` for detailed breakdown. Summary:
 statechart:
   default_timeout_ticks: 5
   max_history_depth: 50
-  oracle_enabled: true
+  reasoner_enabled: true
 
 # Agent-specific thresholds (set at construction)
 # agent = SocialAgent(
@@ -231,14 +231,14 @@ statechart:
 | `prism/statechart/states.py` | AgentState enum |
 | `prism/statechart/transitions.py` | Transition and StateTransition dataclasses |
 | `prism/statechart/statechart.py` | Statechart class (~150 lines) |
-| `prism/statechart/oracle.py` | LLM oracle for ambiguous transitions |
+| `prism/statechart/reasoner.py` | LLM reasoner for ambiguous transitions |
 | `prism/statechart/queries.py` | State query functions |
 
 ## Verification
 
 1. Unit tests pass: `uv run pytest tests/statechart/`
 2. Integration test: Agent transitions through states correctly
-3. Oracle test: LLM invoked only for ambiguous cases
+3. Reasoner test: LLM invoked only for ambiguous cases
 4. Timeout test: Stuck agent recovers after N ticks
 5. Spec tests pass: `specs/tests/003-agent-behavior-statecharts.md`
 
@@ -247,8 +247,8 @@ statechart:
 | Risk | Mitigation |
 |------|------------|
 | Statechart complexity creep | Start minimal; resist adding features until needed |
-| Oracle response parsing fails | Fallback to SCROLLING; log warning for debugging |
-| Performance impact | Guards are simple lambdas; oracle only when needed |
+| Reasoner response parsing fails | Fallback to SCROLLING; log warning for debugging |
+| Performance impact | Guards are simple lambdas; reasoner only when needed |
 | Memory from history | Configurable depth with FIFO pruning |
 
 ## Limitations (MVP)

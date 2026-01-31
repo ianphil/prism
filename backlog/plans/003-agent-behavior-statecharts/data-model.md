@@ -93,7 +93,7 @@ New fields added to the existing `SocialAgent` class.
 **Relationships:**
 - Uses shared `Statechart` instance for transitions
 - Owns `state_history` list
-- References `OllamaChatClient` for oracle calls
+- References `OllamaChatClient` for reasoner calls
 
 **Invariants:**
 - `state` is always a valid `AgentState`
@@ -186,11 +186,11 @@ New fields added to the existing `SocialAgent` class.
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Oracle Decision Flow
+### Reasoner Decision Flow
 
 ```
 ┌──────────────┐                    ┌──────────────┐
-│  Statechart  │   ambiguous case   │  LLM Oracle  │
+│  Statechart  │   ambiguous case   │  LLM Reasoner  │
 │              │ ─────────────────▶ │              │
 │              │                    │              │
 │ Candidates:  │   build_prompt()   │              │

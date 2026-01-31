@@ -6,7 +6,7 @@
 |---------|-------------------|
 | Pydantic models | `AgentState` enum mirrors `AgentDecision.choice` pattern |
 | Dataclass patterns | `Transition` follows `Post` field structure |
-| LLM oracle | Statechart uses `SocialAgent._agent.run()` for ambiguous transitions |
+| LLM reasoner | Statechart uses `SocialAgent._agent.run()` for ambiguous transitions |
 | Async operations | State transitions follow `SocialAgent.decide()` async pattern |
 | Agent profile | Statechart guards use agent interests/personality thresholds |
 
@@ -64,7 +64,7 @@ Problem: Agent behavior is opaque. The LLM's "state" is implicit
 │                         │  clear    ambiguous                        │
 │                         │    │         │                             │
 │                         │    ▼         ▼                             │
-│                         │  direct   LLM Oracle                       │
+│                         │  direct   LLM Reasoner                       │
 │                         │  transition  │                             │
 │                         │    │         │                             │
 │                         │    └────┬────┘                             │
@@ -156,14 +156,14 @@ async def fire(
     trigger: str,
     context: Any = None
 ) -> AgentState | None:
-    # For ambiguous transitions, call LLM oracle
+    # For ambiguous transitions, call LLM reasoner
     if needs_llm_decision:
-        decision = await self._query_oracle(agent, context, options)
+        decision = await self._query_reasoner(agent, context, options)
         return self._execute_transition(agent, decision, context)
     return self._execute_transition(agent, matched_transition, context)
 ```
 
-### 4. LLM Oracle Integration
+### 4. LLM Reasoner Integration
 
 **Current Implementation:**
 ```python
@@ -176,8 +176,8 @@ What do you decide to do? Respond with JSON only."""
 
 **Target Evolution:**
 ```python
-# prism/statechart/oracle.py
-def build_oracle_prompt(
+# prism/statechart/reasoner.py
+def build_reasoner_prompt(
     agent_name: str,
     agent_interests: list[str],
     current_state: AgentState,
@@ -208,7 +208,7 @@ Respond with JSON: {{"next_state": "..."}}"""
 | `build_feed_prompt()` | ✅ | Prompt construction for decisions |
 | `Post` model | ✅ | Post data for evaluation context |
 | `FeedRetriever` | ✅ | Gets posts for agent to evaluate |
-| `OllamaChatClient` | ✅ | LLM inference for oracle |
+| `OllamaChatClient` | ✅ | LLM inference for reasoner |
 
 ### Needed
 
@@ -218,7 +218,7 @@ Respond with JSON: {{"next_state": "..."}}"""
 | `Transition` dataclass | ❌ | Research doc §Minimal Core Design |
 | `Statechart` class | ❌ | Research doc (~150 lines) |
 | `StateTransition` history | ❌ | Track state changes for debugging |
-| Oracle prompt builder | ❌ | Extends existing prompt patterns |
+| Reasoner prompt builder | ❌ | Extends existing prompt patterns |
 | Agent state field | ❌ | Add to `SocialAgent` |
 | State query methods | ❌ | `agents_in_state()`, `state_distribution()` |
 | Timeout transitions | ❌ | Tick-based expiry for stuck agents |
@@ -229,13 +229,13 @@ Respond with JSON: {{"next_state": "..."}}"""
 
 1. **Existing decision flow** — `SocialAgent.decide()` already calls LLM and returns structured output. The statechart wraps this flow, adding explicit state before/after.
 
-2. **Prompt patterns** — `build_system_prompt()` and `build_feed_prompt()` provide templates for oracle prompts.
+2. **Prompt patterns** — `build_system_prompt()` and `build_feed_prompt()` provide templates for reasoner prompts.
 
 3. **Agent profile** — `SocialAgent` has `interests` and `personality` fields that map directly to statechart guard parameters.
 
 4. **Post context** — `Post` model with engagement metrics provides rich context for transition guards (e.g., "engage if post.velocity > threshold").
 
-5. **Async foundation** — Existing async pattern in `decide()` extends naturally to statechart oracle calls.
+5. **Async foundation** — Existing async pattern in `decide()` extends naturally to statechart reasoner calls.
 
 ### Gaps/Limitations
 
@@ -259,7 +259,7 @@ Respond with JSON: {{"next_state": "..."}}"""
    - First matching guard wins
    - SCXML semantics: "document order" for conflicting transitions
 
-3. **LLM Oracle Scope**
+3. **LLM Reasoner Scope**
    - Only for ambiguous `Evaluating → ?` transitions
    - Clear transitions (timeout, explicit triggers) don't need LLM
    - Reduces inference cost; LLM is expensive
@@ -271,7 +271,7 @@ Respond with JSON: {{"next_state": "..."}}"""
 
 5. **Integration with Existing decide()**
    - Option A: Replace `decide()` with statechart-driven flow
-   - Option B: Statechart wraps `decide()`, using it as oracle
+   - Option B: Statechart wraps `decide()`, using it as reasoner
    - **Recommendation**: Option B — minimal disruption, `decide()` becomes internal
 
 ## External References

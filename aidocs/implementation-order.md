@@ -83,7 +83,7 @@ This document outlines the recommended implementation sequence for PRISM based o
 **Feature 3: Agent Behavior Statecharts** (depends on F1, parallel with F2) — *Planned*
 - Harel-style statechart for agent behavioral states
 - Shared statechart with parameterized guards per agent
-- LLM as decision oracle for ambiguous transitions
+- LLM-based Agent Reasoner for ambiguous transitions
 - Timeout transitions for stuck agents
 - State history in agent memory for RAG context
 - Validates: Agent states are queryable, transitions are traceable

@@ -21,14 +21,14 @@ All implementation follows strict Red-Green-Refactor:
 | Researcher queries state distribution | FR-7 (State Query Methods) | agents_in_state counts agents, state_distribution returns counts |
 | Experimenter traces state transitions | FR-5 (State History) | StateTransition records transitions, SocialAgent provides transition method |
 | Developer prevents stuck agents | FR-6 (Timeout Transitions) | SocialAgent supports timeout detection |
-| Debugger minimizes oracle calls | FR-4 (LLM Oracle Integration) | StatechartOracle decides via LLM, Oracle handles parse errors |
+| Debugger minimizes reasoner calls | FR-4 (LLM Reasoner Integration) | StatechartReasoner decides via LLM, Reasoner handles parse errors |
 
 ## Dependencies
 
 ```
 Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
                                           │
-                                          ├──► Phase 3 (Oracle)
+                                          ├──► Phase 3 (Reasoner)
                                           │
                                           └──► Phase 4 (Timeouts)
                                                     │
@@ -96,35 +96,35 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
   - Returns empty list when no matching transitions
 - [ ] T015 [IMPL] Implement `valid_triggers()` and `valid_targets()`
 
-## Phase 3: LLM Oracle
+## Phase 3: LLM Reasoner
 
-### Oracle Construction
-- [ ] T016 [TEST] Write tests for `StatechartOracle.__init__()`
+### Reasoner Construction
+- [ ] T016 [TEST] Write tests for `StatechartReasoner.__init__()`
   - Accepts OllamaChatClient
   - Stores client reference
-- [ ] T017 [IMPL] Implement `StatechartOracle.__init__()` in `prism/statechart/oracle.py`
+- [ ] T017 [IMPL] Implement `StatechartReasoner.__init__()` in `prism/statechart/reasoner.py`
 
-### Oracle Prompt Building
-- [ ] T018 [TEST] Write tests for oracle prompt construction
+### Reasoner Prompt Building
+- [ ] T018 [TEST] Write tests for reasoner prompt construction
   - Includes agent name/interests in prompt
   - Includes current state and trigger
   - Includes available options with descriptions
   - Requests JSON response format
-- [ ] T019 [IMPL] Implement `build_oracle_prompt()` function
+- [ ] T019 [IMPL] Implement `build_reasoner_prompt()` function
 
-### Oracle Decision
-- [ ] T020 [TEST] Write tests for `StatechartOracle.decide()` (async)
+### Reasoner Decision
+- [ ] T020 [TEST] Write tests for `StatechartReasoner.decide()` (async)
   - Returns AgentState from options
   - Calls LLM with constructed prompt
   - Parses JSON response correctly
-- [ ] T021 [IMPL] Implement `StatechartOracle.decide()`
+- [ ] T021 [IMPL] Implement `StatechartReasoner.decide()`
 
-### Oracle Error Handling
-- [ ] T022 [TEST] Write tests for oracle parse error handling
+### Reasoner Error Handling
+- [ ] T022 [TEST] Write tests for reasoner parse error handling
   - JSON parse error returns fallback state
   - Invalid state in response returns fallback
   - Empty options raises ValueError
-- [ ] T023 [IMPL] Implement oracle error handling
+- [ ] T023 [IMPL] Implement reasoner error handling
 
 ## Phase 4: Timeout Transitions
 
@@ -200,7 +200,7 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
 ### Package Exports
 - [ ] T044 [IMPL] Create `prism/statechart/__init__.py` with exports
   - AgentState, Transition, StateTransition
-  - Statechart, StatechartOracle
+  - Statechart, StatechartReasoner
   - agents_in_state, state_distribution
 - [ ] T045 [IMPL] Create `tests/statechart/__init__.py`
 
@@ -210,7 +210,7 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
   - Create agent and fire transitions
   - Verify state changes and history recording
   - Test timeout detection and recovery
-  - Test oracle invocation for ambiguous case (mock LLM)
+  - Test reasoner invocation for ambiguous case (mock LLM)
 
 ### Spec Tests
 - [ ] T047 [SPEC] Run spec tests using `specs/tests/003-agent-behavior-statecharts.md`
@@ -222,7 +222,7 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
 |-------|-------|--------|--------|--------|
 | Phase 1: Core Types | T001-T006 | 3 | 3 | 0 |
 | Phase 2: Statechart Engine | T007-T015 | 5 | 4 | 0 |
-| Phase 3: LLM Oracle | T016-T023 | 4 | 4 | 0 |
+| Phase 3: LLM Reasoner | T016-T023 | 4 | 4 | 0 |
 | Phase 4: Timeout | T024-T029 | 3 | 3 | 0 |
 | Phase 5: Agent Integration | T030-T039 | 5 | 5 | 0 |
 | Phase 6: Queries + Validation | T040-T047 | 3 | 4 | 1 |

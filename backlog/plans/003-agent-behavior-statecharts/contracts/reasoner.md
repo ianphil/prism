@@ -1,25 +1,30 @@
-# LLM Oracle Contract
+# LLM-based Agent Reasoner Contract
 
 ## Purpose
 
-The LLM Oracle resolves ambiguous state transitions where multiple target states are valid. Instead of arbitrary selection, the oracle uses the agent's profile and post context to make a decision that reflects the agent's personality.
+The Reasoner resolves ambiguous state transitions where multiple target states are valid. Instead of arbitrary selection, the Reasoner uses the agent's profile and post context to reason about which action best reflects the agent's personality — aligning with generative agent architecture principles.
 
-## When Oracle is Invoked
+## When Reasoner is Invoked
 
 1. `Statechart.fire()` finds multiple matching transitions
-2. Caller detects ambiguity and calls oracle
-3. Oracle returns the chosen target state
+2. Caller detects ambiguity and calls Reasoner
+3. Reasoner returns the chosen target state
 4. Caller updates agent state accordingly
 
-## Oracle Interface
+## Reasoner Interface
 
 ```python
-class StatechartOracle:
-    """LLM-based decision maker for ambiguous transitions."""
+class Reasoner:
+    """LLM-based Agent Reasoner for ambiguous transitions.
+
+    Implements the reasoning component of generative agent architecture,
+    using the LLM to select appropriate state transitions based on
+    agent profile, context, and behavioral history.
+    """
 
     def __init__(self, client: OllamaChatClient) -> None:
         """
-        Initialize oracle with LLM client.
+        Initialize Reasoner with LLM client.
 
         Args:
             client: Ollama client for inference
@@ -35,7 +40,7 @@ class StatechartOracle:
         context: Any = None,
     ) -> AgentState:
         """
-        Decide which state transition to take.
+        Reason about which state transition to take.
 
         Args:
             agent: Agent making the decision
@@ -59,7 +64,7 @@ class StatechartOracle:
 ## Prompt Template
 
 ```python
-def build_oracle_prompt(
+def build_reasoner_prompt(
     agent_name: str,
     agent_interests: list[str],
     agent_personality: str,
@@ -68,7 +73,7 @@ def build_oracle_prompt(
     options: list[AgentState],
     context: Any,
 ) -> str:
-    """Build prompt for oracle decision."""
+    """Build prompt for Reasoner decision."""
 
     options_text = "\n".join(
         f"- {opt.value}: {STATE_DESCRIPTIONS[opt]}"
@@ -97,12 +102,12 @@ Respond with JSON only:
 ## Response Parsing
 
 ```python
-def parse_oracle_response(
+def parse_reasoner_response(
     response_text: str,
     options: list[AgentState],
 ) -> AgentState:
     """
-    Parse oracle response to AgentState.
+    Parse Reasoner response to AgentState.
 
     Args:
         response_text: Raw LLM response
@@ -125,7 +130,7 @@ def parse_oracle_response(
         raise ValueError(f"Invalid state: {state_value}")
 
     except (json.JSONDecodeError, KeyError) as e:
-        raise ValueError(f"Failed to parse oracle response: {e}")
+        raise ValueError(f"Failed to parse Reasoner response: {e}")
 ```
 
 ## State Descriptions
@@ -157,12 +162,12 @@ STATE_DESCRIPTIONS = {
 ## Usage Example
 
 ```python
-from prism.statechart import StatechartOracle, AgentState
+from prism.statechart import Reasoner, AgentState
 
-oracle = StatechartOracle(client=ollama_client)
+reasoner = Reasoner(client=ollama_client)
 
 # Ambiguous decision: agent evaluating a post
-new_state = await oracle.decide(
+new_state = await reasoner.decide(
     agent=agent,
     current_state=AgentState.EVALUATING,
     trigger="decides",
@@ -175,7 +180,7 @@ agent.state = new_state
 
 ## Integration with Statechart
 
-The oracle is NOT called by Statechart directly. The caller (simulation loop or agent) detects ambiguity and invokes oracle:
+The Reasoner is NOT called by Statechart directly. The caller (simulation loop or agent) detects ambiguity and invokes the Reasoner:
 
 ```python
 # In simulation loop or agent method
@@ -195,7 +200,7 @@ else:
 # Alternative: explicit ambiguity check
 targets = chart.valid_targets(agent.state, trigger)
 if len(targets) > 1:
-    new_state = await oracle.decide(agent, agent.state, trigger, targets, context)
+    new_state = await reasoner.decide(agent, agent.state, trigger, targets, context)
     agent.state = new_state
 elif len(targets) == 1:
     agent.state = targets[0]

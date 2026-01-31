@@ -163,7 +163,7 @@ lurker = Agent(engagement_threshold=0.95, attention_span=3)
 influencer = Agent(engagement_threshold=0.3, attention_span=20)
 ```
 
-### LLM as Decision Oracle
+### LLM-based Agent Reasoner
 
 For non-deterministic transitions (e.g., `Evaluating → ?`), the LLM decides:
 

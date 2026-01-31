@@ -3,14 +3,14 @@ target:
   - prism/statechart/states.py
   - prism/statechart/transitions.py
   - prism/statechart/statechart.py
-  - prism/statechart/oracle.py
+  - prism/statechart/reasoner.py
   - prism/statechart/queries.py
   - prism/agents/social_agent.py
 ---
 
 # Agent Behavior Statecharts Spec Tests
 
-Validates that PRISM's statechart system provides explicit behavioral states for agents, governed transitions with guards, LLM oracle integration for ambiguous decisions, state history tracking, and timeout recovery for stuck agents.
+Validates that PRISM's statechart system provides explicit behavioral states for agents, governed transitions with guards, LLM reasoner integration for ambiguous decisions, state history tracking, and timeout recovery for stuck agents.
 
 ## Agent State Enum
 
@@ -111,27 +111,27 @@ Then guard evaluation is wrapped in try/except
 And exceptions in guard evaluation result in the guard being treated as False
 ```
 
-## LLM Oracle
+## LLM Reasoner
 
-### StatechartOracle decides ambiguous transitions via LLM
+### StatechartReasoner decides ambiguous transitions via LLM
 
-When multiple target states are valid, the LLM must decide based on agent personality and post context. Without the oracle, ambiguous transitions would be resolved arbitrarily.
+When multiple target states are valid, the LLM must decide based on agent personality and post context. Without the reasoner, ambiguous transitions would be resolved arbitrarily.
 
 ```
-Given the prism/statechart/oracle.py file
-When examining the StatechartOracle class
+Given the prism/statechart/reasoner.py file
+When examining the StatechartReasoner class
 Then it has an __init__ that accepts an LLM client
 And it has an async decide method
 And decide accepts agent, current_state, trigger, options, and context parameters
 And decide returns an AgentState
 ```
 
-### Oracle prompt includes agent profile and context
+### Reasoner prompt includes agent profile and context
 
 The LLM needs sufficient context to make personality-consistent decisions. Without agent interests and post content in the prompt, decisions would be random rather than character-driven.
 
 ```
-Given the prism/statechart/oracle.py file
+Given the prism/statechart/reasoner.py file
 When examining the prompt building logic
 Then the prompt includes the agent's name or identifier
 And the prompt includes the agent's interests
@@ -139,12 +139,12 @@ And the prompt includes the available state options
 And the prompt requests JSON output with a next_state field
 ```
 
-### Oracle handles parse errors with fallback
+### Reasoner handles parse errors with fallback
 
 LLM responses may be malformed. Without graceful fallback, parse errors would crash the simulation or leave agents in undefined states.
 
 ```
-Given the prism/statechart/oracle.py file
+Given the prism/statechart/reasoner.py file
 When examining the decide method implementation
 Then there is error handling for JSON parse failures
 And on parse error, it returns a fallback state (first option or SCROLLING)

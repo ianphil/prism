@@ -15,7 +15,7 @@ Without explicit behavioral states, researchers cannot understand agent dynamics
 
 ### Solution Summary
 
-Implement Harel-style statecharts to model agent behavioral states (Idle, Scrolling, Evaluating, Composing, Engaging substates). The statechart governs state transitions via triggers, guards, and actions, while the LLM serves as a "decision oracle" for ambiguous transitions. All state changes are logged for observability and cascade analysis.
+Implement Harel-style statecharts to model agent behavioral states (Idle, Scrolling, Evaluating, Composing, Engaging substates). The statechart governs state transitions via triggers, guards, and actions, while the LLM serves as a "decision reasoner" for ambiguous transitions. All state changes are logged for observability and cascade analysis.
 
 ### Business Value
 
@@ -25,7 +25,7 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 | Traceable transitions | Log every state change for cascade analysis and debugging |
 | Behavioral modes | Agents exhibit realistic patterns (lurking, engaging bursts) |
 | Stuck prevention | Timeout transitions auto-recover deadlocked agents |
-| LLM as oracle | Statechart governs flow; LLM decides only ambiguous cases |
+| LLM as reasoner | Statechart governs flow; LLM decides only ambiguous cases |
 
 ## User Stories
 
@@ -59,13 +59,13 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 
 ### Debugger
 
-**As a developer debugging the simulation**, I want the LLM oracle to only be invoked for genuinely ambiguous transitions, so that inference costs stay manageable.
+**As a developer debugging the simulation**, I want the LLM reasoner to only be invoked for genuinely ambiguous transitions, so that inference costs stay manageable.
 
 **Acceptance Criteria:**
 - Clear transitions (timeout, explicit event) execute without LLM
-- LLM oracle invoked only for `Evaluating → ?` decisions
-- Oracle prompt includes agent profile, post content, and valid options
-- Oracle response parsed to valid `AgentState`
+- LLM reasoner invoked only for `Evaluating → ?` decisions
+- Reasoner prompt includes agent profile, post content, and valid options
+- Reasoner response parsed to valid `AgentState`
 
 ## Functional Requirements
 
@@ -96,14 +96,14 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 | FR-3.4 | Guards evaluated in definition order; first match wins |
 | FR-3.5 | Statechart is shared across agents (parameterized via agent fields) |
 
-### FR-4: LLM Oracle Integration
+### FR-4: LLM Reasoner Integration
 
 | Requirement | Description |
 |-------------|-------------|
-| FR-4.1 | Oracle prompt builder constructs prompt from agent profile and post |
-| FR-4.2 | Oracle invoked only for ambiguous transitions (Evaluating → ?) |
-| FR-4.3 | Oracle returns valid `AgentState` from allowed options |
-| FR-4.4 | Fallback to SCROLLING if oracle response invalid |
+| FR-4.1 | Reasoner prompt builder constructs prompt from agent profile and post |
+| FR-4.2 | Reasoner invoked only for ambiguous transitions (Evaluating → ?) |
+| FR-4.3 | Reasoner returns valid `AgentState` from allowed options |
+| FR-4.4 | Fallback to SCROLLING if reasoner response invalid |
 
 ### FR-5: State History
 
@@ -146,8 +146,8 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 
 | Requirement | Target |
 |-------------|--------|
-| Transition evaluation | < 1ms for non-oracle transitions |
-| Oracle call | Uses existing LLM latency (~500ms for Ollama local) |
+| Transition evaluation | < 1ms for non-reasoner transitions |
+| Reasoner call | Uses existing LLM latency (~500ms for Ollama local) |
 | State query | O(n) where n = number of agents |
 | Memory per agent | < 10KB for state history (50 entries) |
 
@@ -163,7 +163,7 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 | Requirement | Target |
 |-------------|--------|
 | Invalid guard | Failed guards return False (safe default per SCXML) |
-| Oracle parse error | Fallback to SCROLLING state |
+| Reasoner parse error | Fallback to SCROLLING state |
 | Missing trigger | `fire()` returns None (no transition) |
 
 ## Scope
@@ -173,7 +173,7 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 - `AgentState` enum with all behavioral states
 - `Transition` dataclass with guard and action support
 - `Statechart` class with fire(), valid_triggers()
-- LLM oracle for ambiguous Evaluating transitions
+- LLM reasoner for ambiguous Evaluating transitions
 - State history tracking with configurable depth
 - Timeout transitions for stuck agent recovery
 - State query functions (agents_in_state, state_distribution)
@@ -203,13 +203,13 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 | State queryable | All agents report valid state | `agent.state in AgentState` |
 | Transitions traced | All state changes logged | `len(agent.state_history) > 0` after activity |
 | Timeout works | Stuck agents recover | Agent at `ticks_in_state=10` transitions to SCROLLING |
-| Oracle invoked | LLM called for ambiguous only | Logs show oracle calls only for Evaluating→? |
+| Reasoner invoked | LLM called for ambiguous only | Logs show reasoner calls only for Evaluating→? |
 | No deadlocks | Simulation completes | 100-agent, 10-round simulation finishes |
 
 ## Assumptions
 
 1. Existing `SocialAgent` class can be extended with new fields
-2. LLM response parsing is reliable enough for oracle use
+2. LLM response parsing is reliable enough for reasoner use
 3. 50-entry state history is sufficient for debugging without memory pressure
 4. Single-threaded simulation loop (no concurrent state access concerns)
 5. Agent thresholds (engagement_threshold, timeout_threshold) can be added to profile
@@ -219,7 +219,7 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 | Risk | Likelihood | Impact | Mitigation |
 |------|------------|--------|------------|
 | Statechart complexity creep | Medium | Medium | Start minimal; add features only when needed |
-| Oracle response parsing fails | Medium | Low | Fallback to SCROLLING; log warning |
+| Reasoner response parsing fails | Medium | Low | Fallback to SCROLLING; log warning |
 | State explosion with substates | Low | Medium | Keep states flat for MVP; refactor later if needed |
 | Memory growth from history | Low | Medium | Configurable depth limit with FIFO pruning |
 | Guard evaluation expensive | Low | Low | Guards are simple lambdas; profile if needed |
@@ -234,5 +234,5 @@ Implement Harel-style statecharts to model agent behavioral states (Idle, Scroll
 | Trigger | Event that can cause a transition (e.g., "sees_post", "timeout") |
 | Guard | Boolean condition that must be true for transition to fire |
 | Action | Side effect executed when transition fires |
-| Oracle | LLM used to decide ambiguous transitions |
+| Reasoner | LLM used to decide ambiguous transitions |
 | Tick | One simulation round; used for timeout counting |

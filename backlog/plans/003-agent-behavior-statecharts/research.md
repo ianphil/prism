@@ -156,4 +156,4 @@ Our custom statechart implementation adopts a pragmatic subset of SCXML semantic
 
 The planned implementation is **substantially conformant** with SCXML semantics for flat state machines. The key gap is guard fail-safe handling, which should be added. Features like hierarchy, parallel regions, and event queues are intentionally deferred — the PRISM use case doesn't require them for MVP, and adding them would increase complexity without clear benefit.
 
-The custom implementation approach (~150-200 lines) remains the right choice: zero external dependencies, direct LLM oracle integration, and full control over semantics. If requirements grow significantly, migration to a library like `sismic` remains an option.
+The custom implementation approach (~150-200 lines) remains the right choice: zero external dependencies, direct LLM reasoner integration, and full control over semantics. If requirements grow significantly, migration to a library like `sismic` remains an option.

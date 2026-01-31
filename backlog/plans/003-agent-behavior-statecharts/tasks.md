@@ -99,88 +99,88 @@ Phase 1 (States + Transitions) ──► Phase 2 (Statechart Engine)
 ## Phase 3: LLM Reasoner
 
 ### Reasoner Construction
-- [ ] T016 [TEST] Write tests for `StatechartReasoner.__init__()`
+- [x] T016 [TEST] Write tests for `StatechartReasoner.__init__()`
   - Accepts OllamaChatClient
   - Stores client reference
-- [ ] T017 [IMPL] Implement `StatechartReasoner.__init__()` in `prism/statechart/reasoner.py`
+- [x] T017 [IMPL] Implement `StatechartReasoner.__init__()` in `prism/statechart/reasoner.py`
 
 ### Reasoner Prompt Building
-- [ ] T018 [TEST] Write tests for reasoner prompt construction
+- [x] T018 [TEST] Write tests for reasoner prompt construction
   - Includes agent name/interests in prompt
   - Includes current state and trigger
   - Includes available options with descriptions
   - Requests JSON response format
-- [ ] T019 [IMPL] Implement `build_reasoner_prompt()` function
+- [x] T019 [IMPL] Implement `build_reasoner_prompt()` function
 
 ### Reasoner Decision
-- [ ] T020 [TEST] Write tests for `StatechartReasoner.decide()` (async)
+- [x] T020 [TEST] Write tests for `StatechartReasoner.decide()` (async)
   - Returns AgentState from options
   - Calls LLM with constructed prompt
   - Parses JSON response correctly
-- [ ] T021 [IMPL] Implement `StatechartReasoner.decide()`
+- [x] T021 [IMPL] Implement `StatechartReasoner.decide()`
 
 ### Reasoner Error Handling
-- [ ] T022 [TEST] Write tests for reasoner parse error handling
+- [x] T022 [TEST] Write tests for reasoner parse error handling
   - JSON parse error returns fallback state
   - Invalid state in response returns fallback
   - Empty options raises ValueError
-- [ ] T023 [IMPL] Implement reasoner error handling
+- [x] T023 [IMPL] Implement reasoner error handling
 
 ## Phase 4: Timeout Transitions
 
 ### Tick Tracking
-- [ ] T024 [TEST] Write tests for `SocialAgent.tick()`
+- [x] T024 [TEST] Write tests for `SocialAgent.tick()`
   - Increments ticks_in_state by 1
   - Starts at 0 for new agents
-- [ ] T025 [IMPL] Add `tick()` method to `SocialAgent`
+- [x] T025 [IMPL] Add `tick()` method to `SocialAgent`
 
 ### Timeout Detection
-- [ ] T026 [TEST] Write tests for `SocialAgent.is_timed_out()`
+- [x] T026 [TEST] Write tests for `SocialAgent.is_timed_out()`
   - Returns False when ticks_in_state <= timeout_threshold
   - Returns True when ticks_in_state > timeout_threshold
-- [ ] T027 [IMPL] Add `is_timed_out()` method to `SocialAgent`
+- [x] T027 [IMPL] Add `is_timed_out()` method to `SocialAgent`
 
 ### Timeout Threshold Configuration
-- [ ] T028 [TEST] Write tests for timeout_threshold parameter
+- [x] T028 [TEST] Write tests for timeout_threshold parameter
   - Default value is 5
   - Can be set at construction
   - Must be > 0
-- [ ] T029 [IMPL] Add `timeout_threshold` parameter to `SocialAgent.__init__()`
+- [x] T029 [IMPL] Add `timeout_threshold` parameter to `SocialAgent.__init__()`
 
 ## Phase 5: SocialAgent Integration
 
 ### State Field
-- [ ] T030 [TEST] Write tests for `SocialAgent.state` field
+- [x] T030 [TEST] Write tests for `SocialAgent.state` field
   - Default value is AgentState.IDLE
   - Can be set to any valid AgentState
-- [ ] T031 [IMPL] Add `state` field to `SocialAgent`
+- [x] T031 [IMPL] Add `state` field to `SocialAgent`
 
 ### State History
-- [ ] T032 [TEST] Write tests for `SocialAgent.state_history` field
+- [x] T032 [TEST] Write tests for `SocialAgent.state_history` field
   - Initialized as empty list
   - Contains StateTransition objects after transitions
-- [ ] T033 [IMPL] Add `state_history` field to `SocialAgent`
+- [x] T033 [IMPL] Add `state_history` field to `SocialAgent`
 
 ### Transition Method
-- [ ] T034 [TEST] Write tests for `SocialAgent.transition_to()`
+- [x] T034 [TEST] Write tests for `SocialAgent.transition_to()`
   - Updates state to new value
   - Appends StateTransition to history
   - Resets ticks_in_state to 0
   - No-op for self-transitions (same state)
-- [ ] T035 [IMPL] Implement `transition_to()` method
+- [x] T035 [IMPL] Implement `transition_to()` method
 
 ### History Depth Limiting
-- [ ] T036 [TEST] Write tests for history pruning
+- [x] T036 [TEST] Write tests for history pruning
   - History does not exceed max_history_depth
   - Oldest entries removed first (FIFO)
-- [ ] T037 [IMPL] Implement history pruning in `transition_to()`
+- [x] T037 [IMPL] Implement history pruning in `transition_to()`
 
 ### Engagement Threshold
-- [ ] T038 [TEST] Write tests for `engagement_threshold` parameter
+- [x] T038 [TEST] Write tests for `engagement_threshold` parameter
   - Default value is 0.5
   - Can be set at construction
   - Used by `should_engage()` guard helper
-- [ ] T039 [IMPL] Add `engagement_threshold` and `should_engage()` to `SocialAgent`
+- [x] T039 [IMPL] Add `engagement_threshold` and `should_engage()` to `SocialAgent`
 
 ## Phase 6: State Queries and Validation
 

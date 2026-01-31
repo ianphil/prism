@@ -84,7 +84,7 @@ def build_reasoner_prompt(
 
     prompt = f"""You are {agent_name}, a social media user.
 
-Your interests: {', '.join(agent_interests)}
+Your interests: {", ".join(agent_interests)}
 Your personality: {agent_personality}
 
 You are in the "{current_state.value}" state and received "{trigger}" event.

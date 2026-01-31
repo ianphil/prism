@@ -48,43 +48,43 @@ Core data models for simulation state management.
 
 ### Configuration
 
-- [ ] T001 [TEST] Write test for SimulationConfig with default values
-- [ ] T002 [IMPL] Implement SimulationConfig Pydantic model with defaults
-- [ ] T003 [TEST] Write test for SimulationConfig validation (max_rounds >= 1)
-- [ ] T004 [IMPL] Implement validation for max_rounds and checkpoint_frequency
-- [ ] T005 [TEST] Write test for Path field parsing from strings
-- [ ] T006 [IMPL] Implement Path field validator
+- [x] T001 [TEST] Write test for SimulationConfig with default values
+- [x] T002 [IMPL] Implement SimulationConfig Pydantic model with defaults
+- [x] T003 [TEST] Write test for SimulationConfig validation (max_rounds >= 1)
+- [x] T004 [IMPL] Implement validation for max_rounds and checkpoint_frequency
+- [x] T005 [TEST] Write test for Path field parsing from strings
+- [x] T006 [IMPL] Implement Path field validator
 
 ### Engagement Metrics
 
-- [ ] T007 [TEST] Write test for EngagementMetrics with default zero values
-- [ ] T008 [IMPL] Implement EngagementMetrics dataclass
-- [ ] T009 [TEST] Write test for EngagementMetrics increment methods
-- [ ] T010 [IMPL] Implement increment_like, increment_reshare, etc.
+- [x] T007 [TEST] Write test for EngagementMetrics with default zero values
+- [x] T008 [IMPL] Implement EngagementMetrics dataclass
+- [x] T009 [TEST] Write test for EngagementMetrics increment methods
+- [x] T010 [IMPL] Implement increment_like, increment_reshare, etc.
 
 ### Simulation State
 
-- [ ] T011 [TEST] Write test for SimulationState with required fields
-- [ ] T012 [IMPL] Implement SimulationState with posts, agents, statechart
-- [ ] T013 [TEST] Write test for SimulationState validates non-empty agents
-- [ ] T014 [IMPL] Implement agent list validation
-- [ ] T015 [TEST] Write test for get_state_distribution returns dict
-- [ ] T016 [IMPL] Implement get_state_distribution delegating to queries
-- [ ] T017 [TEST] Write test for add_post adds to posts and increments metrics
-- [ ] T018 [IMPL] Implement add_post method
-- [ ] T019 [TEST] Write test for advance_round increments round_number
-- [ ] T020 [IMPL] Implement advance_round method
+- [x] T011 [TEST] Write test for SimulationState with required fields
+- [x] T012 [IMPL] Implement SimulationState with posts, agents, statechart
+- [x] T013 [TEST] Write test for SimulationState validates non-empty agents
+- [x] T014 [IMPL] Implement agent list validation
+- [x] T015 [TEST] Write test for get_state_distribution returns dict
+- [x] T016 [IMPL] Implement get_state_distribution delegating to queries
+- [x] T017 [TEST] Write test for add_post adds to posts and increments metrics
+- [x] T018 [IMPL] Implement add_post method
+- [x] T019 [TEST] Write test for advance_round increments round_number
+- [x] T020 [IMPL] Implement advance_round method
 
 ### Result Types
 
-- [ ] T021 [TEST] Write test for ActionResult dataclass
-- [ ] T022 [IMPL] Implement ActionResult
-- [ ] T023 [TEST] Write test for DecisionResult dataclass
-- [ ] T024 [IMPL] Implement DecisionResult
-- [ ] T025 [TEST] Write test for RoundResult dataclass
-- [ ] T026 [IMPL] Implement RoundResult
-- [ ] T027 [TEST] Write test for SimulationResult dataclass
-- [ ] T028 [IMPL] Implement SimulationResult
+- [x] T021 [TEST] Write test for ActionResult dataclass
+- [x] T022 [IMPL] Implement ActionResult
+- [x] T023 [TEST] Write test for DecisionResult dataclass
+- [x] T024 [IMPL] Implement DecisionResult
+- [x] T025 [TEST] Write test for RoundResult dataclass
+- [x] T026 [IMPL] Implement RoundResult
+- [x] T027 [TEST] Write test for SimulationResult dataclass
+- [x] T028 [IMPL] Implement SimulationResult
 
 ---
 
@@ -94,43 +94,43 @@ Trigger determination and default statechart definition.
 
 ### Trigger Determination
 
-- [ ] T029 [TEST] Write test for determine_trigger returns string
-- [ ] T030 [IMPL] Implement determine_trigger function signature
-- [ ] T031 [TEST] Write test for IDLE → "start_browsing"
-- [ ] T032 [IMPL] Implement IDLE trigger case
-- [ ] T033 [TEST] Write test for SCROLLING + feed → "sees_post"
-- [ ] T034 [IMPL] Implement SCROLLING with feed trigger case
-- [ ] T035 [TEST] Write test for SCROLLING + empty feed → "feed_empty"
-- [ ] T036 [IMPL] Implement SCROLLING without feed trigger case
-- [ ] T037 [TEST] Write test for EVALUATING → "decides"
-- [ ] T038 [IMPL] Implement EVALUATING trigger case
-- [ ] T039 [TEST] Write test for COMPOSING → "finishes_composing"
-- [ ] T040 [IMPL] Implement COMPOSING trigger case
-- [ ] T041 [TEST] Write test for ENGAGING_* → "finishes_engaging"
-- [ ] T042 [IMPL] Implement ENGAGING states trigger case
-- [ ] T043 [TEST] Write test for RESTING → "rested"
-- [ ] T044 [IMPL] Implement RESTING trigger case
+- [x] T029 [TEST] Write test for determine_trigger returns string
+- [x] T030 [IMPL] Implement determine_trigger function signature
+- [x] T031 [TEST] Write test for IDLE → "start_browsing"
+- [x] T032 [IMPL] Implement IDLE trigger case
+- [x] T033 [TEST] Write test for SCROLLING + feed → "sees_post"
+- [x] T034 [IMPL] Implement SCROLLING with feed trigger case
+- [x] T035 [TEST] Write test for SCROLLING + empty feed → "feed_empty"
+- [x] T036 [IMPL] Implement SCROLLING without feed trigger case
+- [x] T037 [TEST] Write test for EVALUATING → "decides"
+- [x] T038 [IMPL] Implement EVALUATING trigger case
+- [x] T039 [TEST] Write test for COMPOSING → "finishes_composing"
+- [x] T040 [IMPL] Implement COMPOSING trigger case
+- [x] T041 [TEST] Write test for ENGAGING_* → "finishes_engaging"
+- [x] T042 [IMPL] Implement ENGAGING states trigger case
+- [x] T043 [TEST] Write test for RESTING → "rested"
+- [x] T044 [IMPL] Implement RESTING trigger case
 
 ### Statechart Factory
 
-- [ ] T045 [TEST] Write test for create_social_media_statechart returns Statechart
-- [ ] T046 [IMPL] Implement factory function signature
-- [ ] T047 [TEST] Write test for statechart has all AgentState values
-- [ ] T048 [IMPL] Add all states to statechart
-- [ ] T049 [TEST] Write test for statechart has initial state IDLE
-- [ ] T050 [IMPL] Set initial state to IDLE
-- [ ] T051 [TEST] Write test for transition IDLE → SCROLLING on "start_browsing"
-- [ ] T052 [IMPL] Add start_browsing transition
-- [ ] T053 [TEST] Write test for transition SCROLLING → EVALUATING on "sees_post"
-- [ ] T054 [IMPL] Add sees_post transition
-- [ ] T055 [TEST] Write test for transition SCROLLING → RESTING on "feed_empty"
-- [ ] T056 [IMPL] Add feed_empty transition
-- [ ] T057 [TEST] Write test for transitions from EVALUATING on "decides"
-- [ ] T058 [IMPL] Add decides transitions to COMPOSING, ENGAGING_*, SCROLLING
-- [ ] T059 [TEST] Write test for finishing transitions back to SCROLLING
-- [ ] T060 [IMPL] Add finishes_composing and finishes_engaging transitions
-- [ ] T061 [TEST] Write test for timeout transition from any state
-- [ ] T062 [IMPL] Add timeout transitions
+- [x] T045 [TEST] Write test for create_social_media_statechart returns Statechart
+- [x] T046 [IMPL] Implement factory function signature
+- [x] T047 [TEST] Write test for statechart has all AgentState values
+- [x] T048 [IMPL] Add all states to statechart
+- [x] T049 [TEST] Write test for statechart has initial state IDLE
+- [x] T050 [IMPL] Set initial state to IDLE
+- [x] T051 [TEST] Write test for transition IDLE → SCROLLING on "start_browsing"
+- [x] T052 [IMPL] Add start_browsing transition
+- [x] T053 [TEST] Write test for transition SCROLLING → EVALUATING on "sees_post"
+- [x] T054 [IMPL] Add sees_post transition
+- [x] T055 [TEST] Write test for transition SCROLLING → RESTING on "feed_empty"
+- [x] T056 [IMPL] Add feed_empty transition
+- [x] T057 [TEST] Write test for transitions from EVALUATING on "decides"
+- [x] T058 [IMPL] Add decides transitions to COMPOSING, ENGAGING_*, SCROLLING
+- [x] T059 [TEST] Write test for finishing transitions back to SCROLLING
+- [x] T060 [IMPL] Add finishes_composing and finishes_engaging transitions
+- [x] T061 [TEST] Write test for timeout transition from any state
+- [x] T062 [IMPL] Add timeout transitions
 
 ---
 

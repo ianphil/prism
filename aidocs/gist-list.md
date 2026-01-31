@@ -49,3 +49,7 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 002 Phase 4 Implementation** (2026-01-30)
   - Gist: https://gist.github.com/ianphil/6d08caf7c2e0021fbe12b7cbb839660b
   - Preview: https://gisthost.github.io/?6d08caf7c2e0021fbe12b7cbb839660b/index.html
+
+- **Feature 003 - Merge to main** (2026-01-30)
+  - Gist: https://gist.github.com/ianphil/13ad5ba3c36eebb31db2d780a64d3ca7
+  - Preview: https://gisthost.github.io/?13ad5ba3c36eebb31db2d780a64d3ca7/index.html

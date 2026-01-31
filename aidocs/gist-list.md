@@ -53,3 +53,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Feature 003 - Merge to main** (2026-01-30)
   - Gist: https://gist.github.com/ianphil/13ad5ba3c36eebb31db2d780a64d3ca7
   - Preview: https://gisthost.github.io/?13ad5ba3c36eebb31db2d780a64d3ca7/index.html
+- **Feature 004 planning session** (2026-01-30)
+  - Gist: https://gist.github.com/ianphil/c31bc18edee7810dd6c7b8e5e726ccac
+  - Preview: https://gisthost.github.io/?c31bc18edee7810dd6c7b8e5e726ccac/index.html

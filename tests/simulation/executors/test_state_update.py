@@ -50,7 +50,7 @@ class TestStateUpdateExecutor:
 
     @pytest.mark.asyncio
     async def test_handles_like_action(self) -> None:
-        """T081: executor should handle like action - increment post.likes and metrics."""
+        """T081: executor should handle like action - increment metrics."""
         # Arrange
         post = create_test_post("p1")
         state = create_test_state([post])

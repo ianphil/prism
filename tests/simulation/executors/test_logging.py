@@ -2,7 +2,6 @@
 
 import json
 import logging
-from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -37,7 +36,9 @@ class TestLoggingExecutor:
     """Tests for LoggingExecutor."""
 
     @pytest.mark.asyncio
-    async def test_execute_logs_json_entry(self, caplog: pytest.LogCaptureFixture) -> None:
+    async def test_execute_logs_json_entry(
+        self, caplog: pytest.LogCaptureFixture
+    ) -> None:
         """T091: executor should log JSON entry."""
         # Arrange
         agent = create_mock_agent()
@@ -67,7 +68,7 @@ class TestLoggingExecutor:
     async def test_log_entry_contains_required_fields(
         self, caplog: pytest.LogCaptureFixture
     ) -> None:
-        """T093: log entry should contain timestamp, round, agent_id, trigger, states, action."""
+        """T093: log entry should contain required fields."""
         # Arrange
         agent = create_mock_agent()
         state = create_test_state()

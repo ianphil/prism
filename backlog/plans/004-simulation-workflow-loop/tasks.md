@@ -243,32 +243,32 @@ End-to-end integration and entry point.
 
 ### Config Integration
 
-- [ ] T133 [TEST] Write test for configs/default.yaml has simulation section
-- [ ] T134 [IMPL] Add simulation section to default.yaml
-- [ ] T135 [TEST] Write test for load_config reads simulation section
-- [ ] T136 [IMPL] Implement config loading function
+- [x] T133 [TEST] Write test for configs/default.yaml has simulation section
+- [x] T134 [IMPL] Add simulation section to default.yaml
+- [x] T135 [TEST] Write test for load_config reads simulation section
+- [x] T136 [IMPL] Implement config loading function
 
 ### Module Exports
 
-- [ ] T137 [TEST] Write test for prism/simulation/__init__.py exports
-- [ ] T138 [IMPL] Create __init__.py with public exports
-- [ ] T139 [TEST] Write test for prism/simulation/executors/__init__.py exports
-- [ ] T140 [IMPL] Create executors/__init__.py
+- [x] T137 [TEST] Write test for prism/simulation/__init__.py exports
+- [x] T138 [IMPL] Create __init__.py with public exports
+- [x] T139 [TEST] Write test for prism/simulation/executors/__init__.py exports
+- [x] T140 [IMPL] Create executors/__init__.py
 
 ### Integration Test
 
-- [ ] T141 [TEST] Write integration test: 3 agents × 2 rounds completes
-- [ ] T142 [IMPL] Wire up all components in controller
-- [ ] T143 [TEST] Write integration test: checkpoint/resume produces same state
-- [ ] T144 [IMPL] Verify checkpoint serialization round-trips correctly
-- [ ] T145 [TEST] Write integration test: state distribution logged each round
-- [ ] T146 [IMPL] Verify logging executor output
+- [x] T141 [TEST] Write integration test: 3 agents × 2 rounds completes
+- [x] T142 [IMPL] Wire up all components in controller
+- [x] T143 [TEST] Write integration test: checkpoint/resume produces same state
+- [x] T144 [IMPL] Verify checkpoint serialization round-trips correctly
+- [x] T145 [TEST] Write integration test: state distribution logged each round
+- [x] T146 [IMPL] Verify logging executor output
 
 ### Entry Point
 
-- [ ] T147 [TEST] Write test for main.py has run_simulation function
-- [ ] T148 [IMPL] Add run_simulation to main.py
-- [ ] T149 [SPEC] Run spec tests for 004-simulation-workflow-loop
+- [x] T147 [TEST] Write test for main.py has run_simulation function
+- [x] T148 [IMPL] Add run_simulation to main.py
+- [x] T149 [SPEC] Run spec tests for 004-simulation-workflow-loop
 
 ---
 
@@ -289,8 +289,8 @@ End-to-end integration and entry point.
 
 After all implementation phases are complete:
 
-- [ ] `uv run ruff check .` passes
-- [ ] `uv run ruff format --check .` passes
-- [ ] `uv run pytest tests/simulation/` passes
-- [ ] Run spec tests with `/spec-tests` skill using `specs/tests/004-simulation-workflow-loop.md`
-- [ ] All spec tests pass → feature complete
+- [x] `uv run ruff check .` passes
+- [x] `uv run ruff format --check .` passes
+- [x] `uv run pytest tests/simulation/` passes (187 tests)
+- [x] Run spec tests with `/spec-tests` skill using `specs/tests/004-simulation-workflow-loop.md`
+- [x] All spec tests pass (21/21) → feature complete

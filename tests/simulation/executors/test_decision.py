@@ -8,7 +8,7 @@ import pytest
 
 from prism.rag.models import Post
 from prism.simulation.executors.decision import AgentDecisionExecutor
-from prism.simulation.results import ActionResult, DecisionResult
+from prism.simulation.results import DecisionResult
 from prism.simulation.state import SimulationState
 from prism.simulation.statechart_factory import create_social_media_statechart
 from prism.statechart.states import AgentState
@@ -83,7 +83,8 @@ class TestAgentDecisionExecutor:
         executor = AgentDecisionExecutor()
 
         # Act
-        with patch.object(statechart, "fire", return_value=AgentState.SCROLLING) as mock_fire:
+        fire_return = AgentState.SCROLLING
+        with patch.object(statechart, "fire", return_value=fire_return) as mock_fire:
             state.statechart = statechart
             await executor.execute(agent=agent, state=state, feed=feed)
 
@@ -101,9 +102,6 @@ class TestAgentDecisionExecutor:
         # Arrange - EVALUATING + decides has multiple possible targets
         agent = create_mock_agent(AgentState.EVALUATING)
         state = create_test_state([agent])
-        feed = [create_test_post()]
-
-        executor = AgentDecisionExecutor()
 
         # The statechart has multiple transitions from EVALUATING on "decides"
         targets = state.statechart.valid_targets(AgentState.EVALUATING, "decides")
@@ -113,8 +111,8 @@ class TestAgentDecisionExecutor:
 
     @pytest.mark.asyncio
     async def test_execute_calls_reasoner_when_ambiguous(self) -> None:
-        """T073: execute should call reasoner.decide when fire returns None and multiple targets exist."""
-        # Arrange - Create a statechart where fire() returns None but valid_targets has multiple
+        """T073: execute should call reasoner when ambiguous targets exist."""
+        # Arrange - Statechart where fire() returns None but valid_targets has multiple
         from prism.statechart.statechart import Statechart
         from prism.statechart.transitions import Transition
 
@@ -168,7 +166,7 @@ class TestAgentDecisionExecutor:
         # Act
         result = await executor.execute(agent=agent, state=state, feed=feed)
 
-        # Assert - reasoner was called because fire returned None and multiple targets exist
+        # Assert - reasoner called since fire returned None + multiple targets
         mock_reasoner.decide.assert_called_once()
         assert result.reasoner_used is True
         assert result.to_state == AgentState.ENGAGING_LIKE

@@ -608,7 +608,7 @@ class TestSocialAgentTimestamps:
 
     def test_transition_to_records_utc_timestamp(self) -> None:
         """transition_to() should record UTC timestamp."""
-        from datetime import datetime
+        from datetime import datetime, timezone
 
         from prism.statechart.states import AgentState
 
@@ -621,9 +621,9 @@ class TestSocialAgentTimestamps:
             client=mock_client,
         )
 
-        before = datetime.utcnow()
+        before = datetime.now(timezone.utc)
         agent.transition_to(AgentState.SCROLLING, trigger="start")
-        after = datetime.utcnow()
+        after = datetime.now(timezone.utc)
 
         ts = agent.state_history[0].timestamp
         assert before <= ts <= after

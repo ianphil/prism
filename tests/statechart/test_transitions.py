@@ -1,7 +1,7 @@
 """Tests for Transition and StateTransition dataclasses (T003, T005)."""
 
 from dataclasses import FrozenInstanceError, fields, is_dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import get_type_hints
 
 import pytest
@@ -198,7 +198,7 @@ class TestStateTransition:
         assert "context" in field_names
 
         # Context should default to None
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         st = StateTransition(
             from_state=AgentState.IDLE,
             to_state=AgentState.SCROLLING,
@@ -211,7 +211,7 @@ class TestStateTransition:
         """StateTransition should accept a dict as context."""
         from prism.statechart.transitions import StateTransition
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         context = {"post_id": "123", "relevance": 0.8}
         st = StateTransition(
             from_state=AgentState.SCROLLING,
@@ -227,7 +227,7 @@ class TestStateTransition:
         """StateTransition should be creatable with all fields specified."""
         from prism.statechart.transitions import StateTransition
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         context = {"reason": "interesting content"}
 
         st = StateTransition(
@@ -248,7 +248,7 @@ class TestStateTransition:
         """StateTransition timestamp should be a datetime object."""
         from prism.statechart.transitions import StateTransition
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         st = StateTransition(
             from_state=AgentState.IDLE,
             to_state=AgentState.SCROLLING,

@@ -2,7 +2,7 @@
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 from agent_framework.ollama import OllamaChatClient
 
@@ -199,7 +199,7 @@ class SocialAgent:
             from_state=self.state,
             to_state=new_state,
             trigger=trigger,
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             context=context,
         )
         self.state_history.append(transition)

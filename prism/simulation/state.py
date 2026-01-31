@@ -62,6 +62,7 @@ class SimulationState(BaseModel):
         round_number: Current simulation round (0-indexed).
         metrics: Cumulative engagement metrics.
         statechart: Statechart definition for agent behavior.
+        reasoner: Optional LLM reasoner for ambiguous state transitions.
     """
 
     model_config = {"arbitrary_types_allowed": True}
@@ -71,6 +72,7 @@ class SimulationState(BaseModel):
     round_number: int = Field(default=0)
     metrics: EngagementMetrics = Field(default_factory=EngagementMetrics)
     statechart: Statechart
+    reasoner: Any = None
 
     @field_validator("agents")
     @classmethod
@@ -100,6 +102,20 @@ class SimulationState(BaseModel):
             Dictionary mapping AgentState to count of agents in that state.
         """
         return state_distribution(self.agents)
+
+    def get_post_by_id(self, post_id: str) -> Post | None:
+        """Find a post by its ID.
+
+        Args:
+            post_id: The ID of the post to find.
+
+        Returns:
+            The Post if found, None otherwise.
+        """
+        for post in self.posts:
+            if post.id == post_id:
+                return post
+        return None
 
     def add_post(self, post: Post) -> None:
         """Add a post to the simulation and increment posts_created.

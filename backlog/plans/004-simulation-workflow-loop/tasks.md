@@ -140,56 +140,56 @@ Pipeline executors for agent rounds.
 
 ### Feed Retrieval Executor
 
-- [ ] T063 [TEST] Write test for FeedRetrievalExecutor.execute returns list[Post]
-- [ ] T064 [IMPL] Implement FeedRetrievalExecutor.execute
-- [ ] T065 [TEST] Write test for executor uses agent.interests for retrieval
-- [ ] T066 [IMPL] Wire up FeedRetriever.get_feed with agent interests
+- [x] T063 [TEST] Write test for FeedRetrievalExecutor.execute returns list[Post]
+- [x] T064 [IMPL] Implement FeedRetrievalExecutor.execute
+- [x] T065 [TEST] Write test for executor uses agent.interests for retrieval
+- [x] T066 [IMPL] Wire up FeedRetriever.get_feed with agent interests
 
 ### Decision Executor
 
-- [ ] T067 [TEST] Write test for AgentDecisionExecutor.execute calls agent.tick
-- [ ] T068 [IMPL] Implement tick call at start of execute
-- [ ] T069 [TEST] Write test for execute calls statechart.fire with correct args
-- [ ] T070 [IMPL] Implement statechart.fire call
-- [ ] T071 [TEST] Write test for execute detects multiple valid targets
-- [ ] T072 [IMPL] Implement valid_targets check for ambiguous case
-- [ ] T073 [TEST] Write test for execute calls reasoner.decide when ambiguous
-- [ ] T074 [IMPL] Implement reasoner invocation
-- [ ] T075 [TEST] Write test for execute calls agent.transition_to
-- [ ] T076 [IMPL] Implement transition_to call
-- [ ] T077 [TEST] Write test for execute returns DecisionResult
-- [ ] T078 [IMPL] Implement DecisionResult construction and return
-- [ ] T079 [TEST] Write test for action execution based on new state
-- [ ] T080 [IMPL] Implement _execute_action method
+- [x] T067 [TEST] Write test for AgentDecisionExecutor.execute calls agent.tick
+- [x] T068 [IMPL] Implement tick call at start of execute
+- [x] T069 [TEST] Write test for execute calls statechart.fire with correct args
+- [x] T070 [IMPL] Implement statechart.fire call
+- [x] T071 [TEST] Write test for execute detects multiple valid targets
+- [x] T072 [IMPL] Implement valid_targets check for ambiguous case
+- [x] T073 [TEST] Write test for execute calls reasoner.decide when ambiguous
+- [x] T074 [IMPL] Implement reasoner invocation
+- [x] T075 [TEST] Write test for execute calls agent.transition_to
+- [x] T076 [IMPL] Implement transition_to call
+- [x] T077 [TEST] Write test for execute returns DecisionResult
+- [x] T078 [IMPL] Implement DecisionResult construction and return
+- [x] T079 [TEST] Write test for action execution based on new state
+- [x] T080 [IMPL] Implement _execute_action method
 
 ### State Update Executor
 
-- [ ] T081 [TEST] Write test for StateUpdateExecutor handles like action
-- [ ] T082 [IMPL] Implement like handling (increment post.likes and metrics)
-- [ ] T083 [TEST] Write test for executor handles reply action
-- [ ] T084 [IMPL] Implement reply handling (increment + add post)
-- [ ] T085 [TEST] Write test for executor handles reshare action
-- [ ] T086 [IMPL] Implement reshare handling
-- [ ] T087 [TEST] Write test for executor handles compose action
-- [ ] T088 [IMPL] Implement compose handling (add new post)
-- [ ] T089 [TEST] Write test for executor handles scroll action (no changes)
-- [ ] T090 [IMPL] Implement scroll handling (no-op)
+- [x] T081 [TEST] Write test for StateUpdateExecutor handles like action
+- [x] T082 [IMPL] Implement like handling (increment post.likes and metrics)
+- [x] T083 [TEST] Write test for executor handles reply action
+- [x] T084 [IMPL] Implement reply handling (increment + add post)
+- [x] T085 [TEST] Write test for executor handles reshare action
+- [x] T086 [IMPL] Implement reshare handling
+- [x] T087 [TEST] Write test for executor handles compose action
+- [x] T088 [IMPL] Implement compose handling (add new post)
+- [x] T089 [TEST] Write test for executor handles scroll action (no changes)
+- [x] T090 [IMPL] Implement scroll handling (no-op)
 
 ### Logging Executor
 
-- [ ] T091 [TEST] Write test for LoggingExecutor.execute logs JSON entry
-- [ ] T092 [IMPL] Implement structured JSON logging
-- [ ] T093 [TEST] Write test for log entry contains required fields
-- [ ] T094 [IMPL] Include timestamp, round, agent_id, trigger, states, action
-- [ ] T095 [TEST] Write test for executor writes to file when configured
-- [ ] T096 [IMPL] Implement file writing with flush
+- [x] T091 [TEST] Write test for LoggingExecutor.execute logs JSON entry
+- [x] T092 [IMPL] Implement structured JSON logging
+- [x] T093 [TEST] Write test for log entry contains required fields
+- [x] T094 [IMPL] Include timestamp, round, agent_id, trigger, states, action
+- [x] T095 [TEST] Write test for executor writes to file when configured
+- [x] T096 [IMPL] Implement file writing with flush
 
 ### Agent Round Executor
 
-- [ ] T097 [TEST] Write test for AgentRoundExecutor coordinates pipeline
-- [ ] T098 [IMPL] Implement AgentRoundExecutor.execute calling all executors
-- [ ] T099 [TEST] Write test for executor returns DecisionResult
-- [ ] T100 [IMPL] Wire up return value from decision executor
+- [x] T097 [TEST] Write test for AgentRoundExecutor coordinates pipeline
+- [x] T098 [IMPL] Implement AgentRoundExecutor.execute calling all executors
+- [x] T099 [TEST] Write test for executor returns DecisionResult
+- [x] T100 [IMPL] Wire up return value from decision executor
 
 ---
 

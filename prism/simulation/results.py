@@ -36,6 +36,7 @@ class DecisionResult:
         from_state: The agent's state before transition.
         to_state: The agent's state after transition.
         action: Optional action result if an action was taken.
+        reasoner_used: Whether the LLM reasoner was invoked for this decision.
     """
 
     agent_id: str
@@ -43,6 +44,7 @@ class DecisionResult:
     from_state: AgentState
     to_state: AgentState
     action: ActionResult | None = None
+    reasoner_used: bool = False
 
 
 @dataclass

@@ -41,13 +41,41 @@ Load all planning artifacts and context for feature {{feature_number}}.
 
 ## Output Summary
 
-```
-Feature: {NNN}-{slug}
-Branch: feature/{NNN}-{slug} (current: {actual-branch})
-Status: Phase {N} - {phase-name} ({completed}/{total} tasks)
-Next task: T{NNN} - {task-description}
+Present a concise status report in this format:
 
-Ready to continue work on this feature.
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Feature {NNN}-{slug}                                        │
+├─────────────────────────────────────────────────────────────┤
+│ Branch: feature/{NNN}-{slug} ✓ (or ✗ if not on branch)     │
+│ Progress: {completed}/{total} tasks ({percent}%)            │
+├─────────────────────────────────────────────────────────────┤
+│ Phase Progress:                                             │
+│   Phase 1: {name} ████████████ {done}/{total} ✓            │
+│   Phase 2: {name} ██████░░░░░░ {done}/{total} ← current    │
+│   Phase 3: {name} ░░░░░░░░░░░░ {done}/{total}              │
+│   ...                                                       │
+├─────────────────────────────────────────────────────────────┤
+│ Recently Completed:                                         │
+│   • T{N} - {description}                                    │
+│   • T{N} - {description}                                    │
+├─────────────────────────────────────────────────────────────┤
+│ Next Up:                                                    │
+│   → T{N} - {description}  ← START HERE                      │
+│     T{N} - {description}                                    │
+│     T{N} - {description}                                    │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-**Important:** Do NOT provide a detailed summary of the documents - they are already loaded into context. Confirm what was loaded and show the status summary only.
+### Report Guidelines
+
+1. **Phase Progress**: Show all phases with a visual progress bar (█ for done, ░ for remaining)
+2. **Recently Completed**: Show last 2-3 completed tasks from the current phase
+3. **Next Up**: Show next 3 uncompleted tasks, marking the first with "← START HERE"
+4. **Keep it scannable**: Use consistent formatting, avoid prose
+
+### Progress Bar Calculation
+
+For each phase, calculate: `done / total * 12` filled blocks (█), remainder as empty (░)
+
+**Important:** Do NOT provide a detailed summary of the documents - they are already loaded into context. The report replaces verbose explanations.

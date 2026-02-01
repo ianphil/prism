@@ -1,6 +1,6 @@
 llm:
   provider: ollama                # LLM backend provider (currently only "ollama" supported)
-  host: "http://localhost:11434"  # Ollama server URL
+  host: "http://192.168.68.69:11434"  # Ollama server URL
   model_id: mistral               # Model to use (e.g., mistral, llama2, qwen2.5)
   temperature: 0.7                # Sampling randomness (0.0=deterministic, 2.0=very random)
   max_tokens: 512                 # Maximum tokens in LLM response
@@ -13,3 +13,11 @@ rag:
   persist_directory: null         # Storage path (null=in-memory, path=persistent)
   feed_size: 5                    # Number of posts per agent feed (1-20)
   mode: preference                # Retrieval mode ("preference" or "random")
+
+simulation:
+  max_rounds: 50                  # Number of rounds to execute (1-10000)
+  checkpoint_frequency: 1         # Save checkpoint every N rounds (1 = every round)
+  checkpoint_dir: null            # Directory for checkpoints (null = no checkpoints)
+  reasoner_enabled: true          # Use LLM reasoner for ambiguous state transitions
+  log_decisions: true             # Log decisions to structured JSON
+  log_file: null                  # Path for decision log file (null = no file output)

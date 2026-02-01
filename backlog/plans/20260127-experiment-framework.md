@@ -5,6 +5,7 @@ priority: medium
 created: 2026-01-27
 updated: 2026-01-31
 depends_on: ["004-simulation-workflow-loop", "20260127-x-algorithm-ranking.md", "20260127-observability-metrics.md"]
+supports_studies: ["study-network-position-virality.md"]
 ---
 
 # Experiment Framework and CLI
@@ -112,6 +113,167 @@ Track network properties for experiment analysis:
 - **Average path length**: Degrees of separation
 - **Degree distribution**: In-degree, out-degree histograms
 - **Assortativity**: Homophily by agent attributes
+- **Betweenness centrality**: Per-node bridge score (for agent classification)
+- **Community membership**: Which community each agent belongs to
+
+### Agent Position Classification
+
+For Study 1 (network-position-virality), agents must be classified by network position and follower count.
+
+#### Position Classification (Betweenness Centrality)
+
+```python
+import networkx as nx
+import numpy as np
+
+def classify_agents_by_position(
+    graph: nx.DiGraph,
+    bridge_percentile: float = 90,
+    peripheral_percentile: float = 50
+) -> dict[str, str]:
+    """Classify agents as bridge, peripheral, or middle."""
+    betweenness = nx.betweenness_centrality(graph, normalized=True)
+
+    values = list(betweenness.values())
+    bridge_threshold = np.percentile(values, bridge_percentile)
+    peripheral_threshold = np.percentile(values, peripheral_percentile)
+
+    classification = {}
+    for agent_id, score in betweenness.items():
+        if score >= bridge_threshold:
+            classification[agent_id] = "bridge"
+        elif score <= peripheral_threshold:
+            classification[agent_id] = "peripheral"
+        else:
+            classification[agent_id] = "middle"
+
+    return classification
+```
+
+#### Size Classification (Follower Count)
+
+```python
+def classify_agents_by_size(
+    graph: nx.DiGraph,
+    small_threshold: int = 100,
+    large_threshold: int = 1000
+) -> dict[str, str]:
+    """Classify agents by follower count (in-degree)."""
+    follower_counts = dict(graph.in_degree())
+
+    classification = {}
+    for agent_id, followers in follower_counts.items():
+        if followers <= small_threshold:
+            classification[agent_id] = "small"
+        elif followers >= large_threshold:
+            classification[agent_id] = "large"
+        else:
+            classification[agent_id] = "medium"
+
+    return classification
+```
+
+#### Agent Selection for Experiments
+
+```python
+def select_agents_for_condition(
+    graph: nx.DiGraph,
+    size: str,  # "small" | "large"
+    position: str,  # "bridge" | "peripheral"
+    n: int = 30
+) -> list[str]:
+    """Select n agents matching size × position criteria."""
+    size_class = classify_agents_by_size(graph)
+    position_class = classify_agents_by_position(graph)
+
+    eligible = [
+        agent_id for agent_id in graph.nodes()
+        if size_class[agent_id] == size and position_class[agent_id] == position
+    ]
+
+    if len(eligible) < n:
+        raise ValueError(f"Only {len(eligible)} agents match {size}_{position}, need {n}")
+
+    return random.sample(eligible, n)
+```
+
+### Seed Post Injection
+
+Experiments require seeding the simulation with a specific post from a specific author.
+
+```python
+@dataclass
+class SeedPostConfig:
+    text: str
+    author_id: str  # Must be valid agent in network
+    has_media: bool = False
+    media_description: Optional[str] = None
+    inject_at_round: int = 0  # Usually round 0
+
+def inject_seed_post(
+    state: SimulationState,
+    config: SeedPostConfig
+) -> Post:
+    """Inject seed post into simulation at specified round."""
+    post = Post(
+        id=generate_post_id(),
+        author_id=config.author_id,
+        text=config.text,
+        has_media=config.has_media,
+        media_description=config.media_description,
+        timestamp=state.current_round,
+    )
+
+    # Add to post store so it appears in feeds
+    state.post_store.add(post)
+
+    # Track as seed for cascade measurement
+    state.seed_post_id = post.id
+
+    return post
+```
+
+#### Experiment Config with Seed Post
+
+```yaml
+experiment:
+  name: "network_position_virality_v1"
+  replications: 30
+
+  network:
+    topology: "stochastic_block"
+    stochastic_block:
+      communities: 5
+      agents_per_community: 100
+      p_within: 0.15
+      p_between: 0.01
+
+  # Agent selection for each condition
+  conditions:
+    - name: "large_bridge"
+      agent_size: "large"
+      agent_position: "bridge"
+    - name: "large_peripheral"
+      agent_size: "large"
+      agent_position: "peripheral"
+    - name: "small_bridge"
+      agent_size: "small"
+      agent_position: "bridge"
+    - name: "small_peripheral"
+      agent_size: "small"
+      agent_position: "peripheral"
+
+  # Seed post (same content, author varies by condition)
+  seed_post:
+    text: "Just mass adoption starting? My local coffee shop now accepts Bitcoin!"
+    has_media: false
+    inject_at_round: 0
+
+  fixed:
+    agents: 500
+    rounds: 50
+    ranking_mode: "x_algo"
+```
 
 ### CLI Interface
 
@@ -230,6 +392,20 @@ Outputs:
 - [ ] Add `SocialGraph` wrapper class for follow relationship queries
 - [ ] Implement network metrics collection (density, clustering, assortativity)
 - [ ] Add network visualization command
+- [ ] Compute betweenness centrality for all nodes
+- [ ] Store community membership for stochastic block model nodes
+
+### Agent Classification (Study 1 Support)
+- [ ] Implement `classify_agents_by_position()` using betweenness centrality
+- [ ] Implement `classify_agents_by_size()` using follower count (in-degree)
+- [ ] Implement `select_agents_for_condition()` for experiment setup
+- [ ] Add agent classification to experiment output metadata
+
+### Seed Post Injection (Study 1 Support)
+- [ ] Define `SeedPostConfig` dataclass
+- [ ] Implement `inject_seed_post()` function
+- [ ] Add seed post tracking to `SimulationState` for cascade measurement
+- [ ] Support condition-based author selection in experiment runner
 
 ### CLI
 - [ ] Create CLI entry point with Click/Typer (`prism/cli/main.py`)
@@ -241,8 +417,9 @@ Outputs:
 - [ ] Implement experiment runner with batch execution and seed management
 - [ ] Add `prism experiment` command for multi-scenario runs
 - [ ] Integrate pyDOE for factorial/Latin Hypercube designs
+- [ ] Support condition-based agent selection (size × position)
 
 ### Analysis
-- [ ] Implement `prism analyze` with stats (Mann-Whitney, Cohen's d)
+- [ ] Implement `prism analyze` with stats (Mann-Whitney, Kruskal-Wallis, Cohen's d)
 - [ ] Add cascade visualization with NetworkX
 - [ ] Export results to JSON/CSV for external analysis

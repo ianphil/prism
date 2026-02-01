@@ -9,7 +9,7 @@ This document outlines the recommended implementation sequence for PRISM based o
 | 1 | Foundation: Agent Framework + Ollama | `_completed/001-foundation-agent-ollama/` | High | 14 | ✅ Done |
 | 2 | RAG Feed System | `_completed/002-rag-feed-system/` | High | 30 | ✅ Done |
 | 3 | Agent Behavior Statecharts | `_completed/003-agent-behavior-statecharts/` | High | 47 | ✅ Done |
-| 4 | Simulation Workflow Loop | `20260127-simulation-workflow-loop.md` | High | 7 | Open |
+| 4 | Simulation Workflow Loop | `_completed/004-simulation-workflow-loop/` | High | 7 | ✅ Done |
 | 5 | X Algorithm Ranking | `20260127-x-algorithm-ranking.md` | Medium | 6 | Open |
 | 6 | Data Pipeline | `20260127-data-pipeline.md` | Medium | 7 | Open |
 | 7 | Observability and Metrics | `20260127-observability-metrics.md` | Medium | 7 | Open |
@@ -43,7 +43,7 @@ This document outlines the recommended implementation sequence for PRISM based o
 │    ▼        ▼              ▼                                │
 │ ┌──────────────────────────────┐                            │
 │ │         Feature 4            │                            │
-│ │    Simulation Workflow Loop  │  (depends on F2, F3)       │
+│ │    Simulation Workflow Loop  │  ✅ COMPLETE               │
 │ │          (High)              │                            │
 │ └──────────────┬───────────────┘                            │
 │                │                                            │
@@ -94,9 +94,9 @@ This document outlines the recommended implementation sequence for PRISM based o
 - Agent profile generation
 - Validates: Real data bootstraps realistic agents
 
-### Phase 3: Simulation Core (Current)
+### Phase 3: Simulation Core ✅ COMPLETE
 
-**Feature 4: Simulation Workflow Loop** (depends on F2, F3)
+**Feature 4: Simulation Workflow Loop** (depends on F2, F3) — ✅ Complete
 - Graph-based workflow orchestration
 - Statechart-driven agent execution per round
 - State management and checkpointing
@@ -150,7 +150,7 @@ Merge point: F4 (Simulation Loop) requires F2 + F3, optionally F5/F6
 | **M1: Agent Works** | F1 ✅ | Single agent makes valid decision with gpt-oss:20b |
 | **M2: Feed Works** | F1, F2 ✅ | Agent receives personalized feed from ChromaDB |
 | **M3: States Work** | F1, F3 ✅ | Agent transitions between states, state queries work |
-| **M4: Sim Runs** | F1-F4 | 100-agent statechart-driven simulation completes 10 rounds |
+| **M4: Sim Runs** | F1-F4 ✅ | 100-agent statechart-driven simulation completes 10 rounds |
 | **M5: Real Data** | F1-F4, F6 | Simulation bootstrapped from Twitter dataset |
 | **M6: Algorithm** | F1-F5 | X-algo feed produces different cascades than random |
 | **M7: Observable** | F1-F5, F7 | 100% trace coverage, state distributions exported |
@@ -175,5 +175,7 @@ Merge point: F4 (Simulation Loop) requires F2 + F3, optionally F5/F6
 2. ~~Continue Feature 2 (RAG)~~ ✅ Complete
 3. ~~Plan Feature 3 (Statecharts) with `/planner`~~ ✅ Planned (47 tasks)
 4. ~~Implement Feature 3 with `/implement` skill~~ ✅ Complete
-5. Track progress in `backlog/plans/` with status updates
-6. Validate each milestone before proceeding
+5. ~~Implement Feature 4 (Simulation Workflow Loop)~~ ✅ Complete
+6. **Next: Feature 5 (X Algorithm) or Feature 7 (Observability)**
+7. Track progress in `backlog/plans/` with status updates
+8. Validate each milestone before proceeding

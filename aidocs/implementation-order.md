@@ -2,64 +2,100 @@
 
 This document outlines the recommended implementation sequence for PRISM based on the PRD and feature dependencies.
 
+## Research Studies
+
+PRISM development is driven by two pre-registered studies (see `aidocs/`):
+
+| Study | Focus | Design | Key Requirements |
+|-------|-------|--------|------------------|
+| **Study 1** | Network position as equalizer for small accounts | 2×2 factorial (size × position) | Features 5, 7, 8 |
+| **Study 2** | Growth strategies for follower acquisition | 5 strategies + control | Features 5, 7, 8, 9, 10 |
+
 ## Feature Overview
 
-| # | Feature | Plan File | Priority | Est. Tasks | Status |
-|---|---------|-----------|----------|------------|--------|
-| 1 | Foundation: Agent Framework + Ollama | `_completed/001-foundation-agent-ollama/` | High | 14 | ✅ Done |
-| 2 | RAG Feed System | `_completed/002-rag-feed-system/` | High | 30 | ✅ Done |
-| 3 | Agent Behavior Statecharts | `_completed/003-agent-behavior-statecharts/` | High | 47 | ✅ Done |
-| 4 | Simulation Workflow Loop | `_completed/004-simulation-workflow-loop/` | High | 7 | ✅ Done |
-| 5 | X Algorithm Ranking | `20260127-x-algorithm-ranking.md` | Medium | 6 | Open |
-| 6 | Data Pipeline | `20260127-data-pipeline.md` | Medium | 7 | Open |
-| 7 | Observability and Metrics | `20260127-observability-metrics.md` | Medium | 7 | Open |
-| 8 | Experiment Framework | `20260127-experiment-framework.md` | Medium | 7 | Open |
+| # | Feature | Plan File | Priority | Est. Tasks | Status | Supports |
+|---|---------|-----------|----------|------------|--------|----------|
+| 1 | Foundation: Agent Framework + Ollama | `_completed/001-foundation-agent-ollama/` | High | 14 | ✅ Done | — |
+| 2 | RAG Feed System | `_completed/002-rag-feed-system/` | High | 30 | ✅ Done | — |
+| 3 | Agent Behavior Statecharts | `_completed/003-agent-behavior-statecharts/` | High | 47 | ✅ Done | — |
+| 4 | Simulation Workflow Loop | `_completed/004-simulation-workflow-loop/` | High | 7 | ✅ Done | — |
+| 5 | X Algorithm Ranking | `20260127-x-algorithm-ranking.md` | High | 8 | Open | Study 1, 2 |
+| 6 | Data Pipeline | `20260127-data-pipeline.md` | Medium | 16 | Open | Study 1 (validation) |
+| 7 | Observability and Metrics | `20260127-observability-metrics.md` | High | 14 | Open | Study 1, 2 |
+| 8 | Experiment Framework | `20260127-experiment-framework.md` | High | 18 | Open | Study 1, 2 |
+| 9 | Dynamic Network Module | `20260131-dynamic-network-module.md` | Medium | 7 | Open | Study 2 |
+| 10 | Agent Strategy System | `20260131-agent-strategy-system.md` | Medium | 7 | Open | Study 2 |
 
 ## Dependency Graph
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│   ┌───────────┐                                             │
-│   │ Feature 1 │  Foundation: Agent Framework + Ollama  ✅   │
-│   │   (Done)  │  No dependencies - COMPLETE                 │
-│   └─────┬─────┘                                             │
-│         │                                                   │
-│    ┌────┴────┬──────────────┐                               │
-│    │         │              │                               │
-│    ▼         ▼              ▼                               │
-│ ┌─────┐  ┌─────┐        ┌─────┐                             │
-│ │ F2  │  │ F6  │        │ F3  │                             │
-│ │ RAG │  │Data │        │State│  Agent Behavior             │
-│ │Feed │  │Pipe │        │chart│  Statecharts                │
-│ └──┬──┘  └──┬──┘        └──┬──┘                             │
-│    │        │              │                                │
-│    ▼        │              │                                │
-│ ┌─────┐     │              │                                │
-│ │ F5  │     │              │                                │
-│ │X Alg│     │              │                                │
-│ └──┬──┘     │              │                                │
-│    │        │              │                                │
-│    ▼        ▼              ▼                                │
-│ ┌──────────────────────────────┐                            │
-│ │         Feature 4            │                            │
-│ │    Simulation Workflow Loop  │  ✅ COMPLETE               │
-│ │          (High)              │                            │
-│ └──────────────┬───────────────┘                            │
-│                │                                            │
-│                ▼                                            │
-│ ┌──────────────────────────────┐                            │
-│ │         Feature 7            │  Observability and Metrics │
-│ │          (Medium)            │                            │
-│ └──────────────┬───────────────┘                            │
-│                │                                            │
-│                ▼                                            │
-│ ┌──────────────────────────────┐                            │
-│ │         Feature 8            │  Experiment Framework      │
-│ │          (Medium)            │  (capstone)                │
-│ └──────────────────────────────┘                            │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           CORE INFRASTRUCTURE                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│   ┌───────────┐                                                          │
+│   │ Feature 1 │  Foundation: Agent Framework + Ollama  ✅                │
+│   └─────┬─────┘                                                          │
+│         │                                                                │
+│    ┌────┴────┬──────────────┐                                            │
+│    ▼         ▼              ▼                                            │
+│ ┌─────┐  ┌─────┐        ┌─────┐                                          │
+│ │ F2 ✅│  │ F6  │        │ F3 ✅│                                          │
+│ │ RAG │  │Data │        │State│                                          │
+│ └──┬──┘  └──┬──┘        └──┬──┘                                          │
+│    │        │              │                                             │
+│    ▼        │              │                                             │
+│ ┌─────┐     │              │                                             │
+│ │ F5  │     │              │                                             │
+│ │X Alg│     │              │                                             │
+│ └──┬──┘     │              │                                             │
+│    │        ▼              ▼                                             │
+│    ▼   ┌──────────────────────────────┐                                  │
+│ ┌──────│         Feature 4  ✅         │                                  │
+│ │      │    Simulation Workflow Loop   │                                  │
+│ │      └──────────────┬───────────────┘                                  │
+│ │                     │                                                  │
+│ │      ┌──────────────┴───────────────┐                                  │
+│ │      ▼                              ▼                                  │
+│ │ ┌─────────┐                   ┌─────────┐                              │
+│ │ │   F7    │                   │   F8    │                              │
+│ │ │ Metrics │                   │  Exper. │                              │
+│ │ └────┬────┘                   └────┬────┘                              │
+│ │      │                             │                                   │
+│ │      └──────────────┬──────────────┘                                   │
+│ │                     │                                                  │
+├─┼─────────────────────┼─────────────────────────────────────────────────┤
+│ │                     ▼                                                  │
+│ │    ╔═══════════════════════════════════════════╗                       │
+│ │    ║           STUDY 1: Position Virality      ║                       │
+│ │    ║   • 2×2 factorial (size × position)       ║                       │
+│ │    ║   • TOST equivalence testing              ║                       │
+│ │    ║   • 50 replications × 4 conditions        ║                       │
+│ │    ╚═══════════════════════════════════════════╝                       │
+│ │                     │                                                  │
+│ │                     │ Gate: Bridge effect validated                    │
+│ │                     ▼                                                  │
+├─┼─────────────────────────────────────────────────────────────────────────┤
+│ │              STUDY 2 REQUIREMENTS                                      │
+│ │                     │                                                  │
+│ │      ┌──────────────┴──────────────┐                                   │
+│ │      ▼                             ▼                                   │
+│ │ ┌─────────┐                   ┌─────────┐                              │
+│ │ │   F9    │                   │   F10   │                              │
+│ │ │ Dynamic │                   │Strategy │                              │
+│ │ │ Network │                   │ System  │                              │
+│ │ └────┬────┘                   └────┬────┘                              │
+│ │      │                             │                                   │
+│ │      └──────────────┬──────────────┘                                   │
+│ │                     ▼                                                  │
+│ │    ╔═══════════════════════════════════════════╗                       │
+│ │    ║        STUDY 2: Growth Strategies         ║                       │
+│ │    ║   • 6 conditions (5 strategies + control) ║                       │
+│ │    ║   • Mixed-effects models                  ║                       │
+│ │    ║   • 50 simulations × 35 focal agents      ║                       │
+│ │    ╚═══════════════════════════════════════════╝                       │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Recommended Implementation Sequence
@@ -171,11 +207,26 @@ Merge point: F4 (Simulation Loop) requires F2 + F3, optionally F5/F6
 
 ## Next Steps
 
-1. ~~Start with Feature 1: Foundation~~ ✅ Complete
-2. ~~Continue Feature 2 (RAG)~~ ✅ Complete
-3. ~~Plan Feature 3 (Statecharts) with `/planner`~~ ✅ Planned (47 tasks)
-4. ~~Implement Feature 3 with `/implement` skill~~ ✅ Complete
-5. ~~Implement Feature 4 (Simulation Workflow Loop)~~ ✅ Complete
-6. **Next: Feature 5 (X Algorithm) or Feature 7 (Observability)**
-7. Track progress in `backlog/plans/` with status updates
-8. Validate each milestone before proceeding
+### Completed
+1. ~~Feature 1: Foundation~~ ✅
+2. ~~Feature 2: RAG Feed System~~ ✅
+3. ~~Feature 3: Agent Behavior Statecharts~~ ✅
+4. ~~Feature 4: Simulation Workflow Loop~~ ✅
+
+### Study 1 Path (Network Position Virality)
+5. **Feature 5: X Algorithm Ranking** — Required for in-network vs out-of-network
+6. **Feature 7: Observability and Metrics** — Cascade tracking, cross-community spread
+7. **Feature 8: Experiment Framework** — Agent classification, seed injection
+8. **Feature 6: Data Pipeline** — Higgs validation phase
+9. **Run Study 1** — Validate bridge effect before proceeding
+
+### Study 2 Path (Growth Strategies)
+10. **Feature 9: Dynamic Network Module** — Follow decision model
+11. **Feature 10: Agent Strategy System** — Per-agent strategies
+12. **Run Study 2** — Test growth strategies
+
+### Validation Gates
+- **Gate 1**: Study 1 confirms bridge position advantage (proceed to Study 2)
+- **Gate 2**: Study 2 identifies effective growth strategies
+
+Track progress in `backlog/plans/` with status updates.

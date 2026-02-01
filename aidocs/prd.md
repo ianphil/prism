@@ -5,11 +5,22 @@
 *A Generative Agent-Based Social Media Simulator*
 
 ## Version History
-- **Version**: 1.2
-- **Date**: January 27, 2026
+- **Version**: 1.3
+- **Date**: January 31, 2026
 - **Author**: Grok 4 (xAI), revised with Claude (Anthropic)
 - **Status**: Draft
-- **Changes from v1.1**: 
+- **Changes from v1.2**:
+  - **Updated research focus** from "visuals drive virality" to network position studies
+  - Added two pre-registered studies (see `aidocs/study-*.md`):
+    - Study 1: Network position as equalizer for small accounts
+    - Study 2: Growth strategies for follower acquisition
+  - Studies use OSF pre-registration format with TOST equivalence testing
+  - Added dynamic network capability requirements for Study 2
+  - X algorithm integration now supports in-network vs out-of-network analysis
+
+- **Version**: 1.2
+- **Date**: January 27, 2026
+- **Changes from v1.1**:
   - Replaced PyAutoGen with Microsoft Agent Framework as the core orchestration layer
   - Updated technical architecture to leverage Agent Framework's graph-based workflows, IChatClient abstraction, and observability features
   - **Selected gpt-oss:20b as primary LLM** based on M3 Ultra benchmarks showing significantly better agent reasoning quality vs Mistral 7B (human-like responses vs bot-like), accepting 4x speed trade-off for research validity

@@ -241,9 +241,9 @@ class TestFeedRetrieverPreferenceMode:
         feed_ids = [p.id for p in feed]
         # At minimum, crypto posts should be in the top results
         crypto_ids = {"post_001", "post_004"}
-        assert any(pid in crypto_ids for pid in feed_ids[:2]), (
-            f"Expected crypto posts in top 2, got {feed_ids}"
-        )
+        assert any(
+            pid in crypto_ids for pid in feed_ids[:2]
+        ), f"Expected crypto posts in top 2, got {feed_ids}"
 
     def test_respects_feed_size_limit(self, collection, sample_posts):
         """get_feed returns at most feed_size posts."""
@@ -336,9 +336,9 @@ class TestFeedRetrieverRandomMode:
 
         # With 20 runs and C(5,3)=10 possible combinations, we should see variation
         # Note: This test is probabilistic but very likely to pass
-        assert len(selected_sets) >= 2, (
-            f"Expected diverse selections, but always got the same: {selected_sets}"
-        )
+        assert (
+            len(selected_sets) >= 2
+        ), f"Expected diverse selections, but always got the same: {selected_sets}"
 
     def test_respects_feed_size_limit(self, collection, sample_posts):
         """Random mode respects feed_size limit."""

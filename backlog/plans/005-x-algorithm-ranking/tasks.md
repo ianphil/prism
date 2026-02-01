@@ -54,31 +54,31 @@ Phase 1 (Data Model)
 - [x] T009 [TEST] Write test that SocialAgent rejects self-follow (agent_id in following)
 - [x] T010 [IMPL] Add validation to prevent self-follow
 
-## Phase 2: Configuration
+## Phase 2: Configuration ✅
 
 ### RankingConfig Model
 
-- [ ] T011 [TEST] Write test for RankingConfig with mode field accepting x_algo/preference/random
-- [ ] T012 [IMPL] Create RankingConfig class with mode: Literal field
-- [ ] T013 [TEST] Write test for out_of_network_scale with default 0.75 and [0,1] validation
-- [ ] T014 [IMPL] Add out_of_network_scale field with Field validation
-- [ ] T015 [TEST] Write test for reply_scale with default 0.75 and [0,1] validation
-- [ ] T016 [IMPL] Add reply_scale field with Field validation
-- [ ] T017 [TEST] Write test for author_diversity_decay with default 0.5 and [0,1] validation
-- [ ] T018 [IMPL] Add author_diversity_decay field with Field validation
-- [ ] T019 [TEST] Write test for author_diversity_floor with default 0.25 and [0,1] validation
-- [ ] T020 [IMPL] Add author_diversity_floor field with Field validation
-- [ ] T021 [TEST] Write test that floor > decay raises ValidationError
-- [ ] T022 [IMPL] Add model_validator for floor <= decay constraint
-- [ ] T023 [TEST] Write test for in_network_limit and out_of_network_limit fields
-- [ ] T024 [IMPL] Add limit fields with ge=1 validation
+- [x] T011 [TEST] Write test for RankingConfig with mode field accepting x_algo/preference/random
+- [x] T012 [IMPL] Create RankingConfig class with mode: Literal field
+- [x] T013 [TEST] Write test for out_of_network_scale with default 0.75 and [0,1] validation
+- [x] T014 [IMPL] Add out_of_network_scale field with Field validation
+- [x] T015 [TEST] Write test for reply_scale with default 0.75 and [0,1] validation
+- [x] T016 [IMPL] Add reply_scale field with Field validation
+- [x] T017 [TEST] Write test for author_diversity_decay with default 0.5 and [0,1] validation
+- [x] T018 [IMPL] Add author_diversity_decay field with Field validation
+- [x] T019 [TEST] Write test for author_diversity_floor with default 0.25 and [0,1] validation
+- [x] T020 [IMPL] Add author_diversity_floor field with Field validation
+- [x] T021 [TEST] Write test that floor > decay raises ValidationError
+- [x] T022 [IMPL] Add model_validator for floor <= decay constraint
+- [x] T023 [TEST] Write test for in_network_limit and out_of_network_limit fields
+- [x] T024 [IMPL] Add limit fields with ge=1 validation
 
 ### YAML Integration
 
-- [ ] T025 [TEST] Write test for loading RankingConfig from YAML
-- [ ] T026 [IMPL] Integrate RankingConfig into RAGConfig or config loader
-- [ ] T027 [TEST] Write test that missing ranking section uses defaults
-- [ ] T028 [IMPL] Ensure backward compatibility with existing configs
+- [x] T025 [TEST] Write test for loading RankingConfig from YAML
+- [x] T026 [IMPL] Integrate RankingConfig into RAGConfig or config loader
+- [x] T027 [TEST] Write test that missing ranking section uses defaults
+- [x] T028 [IMPL] Ensure backward compatibility with existing configs
 
 ## Phase 3: Social Graph
 

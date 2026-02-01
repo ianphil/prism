@@ -45,6 +45,11 @@ async def run_simulation(
     Raises:
         ValueError: If neither config_path nor config is provided.
         ValueError: If state is not provided.
+
+    Note:
+        The ``reasoner_enabled`` config flag is intended for callers to decide
+        whether to attach a reasoner to the SimulationState before calling
+        this function. This function does not create or attach reasoners.
     """
     # Load config from file if path provided
     if config_path is not None:
@@ -62,7 +67,11 @@ async def run_simulation(
     feed_exec = FeedRetrievalExecutor(retriever)
     decision_exec = AgentDecisionExecutor()
     state_exec = StateUpdateExecutor(retriever)
-    logging_exec = LoggingExecutor(log_file=config.log_file)
+
+    # Only create LoggingExecutor if log_decisions is enabled
+    logging_exec = None
+    if config.log_decisions:
+        logging_exec = LoggingExecutor(log_file=config.log_file)
 
     round_executor = AgentRoundExecutor(
         feed_executor=feed_exec,
@@ -75,8 +84,9 @@ async def run_simulation(
     controller = RoundController(round_executor)
     result = await controller.run_simulation(config, state)
 
-    # Clean up
-    logging_exec.close()
+    # Clean up (only if logging was enabled)
+    if logging_exec is not None:
+        logging_exec.close()
 
     return result
 

@@ -30,7 +30,7 @@ class AgentRoundExecutor:
         feed_executor: "FeedRetrievalExecutor",
         decision_executor: "AgentDecisionExecutor",
         state_executor: "StateUpdateExecutor",
-        logging_executor: "LoggingExecutor",
+        logging_executor: "LoggingExecutor | None" = None,
     ) -> None:
         """Initialize with all pipeline executors.
 
@@ -38,7 +38,7 @@ class AgentRoundExecutor:
             feed_executor: Executor for feed retrieval.
             decision_executor: Executor for agent decisions.
             state_executor: Executor for state updates.
-            logging_executor: Executor for decision logging.
+            logging_executor: Executor for decision logging (optional).
         """
         self._feed = feed_executor
         self._decision = decision_executor
@@ -68,7 +68,8 @@ class AgentRoundExecutor:
         # 3. State update
         await self._state.execute(agent=agent, state=state, decision=decision)
 
-        # 4. Logging
-        await self._logging.execute(agent=agent, state=state, decision=decision)
+        # 4. Logging (only if executor provided)
+        if self._logging is not None:
+            await self._logging.execute(agent=agent, state=state, decision=decision)
 
         return decision

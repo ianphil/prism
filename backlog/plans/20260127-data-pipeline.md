@@ -5,6 +5,7 @@ priority: medium
 created: 2026-01-27
 updated: 2026-01-31
 depends_on: ["001-foundation-agent-ollama"]
+supports_studies: ["study-network-position-virality.md"]
 ---
 
 # Data Pipeline: Ingestion and Profile Generation
@@ -275,6 +276,68 @@ def generate_synthetic_population(
 - COVID-19 Twitter datasets (health/political discourse)
 - Custom topic-specific collections
 
+## Study 1 Validation Phase
+
+Before running simulations, Study 1 requires validating the bridge effect hypothesis using real Higgs cascade data. This is a decision gate for proceeding with the study.
+
+### Validation Analysis
+
+```python
+def validate_bridge_effect(higgs_data: NetworkData) -> ValidationResult:
+    """
+    Analyze Higgs cascades to check if bridge position correlates
+    with cascade size for small accounts.
+
+    Decision gate criteria:
+    - Proceed if: correlation > 0.1 AND p < 0.10
+    - Revise if: correlation <= 0 OR p >= 0.10
+    """
+    # Load follow graph and retweet cascades
+    follow_graph = higgs_data.follow_graph
+    retweet_graph = higgs_data.retweet_graph
+
+    # Calculate metrics for each cascade originator
+    betweenness = nx.betweenness_centrality(follow_graph)
+    follower_counts = dict(follow_graph.in_degree())
+    cascade_sizes = dict(retweet_graph.in_degree())
+
+    # Filter to small accounts (bottom 50% by followers)
+    median_followers = np.median(list(follower_counts.values()))
+    small_accounts = [
+        uid for uid, count in follower_counts.items()
+        if count <= median_followers and cascade_sizes.get(uid, 0) > 0
+    ]
+
+    # Correlate betweenness with cascade size
+    x = [betweenness.get(uid, 0) for uid in small_accounts]
+    y = [cascade_sizes.get(uid, 0) for uid in small_accounts]
+
+    correlation, p_value = stats.spearmanr(x, y)
+
+    return ValidationResult(
+        correlation=correlation,
+        p_value=p_value,
+        n_small_accounts=len(small_accounts),
+        proceed=correlation > 0.1 and p_value < 0.10
+    )
+```
+
+### Validation Output
+
+```python
+@dataclass
+class ValidationResult:
+    correlation: float
+    p_value: float
+    n_small_accounts: int
+    proceed: bool
+
+    # Descriptive statistics
+    small_account_cascade_median: float
+    bridge_account_cascade_median: float
+    peripheral_account_cascade_median: float
+```
+
 ## Tasks
 
 ### Network Import
@@ -282,6 +345,13 @@ def generate_synthetic_population(
 - [ ] Add network sampling methods (snowball, random, degree-preserving)
 - [ ] Compute node metadata (degree, clustering, centrality)
 - [ ] Create `SocialGraph` wrapper for agent queries
+
+### Study 1 Validation (Higgs Analysis)
+- [ ] Implement `validate_bridge_effect()` function
+- [ ] Calculate betweenness centrality for full Higgs network
+- [ ] Correlate betweenness with cascade size for small accounts
+- [ ] Generate validation report with decision gate outcome
+- [ ] Export validation results for study documentation
 
 ### Trait Inference
 - [ ] Implement tweet dataset loader with schema validation

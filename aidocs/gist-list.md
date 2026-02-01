@@ -62,3 +62,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **X Algorithm Research & Study Planning** (2026-01-31)
   - Gist: https://gist.github.com/ianphil/9d527aeb1b590d269efc4e44dc83bb9f
   - Preview: https://gisthost.github.io/?9d527aeb1b590d269efc4e44dc83bb9f/index.html
+- **Study design session** (2026-01-31)
+  - Gist: https://gist.github.com/ianphil/1624cfcd155ed66edec7ef42ed6c229b
+  - Preview: https://gisthost.github.io/?1624cfcd155ed66edec7ef42ed6c229b/index.html

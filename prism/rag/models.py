@@ -20,6 +20,9 @@ class Post(BaseModel):
     media_type: Literal["image", "video", "gif"] | None = None
     media_description: str | None = None
 
+    # Reply chain
+    parent_id: str | None = None
+
     # Engagement metrics
     likes: int = Field(default=0, ge=0)
     reshares: int = Field(default=0, ge=0)
@@ -45,6 +48,7 @@ class Post(BaseModel):
             "has_media": self.has_media,
             "media_type": self.media_type,
             "media_description": self.media_description,
+            "parent_id": self.parent_id,
             "likes": self.likes,
             "reshares": self.reshares,
             "replies": self.replies,
@@ -76,6 +80,7 @@ class Post(BaseModel):
             has_media=metadata.get("has_media", False),
             media_type=metadata.get("media_type"),
             media_description=metadata.get("media_description"),
+            parent_id=metadata.get("parent_id"),
             likes=metadata.get("likes", 0),
             reshares=metadata.get("reshares", 0),
             replies=metadata.get("replies", 0),

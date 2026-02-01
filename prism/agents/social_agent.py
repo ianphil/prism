@@ -34,6 +34,7 @@ class SocialAgent:
         timeout_threshold: int = 5,
         max_history_depth: int = 100,
         engagement_threshold: float = 0.5,
+        following: set[str] | None = None,
     ) -> None:
         """Initialize a social agent.
 
@@ -48,14 +49,21 @@ class SocialAgent:
             timeout_threshold: Ticks before agent is considered timed out (must be > 0).
             max_history_depth: Maximum number of state transitions to keep in history.
             engagement_threshold: Relevance threshold for should_engage() guard.
+            following: Set of agent IDs this agent follows (default empty set).
 
         Raises:
-            ValueError: If interests list is empty or timeout_threshold <= 0.
+            ValueError: If interests list is empty, timeout_threshold <= 0,
+                or agent follows itself.
         """
         if not interests:
             raise ValueError("interests must be a non-empty list")
         if timeout_threshold <= 0:
             raise ValueError("timeout_threshold must be > 0")
+
+        # Handle following with self-follow validation
+        self.following: set[str] = following if following is not None else set()
+        if agent_id in self.following:
+            raise ValueError("agent cannot follow itself")
 
         self.agent_id = agent_id
         self.name = name

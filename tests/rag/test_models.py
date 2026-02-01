@@ -351,3 +351,118 @@ class TestPostChromaConversion:
         )
 
         assert reconstructed == original
+
+
+# =============================================================================
+# Feature 005: X Algorithm Ranking - Post Extensions
+# =============================================================================
+
+
+class TestPostParentId:
+    """Tests for Post.parent_id field (T001, T003, T005)."""
+
+    def test_parent_id_field_exists_with_none_default(self):
+        """Post should have parent_id field with None default (T001)."""
+        from prism.rag.models import Post
+
+        post = Post(
+            id="post_001",
+            author_id="agent_1",
+            text="A top-level post",
+            timestamp=datetime.now(),
+        )
+
+        assert hasattr(post, "parent_id")
+        assert post.parent_id is None
+
+    def test_parent_id_can_be_set_to_string(self):
+        """parent_id can be set to a post ID string."""
+        from prism.rag.models import Post
+
+        post = Post(
+            id="reply_001",
+            author_id="agent_2",
+            text="This is a reply",
+            timestamp=datetime.now(),
+            parent_id="post_001",
+        )
+
+        assert post.parent_id == "post_001"
+
+    def test_to_metadata_includes_parent_id(self):
+        """to_metadata should include parent_id (T003)."""
+        from prism.rag.models import Post
+
+        # Test with parent_id set
+        reply = Post(
+            id="reply_001",
+            author_id="agent_2",
+            text="This is a reply",
+            timestamp=datetime.now(),
+            parent_id="post_001",
+        )
+        metadata = reply.to_metadata()
+        assert "parent_id" in metadata
+        assert metadata["parent_id"] == "post_001"
+
+        # Test with parent_id as None
+        top_level = Post(
+            id="post_001",
+            author_id="agent_1",
+            text="A top-level post",
+            timestamp=datetime.now(),
+        )
+        metadata = top_level.to_metadata()
+        assert "parent_id" in metadata
+        assert metadata["parent_id"] is None
+
+    def test_from_chroma_result_handles_parent_id(self):
+        """from_chroma_result should handle parent_id from metadata (T005)."""
+        from prism.rag.models import Post
+
+        # Test with parent_id in metadata
+        result_metadata = {
+            "author_id": "agent_2",
+            "timestamp": "2026-01-29T10:30:00",
+            "parent_id": "post_001",
+        }
+        reply = Post.from_chroma_result(
+            id="reply_001",
+            document="This is a reply",
+            metadata=result_metadata,
+        )
+        assert reply.parent_id == "post_001"
+
+        # Test without parent_id in metadata (should default to None)
+        result_metadata_no_parent = {
+            "author_id": "agent_1",
+            "timestamp": "2026-01-29T10:30:00",
+        }
+        top_level = Post.from_chroma_result(
+            id="post_001",
+            document="A top-level post",
+            metadata=result_metadata_no_parent,
+        )
+        assert top_level.parent_id is None
+
+    def test_roundtrip_with_parent_id(self):
+        """Post with parent_id survives roundtrip conversion."""
+        from prism.rag.models import Post
+
+        original = Post(
+            id="reply_roundtrip",
+            author_id="agent_test",
+            text="Reply roundtrip test",
+            timestamp=datetime(2026, 1, 29, 15, 45, 30),
+            parent_id="parent_post_001",
+        )
+
+        metadata = original.to_metadata()
+        reconstructed = Post.from_chroma_result(
+            id=original.id,
+            document=original.text,
+            metadata=metadata,
+        )
+
+        assert reconstructed == original
+        assert reconstructed.parent_id == "parent_post_001"

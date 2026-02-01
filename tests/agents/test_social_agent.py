@@ -814,3 +814,89 @@ class TestSocialAgentEngagementThreshold:
         )
         assert high_agent.should_engage(0.8) is False
         assert high_agent.should_engage(0.95) is True
+
+
+# =============================================================================
+# Feature 005: X Algorithm Ranking - SocialAgent Extensions
+# =============================================================================
+
+
+class TestSocialAgentFollowing:
+    """Tests for SocialAgent.following field (T007-T010)."""
+
+    def test_following_parameter_accepted_at_construction(self) -> None:
+        """SocialAgent should accept following parameter at construction (T007)."""
+        mock_client = MagicMock()
+        following = {"agent_002", "agent_003"}
+
+        agent = SocialAgent(
+            agent_id="agent_001",
+            name="Follower",
+            interests=["social"],
+            personality="social",
+            client=mock_client,
+            following=following,
+        )
+
+        assert hasattr(agent, "following")
+        assert agent.following == {"agent_002", "agent_003"}
+
+    def test_following_defaults_to_empty_set(self) -> None:
+        """following should default to empty set if not provided (T008)."""
+        mock_client = MagicMock()
+
+        agent = SocialAgent(
+            agent_id="agent_001",
+            name="Loner",
+            interests=["solitude"],
+            personality="independent",
+            client=mock_client,
+        )
+
+        assert agent.following == set()
+        assert isinstance(agent.following, set)
+
+    def test_following_none_becomes_empty_set(self) -> None:
+        """following=None should be converted to empty set (T008)."""
+        mock_client = MagicMock()
+
+        agent = SocialAgent(
+            agent_id="agent_001",
+            name="Loner",
+            interests=["solitude"],
+            personality="independent",
+            client=mock_client,
+            following=None,
+        )
+
+        assert agent.following == set()
+
+    def test_self_follow_raises_value_error(self) -> None:
+        """SocialAgent should reject self-follow (agent_id in following) (T009)."""
+        mock_client = MagicMock()
+
+        with pytest.raises(ValueError, match="cannot follow itself"):
+            SocialAgent(
+                agent_id="agent_001",
+                name="Narcissist",
+                interests=["self"],
+                personality="self-centered",
+                client=mock_client,
+                following={"agent_001", "agent_002"},  # Self-follow
+            )
+
+    def test_following_without_self_is_valid(self) -> None:
+        """following set without self is valid (T010)."""
+        mock_client = MagicMock()
+
+        agent = SocialAgent(
+            agent_id="agent_001",
+            name="Normal",
+            interests=["friends"],
+            personality="friendly",
+            client=mock_client,
+            following={"agent_002", "agent_003", "agent_004"},
+        )
+
+        assert "agent_001" not in agent.following
+        assert len(agent.following) == 3

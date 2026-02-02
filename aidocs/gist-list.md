@@ -65,3 +65,6 @@ Shareable links to notable Claude Code sessions for this project.
 - **Study design session** (2026-01-31)
   - Gist: https://gist.github.com/ianphil/1624cfcd155ed66edec7ef42ed6c229b
   - Preview: https://gisthost.github.io/?1624cfcd155ed66edec7ef42ed6c229b/index.html
+- **Feature 005 Phase 3 Implementation** (2026-02-02)
+  - Gist: https://gist.github.com/ianphil/927fe0229e471b71ac25bc12c6bddb13
+  - Preview: https://gisthost.github.io/?927fe0229e471b71ac25bc12c6bddb13/index.html

@@ -80,23 +80,23 @@ Phase 1 (Data Model)
 - [x] T027 [TEST] Write test that missing ranking section uses defaults
 - [x] T028 [IMPL] Ensure backward compatibility with existing configs
 
-## Phase 3: Social Graph
+## Phase 3: Social Graph ✅
 
 ### Protocol Definition
 
-- [ ] T029 [TEST] Write test that SocialGraphProtocol is importable with required methods
-- [ ] T030 [IMPL] Define SocialGraphProtocol in protocols.py
+- [x] T029 [TEST] Write test that SocialGraphProtocol is importable with required methods
+- [x] T030 [IMPL] Define SocialGraphProtocol in protocols.py
 
 ### Simple Implementation
 
-- [ ] T031 [TEST] Write test for SimpleSocialGraph.get_following returns correct set
-- [ ] T032 [IMPL] Implement SimpleSocialGraph with following dict
-- [ ] T033 [TEST] Write test for SimpleSocialGraph.is_following returns correct bool
-- [ ] T034 [IMPL] Add is_following method
-- [ ] T035 [TEST] Write test for SimpleSocialGraph.get_followers (reverse lookup)
-- [ ] T036 [IMPL] Build reverse index in __init__, implement get_followers
-- [ ] T037 [TEST] Write test for empty following set returns empty set
-- [ ] T038 [IMPL] Handle edge cases (missing agent, empty following)
+- [x] T031 [TEST] Write test for SimpleSocialGraph.get_following returns correct set
+- [x] T032 [IMPL] Implement SimpleSocialGraph with following dict
+- [x] T033 [TEST] Write test for SimpleSocialGraph.is_following returns correct bool
+- [x] T034 [IMPL] Add is_following method
+- [x] T035 [TEST] Write test for SimpleSocialGraph.get_followers (reverse lookup)
+- [x] T036 [IMPL] Build reverse index in __init__, implement get_followers
+- [x] T037 [TEST] Write test for empty following set returns empty set
+- [x] T038 [IMPL] Handle edge cases (missing agent, empty following)
 
 ## Phase 4: Ranker Core
 

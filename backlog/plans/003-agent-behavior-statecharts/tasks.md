@@ -237,4 +237,4 @@ After all implementation phases are complete:
 - [x] `uv run black --check .` passes
 - [x] `uv run pytest` passes (all tests including new statechart tests)
 - [x] Run spec tests with `/spec-tests` skill using `specs/tests/003-agent-behavior-statecharts.md`
-- [ ] All spec tests pass → feature complete
+- [x] All spec tests pass → feature complete
